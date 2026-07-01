@@ -101,10 +101,8 @@ body{font-family:var(--serif);background:var(--cream);color:var(--br);line-heigh
 .dd-sep{font-size:clamp(18px,5vw,26px);color:var(--rose-l);padding:0 2px;line-height:1;align-self:flex-start;padding-top:clamp(10px,3vw,14px)}
 .dd-msg{font-size:clamp(12px,3.2vw,14px);color:var(--br-m);margin-bottom:clamp(16px,4vw,24px)}
 
-/* 캘린더 + 슬라이더 2열 */
-.wd-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(8px,2vw,14px)}
-/* 캘린더 */
-.cal-box{background:var(--wh);border-radius:var(--r);padding:clamp(10px,3vw,16px) clamp(8px,2.5vw,14px);box-shadow:var(--sh)}
+/* 캘린더 (전체 너비) */
+.cal-box{background:var(--wh);border-radius:var(--r);padding:clamp(14px,4vw,22px) clamp(12px,3.5vw,20px);box-shadow:var(--sh)}
 .cal-hd{font-family:var(--lbl);font-weight:300;font-size:clamp(9px,2.4vw,12px);letter-spacing:2px;color:var(--br-m);text-align:center;margin-bottom:10px}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
 .cal-dow{font-family:var(--lbl);font-weight:300;font-size:clamp(7px,2vw,9px);color:var(--br-l);padding:2px 0;letter-spacing:.5px}
@@ -114,7 +112,7 @@ body{font-family:var(--serif);background:var(--cream);color:var(--br);line-heigh
 .cal-cap{font-size:clamp(8px,2.2vw,10px);color:var(--rose);text-align:center;margin-top:8px;letter-spacing:.5px;line-height:1.4}
 
 /* 슬라이더 (Wedding Day용) */
-.wd-slider-wrap{border-radius:var(--r);overflow:hidden;background:var(--cream-d);box-shadow:var(--sh);position:relative;aspect-ratio:3/4;user-select:none}
+.wd-slider-wrap{border-radius:var(--r);overflow:hidden;background:var(--cream-d);box-shadow:var(--sh);position:relative;aspect-ratio:4/3;user-select:none}
 .wd-track{display:flex;height:100%;transition:transform .38s cubic-bezier(.25,.46,.45,.94)}
 .wd-slide{flex:0 0 100%;height:100%}
 .wd-slide img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
@@ -359,9 +357,9 @@ footer{background:var(--br);color:rgba(255,255,255,.55);text-align:center;paddin
 <section class="sec sec-wd">
   <p class="sec-lbl rev">The Wedding Day</p>
   <div class="gl rev"><span>❋</span></div>
-  <p class="rev" style="font-family:var(--lbl);font-weight:300;font-size:clamp(11px,3vw,13px);color:var(--br-m);letter-spacing:1px;margin-bottom:14px">2026년 11월 7일 토요일 오후 3시</p>
 
-  <!-- D-Day 카운터 (초 포함) -->
+  <!-- 날짜 + D-Day -->
+  <p class="rev" style="font-family:var(--lbl);font-weight:300;font-size:clamp(11px,3vw,13px);color:var(--br-m);letter-spacing:1px;margin-bottom:10px">2026년 11월 7일 토요일 오후 3시</p>
   <div class="dd-wrap rev">
     <div class="dd-u"><div class="dd-n" id="dd-d">-</div><div class="dd-l">DAY</div></div>
     <div class="dd-sep">:</div>
@@ -373,65 +371,59 @@ footer{background:var(--br);color:rgba(255,255,255,.55);text-align:center;paddin
   </div>
   <p class="dd-msg rev" id="dd-msg"></p>
 
-  <!-- 캘린더 + 슬라이더 -->
-  <div class="wd-grid rev">
-    <!-- 캘린더 -->
-    <div class="cal-box" id="cal-box"></div>
+  <!-- 캘린더 (전체 너비) -->
+  <div class="cal-box rev" id="cal-box"></div>
 
-    <!-- 슬라이더 -->
-    <div>
-      <div class="wd-slider-wrap" id="wdSlider"
-           ontouchstart="wdTouchStart(event)" ontouchend="wdTouchEnd(event)">
-        <div class="wd-track" id="wdTrack">
-          
-          <div class="wd-slide">
-            <img src="photos/photo1.jpg" alt="사진1"
-                 onerror="this.style.display='none'" loading="lazy">
-            <div class="wd-slide-ph"><span>📷</span><span>photo1.jpg</span></div>
-          </div>
-          
-          <div class="wd-slide">
-            <img src="photos/photo2.jpg" alt="사진2"
-                 onerror="this.style.display='none'" loading="lazy">
-            <div class="wd-slide-ph"><span>📷</span><span>photo2.jpg</span></div>
-          </div>
-          
-          <div class="wd-slide">
-            <img src="photos/photo3.jpg" alt="사진3"
-                 onerror="this.style.display='none'" loading="lazy">
-            <div class="wd-slide-ph"><span>📷</span><span>photo3.jpg</span></div>
-          </div>
-          
-          <div class="wd-slide">
-            <img src="photos/photo4.jpg" alt="사진4"
-                 onerror="this.style.display='none'" loading="lazy">
-            <div class="wd-slide-ph"><span>📷</span><span>photo4.jpg</span></div>
-          </div>
-          
-          <div class="wd-slide">
-            <img src="photos/photo5.jpg" alt="사진5"
-                 onerror="this.style.display='none'" loading="lazy">
-            <div class="wd-slide-ph"><span>📷</span><span>photo5.jpg</span></div>
-          </div>
-          
-          <div class="wd-slide">
-            <img src="photos/photo6.jpg" alt="사진6"
-                 onerror="this.style.display='none'" loading="lazy">
-            <div class="wd-slide-ph"><span>📷</span><span>photo6.jpg</span></div>
-          </div>
-          
-        </div>
-        <button class="wd-arr p" onclick="wdPrev()" aria-label="이전">
-          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <button class="wd-arr n" onclick="wdNext()" aria-label="다음">
-          <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
-        </button>
+  <!-- 사진 슬라이더 (캘린더 아래) -->
+  <div class="wd-slider-wrap rev" id="wdSlider" style="margin-top:clamp(10px,2.5vw,16px)"
+       ontouchstart="wdTouchStart(event)" ontouchend="wdTouchEnd(event)">
+    <div class="wd-track" id="wdTrack">
+      
+      <div class="wd-slide">
+        <img src="photos/photo1.jpg" alt="사진1"
+             onerror="this.style.display='none'" loading="lazy">
+        <div class="wd-slide-ph"><span>📷</span><span>photo1.jpg</span></div>
       </div>
-      <div class="wd-dots" id="wdDots"></div>
+      
+      <div class="wd-slide">
+        <img src="photos/photo2.jpg" alt="사진2"
+             onerror="this.style.display='none'" loading="lazy">
+        <div class="wd-slide-ph"><span>📷</span><span>photo2.jpg</span></div>
+      </div>
+      
+      <div class="wd-slide">
+        <img src="photos/photo3.jpg" alt="사진3"
+             onerror="this.style.display='none'" loading="lazy">
+        <div class="wd-slide-ph"><span>📷</span><span>photo3.jpg</span></div>
+      </div>
+      
+      <div class="wd-slide">
+        <img src="photos/photo4.jpg" alt="사진4"
+             onerror="this.style.display='none'" loading="lazy">
+        <div class="wd-slide-ph"><span>📷</span><span>photo4.jpg</span></div>
+      </div>
+      
+      <div class="wd-slide">
+        <img src="photos/photo5.jpg" alt="사진5"
+             onerror="this.style.display='none'" loading="lazy">
+        <div class="wd-slide-ph"><span>📷</span><span>photo5.jpg</span></div>
+      </div>
+      
+      <div class="wd-slide">
+        <img src="photos/photo6.jpg" alt="사진6"
+             onerror="this.style.display='none'" loading="lazy">
+        <div class="wd-slide-ph"><span>📷</span><span>photo6.jpg</span></div>
+      </div>
+      
     </div>
+    <button class="wd-arr p" onclick="wdPrev()" aria-label="이전">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="wd-arr n" onclick="wdNext()" aria-label="다음">
+      <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+    </button>
   </div>
-
+  <div class="wd-dots rev" id="wdDots"></div>
   <button class="wd-all-btn rev" onclick="showPhotoModal()">사진 전체보기</button>
 </section>
 
@@ -503,15 +495,12 @@ footer{background:var(--br);color:rgba(255,255,255,.55);text-align:center;paddin
   <div class="gl rev"><span>❋</span></div>
   <h2 class="sec-ttl rev">오시는 길</h2>
 
-  <!-- 네이버 지도 (자물쇠 잠금/해제) -->
+  <!-- 네이버 지도 JS API (자물쇠 잠금/해제) -->
   <div class="map-outer rev">
-    <iframe id="naverMap"
-      src="https://map.naver.com/v5/embed?type=address&lng=127.0076&lat=37.4913&title=사랑의교회+언약채플&zoom=17&desc=서울+서초구+반포대로+121"
-      allowfullscreen loading="lazy" title="사랑의교회 위치">
-    </iframe>
+    <div id="naverMapDiv" style="width:100%;height:100%"></div>
     <!-- 자물쇠 잠금 오버레이 -->
     <div class="map-overlay" id="mapOv" onclick="unlockMap()">
-      <span class="map-ov-hint">지도를 탭하여 활성화</span>
+      <span class="map-ov-hint">탭하여 지도 활성화</span>
     </div>
     <!-- 자물쇠 아이콘 -->
     <button class="map-lock" id="mapLock" onclick="toggleMapLock()" title="지도 잠금/해제">🔒</button>
@@ -773,19 +762,49 @@ function showPhotoModal(){
   showModal('photoModal');
 }
 
+/* ─── NAVER MAP JS API ─── */
+let _nMap=null;
+function initNaverMap(){
+  var _t=0;
+  function _try(){
+    if(typeof naver!=='undefined'&&naver.maps&&naver.maps.LatLng){
+      var loc=new naver.maps.LatLng(37.4913,127.0076);
+      _nMap=new naver.maps.Map('naverMapDiv',{
+        center:loc,zoom:17,
+        mapDataControl:false,
+        logoControl:true,
+        logoControlOptions:{position:naver.maps.Position.BOTTOM_LEFT},
+        scaleControl:false,
+        mapTypeControl:false,
+        zoomControl:false,
+        draggable:false,
+        scrollWheel:false,
+        pinchZoom:false,
+        keyboardShortcuts:false
+      });
+      new naver.maps.Marker({position:loc,map:_nMap});
+    } else if(++_t<40){
+      setTimeout(_try,200);
+    }
+  }
+  setTimeout(_try,100);
+}
+
 /* ─── MAP LOCK ─── */
 let mapLocked=true;
 function unlockMap(){
   mapLocked=false;
   document.getElementById('mapOv').classList.add('hide');
   document.getElementById('mapLock').textContent='🔓';
+  if(_nMap)_nMap.setOptions({draggable:true,scrollWheel:true,pinchZoom:true});
 }
 function toggleMapLock(){
-  if(mapLocked){unlockMap()}
+  if(mapLocked){unlockMap();}
   else{
     mapLocked=true;
     document.getElementById('mapOv').classList.remove('hide');
     document.getElementById('mapLock').textContent='🔒';
+    if(_nMap)_nMap.setOptions({draggable:false,scrollWheel:false,pinchZoom:false});
   }
 }
 
@@ -869,6 +888,9 @@ function toast(msg){
   el.textContent=msg;el.classList.add('show');
   setTimeout(()=>el.classList.remove('show'),3000);
 }
+</script>
+<script type="text/javascript"
+  src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=6c0qt0f3ju&callback=initNaverMap">
 </script>
 </body>
 </html>
