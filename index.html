@@ -31,6 +31,16 @@
 html{scroll-behavior:smooth}
 body{font-family:var(--serif);background:var(--bg);color:var(--t1);line-height:1.8;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom,0)}
 
+/* ─── PETALS ─── */
+#petals{position:fixed;inset:0;pointer-events:none;z-index:10000;overflow:hidden}
+.pt{position:absolute;top:-28px;animation:ptFall linear forwards}
+@keyframes ptFall{
+  0%{opacity:0;transform:translateY(0) rotate(0deg) translateX(0)}
+  8%{opacity:.9}
+  85%{opacity:.65}
+  100%{opacity:0;transform:translateY(110vh) rotate(500deg) translateX(var(--ptd,50px))}
+}
+
 /* ─── CINEMATIC INTRO ─── */
 #intro{position:fixed;inset:0;background:var(--wh);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity 1.3s ease,visibility 1.3s ease;cursor:pointer}
 #intro.hide{opacity:0;visibility:hidden;pointer-events:none}
@@ -349,6 +359,7 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   <p class="it-skip">tap to skip</p>
 </div>
 
+<div id="petals"></div>
 <div id="toast"></div>
 <audio id="bgm" loop preload="auto"><source src="static/music/bgm.mp3" type="audio/mpeg"></audio>
 <button id="musicBtn" aria-label="음악">♪</button>
@@ -817,6 +828,33 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 /* ─── INTRO ─── */
 function skipIntro(){document.getElementById('intro').classList.add('hide')}
 window.addEventListener('load',()=>{setTimeout(skipIntro,5200)});
+
+/* ─── PETALS ─── */
+(function(){
+  const ct=document.getElementById('petals');
+  let burst=true;
+  setTimeout(()=>{burst=false},5400);
+
+  function mk(){
+    const p=document.createElement('div');
+    const sz=Math.random()*13+7;
+    const dur=burst?(Math.random()*2+2.2):(Math.random()*7+9);
+    const dly=burst?(Math.random()*.6):(Math.random()*5);
+    const drift=((Math.random()-.5)*100).toFixed(0);
+    const shape=Math.random()>.5?'150% 0 150% 0':'0 150% 0 150%';
+    const alpha=(.55+Math.random()*.35).toFixed(2);
+    p.className='pt';
+    p.style.cssText=`left:${(Math.random()*112-6).toFixed(1)}vw;width:${sz.toFixed(1)}px;height:${(sz*.62).toFixed(1)}px;border-radius:${shape};background:rgba(255,248,252,${alpha});box-shadow:0 1px 3px rgba(255,200,220,.3);animation-duration:${dur.toFixed(1)}s;animation-delay:${dly.toFixed(1)}s;--ptd:${drift}px`;
+    ct.appendChild(p);
+    setTimeout(()=>p.remove(),(dur+dly)*1000+300);
+  }
+
+  /* 인트로 중: 120ms마다 2~3장 우수수 */
+  const bi=setInterval(()=>{
+    if(burst){mk();mk();if(Math.random()>.35)mk()}
+    else{clearInterval(bi);setInterval(mk,1000)}
+  },120);
+})();
 
 /* ─── MUSIC ─── */
 const bgm=document.getElementById('bgm'),mBtn=document.getElementById('musicBtn');
