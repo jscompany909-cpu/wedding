@@ -31,14 +31,22 @@
 html{scroll-behavior:smooth}
 body{font-family:var(--serif);background:var(--bg);color:var(--t1);line-height:1.8;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom,0)}
 
-/* ─── LOADING ─── */
-#ld{position:fixed;inset:0;background:var(--wh);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .9s,visibility .9s}
-#ld.hide{opacity:0;visibility:hidden;pointer-events:none}
-.ld-mono{font-family:var(--lbl);font-weight:100;font-size:10px;letter-spacing:6px;color:var(--t4);animation:fdIn 1.2s .3s both;text-transform:uppercase}
-.ld-name{font-family:var(--disp);font-size:26px;font-weight:300;color:var(--t2);margin-top:14px;animation:fdIn .9s .7s both;letter-spacing:2px}
-.ld-dot{width:4px;height:4px;border-radius:50%;background:var(--rose);margin:20px auto 0;animation:dotP 1.3s ease-in-out infinite}
-@keyframes fdIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes dotP{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.5)}}
+/* ─── CINEMATIC INTRO ─── */
+#intro{position:fixed;inset:0;background:var(--wh);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity 1.3s ease,visibility 1.3s ease;cursor:pointer}
+#intro.hide{opacity:0;visibility:hidden;pointer-events:none}
+.it-tag{font-family:var(--lbl);font-weight:100;font-size:clamp(8px,2.2vw,10px);letter-spacing:clamp(5px,2vw,8px);text-transform:uppercase;color:var(--t3);margin-bottom:clamp(16px,4.5vw,24px);opacity:0;animation:itUp .6s ease forwards;animation-delay:.4s}
+.it-line{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin-bottom:clamp(18px,5.5vw,28px);animation:itLW .8s ease forwards;animation-delay:.9s}
+.it-names{display:flex;align-items:baseline;justify-content:center;gap:clamp(4px,1.5vw,8px);margin-bottom:clamp(18px,5.5vw,28px)}
+.it-chr{font-family:var(--brush);font-size:clamp(44px,14vw,68px);color:var(--t1);line-height:1;display:inline-block;opacity:0;transform:translateY(85%);animation:itChr .55s cubic-bezier(.16,1,.3,1) forwards}
+.it-amp{font-family:var(--disp);font-size:clamp(20px,6.5vw,32px);color:var(--t4);font-weight:300;line-height:1;margin:0 clamp(6px,2vw,12px);opacity:0;animation:itFd .5s ease forwards;animation-delay:2.1s}
+.it-date{font-family:var(--lbl);font-weight:100;font-size:clamp(10px,2.7vw,12px);letter-spacing:clamp(3px,1.5vw,5px);color:var(--t2);opacity:0;animation:itUp .6s ease forwards;animation-delay:2.7s}
+.it-venue{font-family:var(--lbl);font-weight:100;font-size:clamp(8px,2.2vw,10px);letter-spacing:clamp(1.5px,1vw,3px);color:var(--t3);margin-top:8px;opacity:0;animation:itUp .6s ease forwards;animation-delay:3.1s}
+.it-line-b{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin-top:clamp(18px,5.5vw,28px);animation:itLW .8s ease forwards;animation-delay:3.5s}
+.it-skip{position:absolute;bottom:clamp(28px,7vw,44px);font-family:var(--lbl);font-weight:100;font-size:9px;letter-spacing:3px;color:var(--t4);text-transform:uppercase;opacity:0;animation:itUp .6s ease forwards;animation-delay:4.0s}
+@keyframes itUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes itFd{from{opacity:0}to{opacity:1}}
+@keyframes itLW{from{width:0}to{width:clamp(100px,32vw,160px)}}
+@keyframes itChr{from{opacity:0;transform:translateY(85%)}to{opacity:1;transform:translateY(0)}}
 
 /* ─── FIXED BTNS ─── */
 #musicBtn{position:fixed;bottom:calc(22px + env(safe-area-inset-bottom,0));right:clamp(16px,4vw,24px);width:44px;height:44px;border-radius:50%;background:var(--wh);border:1px solid var(--bd);color:var(--t3);cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh);z-index:500;transition:all .3s}
@@ -322,11 +330,23 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 </head>
 <body>
 
-<!-- LOADING -->
-<div id="ld">
-  <p class="ld-mono">Wedding Invitation</p>
-  <p class="ld-name">Jinseop · Bomi</p>
-  <div class="ld-dot"></div>
+<!-- CINEMATIC INTRO -->
+<div id="intro" onclick="skipIntro()">
+  <p class="it-tag">Wedding Invitation</p>
+  <div class="it-line"></div>
+  <div class="it-names">
+    <span class="it-chr" style="animation-delay:1.3s">배</span>
+    <span class="it-chr" style="animation-delay:1.52s">진</span>
+    <span class="it-chr" style="animation-delay:1.74s">섭</span>
+    <span class="it-amp">&amp;</span>
+    <span class="it-chr" style="animation-delay:2.3s">서</span>
+    <span class="it-chr" style="animation-delay:2.52s">보</span>
+    <span class="it-chr" style="animation-delay:2.74s">미</span>
+  </div>
+  <p class="it-date">2026 · 11 · 07 · SAT · 3 PM</p>
+  <p class="it-venue">사랑의교회 언약채플</p>
+  <div class="it-line-b"></div>
+  <p class="it-skip">tap to skip</p>
 </div>
 
 <div id="toast"></div>
@@ -794,8 +814,9 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 
 
 <script>
-/* ─── LOADING ─── */
-window.addEventListener('load',()=>{setTimeout(()=>document.getElementById('ld').classList.add('hide'),1800)});
+/* ─── INTRO ─── */
+function skipIntro(){document.getElementById('intro').classList.add('hide')}
+window.addEventListener('load',()=>{setTimeout(skipIntro,5200)});
 
 /* ─── MUSIC ─── */
 const bgm=document.getElementById('bgm'),mBtn=document.getElementById('musicBtn');
@@ -862,7 +883,7 @@ updateDD();setInterval(updateDD,1000);
 (function(){
   const grid=document.getElementById('galleryGrid');
   if(!grid)return;
-  for(let i=1;i<=6;i++){
+  for(let i=1;i<=10;i++){
     const item=document.createElement('div');
     item.className='gallery-item';
     const img=document.createElement('img');
@@ -875,7 +896,7 @@ updateDD();setInterval(updateDD,1000);
 })();
 
 /* ─── LIGHTBOX ─── */
-let lbIdx=0,lbTotal=6;
+let lbIdx=0,lbTotal=10;
 function openLb(i){lbIdx=i;updateLb();document.getElementById('lightbox').classList.add('show');document.body.style.overflow='hidden'}
 function closeLb(){document.getElementById('lightbox').classList.remove('show');document.body.style.overflow=''}
 function lbNav(d){lbIdx=(lbIdx+d+lbTotal)%lbTotal;updateLb()}
