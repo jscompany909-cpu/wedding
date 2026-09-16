@@ -77,9 +77,9 @@ body{font-family:var(--serif);background:var(--bg);color:var(--t1);line-height:1
 .hero-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--t3);font-size:13px}
 .hero-ph span:first-child{font-size:40px;opacity:.25}
 .hero-overlay{position:absolute;bottom:0;left:0;right:0;padding:clamp(24px,7vw,44px) clamp(24px,6vw,36px);background:linear-gradient(0deg,rgba(26,23,20,.55) 0%,transparent 100%);text-align:center}
-.hero-names{display:flex;align-items:center;justify-content:center;gap:0}
-.hero-calli{font-family:var(--brush);font-size:clamp(38px,12vw,58px);color:#fff;line-height:1.1}
-.hero-and{font-family:var(--disp);font-weight:300;font-size:clamp(18px,5.5vw,28px);color:rgba(255,255,255,.65);margin:0 clamp(8px,2.5vw,16px);line-height:1}
+.hero-names{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:nowrap;min-width:0}
+.hero-calli{font-family:var(--brush);font-size:clamp(30px,9.5vw,58px);color:#fff;line-height:1.1;white-space:nowrap}
+.hero-and{font-family:var(--disp);font-weight:300;font-size:clamp(14px,4.5vw,28px);color:rgba(255,255,255,.65);margin:0 clamp(4px,1.5vw,16px);line-height:1;flex-shrink:0}
 .hero-date{margin-top:clamp(8px,2.5vw,14px);font-family:var(--lbl);font-weight:100;font-size:clamp(9px,2.4vw,11px);letter-spacing:4px;color:rgba(255,255,255,.75)}
 
 /* ══════════════════════
@@ -476,13 +476,13 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   <div class="parents-card rv">
     <div class="parents-row">
       <span class="parents-side">신랑</span>
-      <div class="parents-names"><strong>배XX</strong> · <strong>배XX</strong></div>
+      <div class="parents-names"><strong>배흥국</strong> · <strong>우정희</strong></div>
       <span class="parents-rel">부 · 모</span>
     </div>
     <div class="parents-row">
       <span class="parents-side">신부</span>
-      <div class="parents-names"><strong>서XX</strong></div>
-      <span class="parents-rel">모</span>
+      <div class="parents-names"><strong>서한철</strong> · <strong>윤진숙</strong></div>
+      <span class="parents-rel">부 · 모</span>
     </div>
   </div>
 </section>
@@ -792,6 +792,7 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   </div>
   <div class="gb-list rv" id="gbList"></div>
   <button class="gb-more rv" onclick="showGbModal()">방명록 전체보기</button>
+  <p class="rv" style="margin-top:clamp(24px,6vw,32px);font-family:var(--lbl);font-weight:200;font-size:clamp(10px,2.6vw,12px);letter-spacing:2px;color:var(--t3)">화환은 정중히 사양합니다</p>
 </section>
 
 
