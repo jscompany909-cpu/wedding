@@ -95,11 +95,12 @@ body{font-family:var(--serif);background:var(--bg);color:var(--t1);line-height:1
 /* ══════════════════════
    NAMES STRIP
 ══════════════════════ */
-.names-strip{max-width:480px;margin:0 auto;padding:clamp(36px,9vw,56px) clamp(24px,6.5vw,36px);text-align:center;background:var(--wh);border-bottom:1px solid var(--bd)}
-.names-row{display:flex;align-items:center;justify-content:center;gap:clamp(10px,3vw,18px);margin-bottom:14px}
-.name-en{font-family:var(--disp);font-weight:300;font-style:italic;font-size:clamp(20px,6vw,28px);color:var(--t1);letter-spacing:.5px}
-.name-sep{font-family:var(--disp);font-size:clamp(16px,4.5vw,22px);color:var(--t4);font-weight:300}
-.names-sub{font-family:var(--lbl);font-weight:200;font-size:clamp(10px,2.6vw,11px);letter-spacing:2.5px;color:var(--t3);line-height:2.2}
+.names-strip{max-width:480px;margin:0 auto;padding:clamp(40px,10vw,64px) clamp(24px,6.5vw,36px);text-align:center;background:var(--wh);border-bottom:1px solid var(--bd)}
+.names-row{display:flex;align-items:center;justify-content:center;gap:clamp(8px,2.5vw,16px);margin-bottom:clamp(18px,5vw,26px)}
+.name-kr{font-family:var(--brush);font-size:clamp(38px,12vw,58px);color:var(--t1);line-height:1.1}
+.name-sep{font-family:var(--disp);font-size:clamp(20px,6vw,30px);color:var(--t4);font-weight:300}
+.names-detail{font-family:var(--nser);font-size:clamp(13px,3.6vw,16px);font-weight:300;color:var(--t2);letter-spacing:.3px;line-height:2;word-break:keep-all}
+.names-venue{font-family:var(--serif);font-size:clamp(12px,3.2vw,14px);font-weight:300;color:var(--t3);margin-top:4px}
 
 /* ══════════════════════
    INVITATION
@@ -404,25 +405,17 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   <div class="hero-photo">
     <img src="photos/main.jpg" alt="커플 사진">
   </div>
-  <div class="hero-overlay rv">
-    <div class="hero-names">
-      <span class="hero-calli">배진섭</span>
-      <span class="hero-and">&amp;</span>
-      <span class="hero-calli">서보미</span>
-    </div>
-    <p class="hero-date">2026 · 11 · 07 · SAT · 3 PM</p>
-  </div>
 </div>
 
 <!-- ══ NAMES STRIP ══ -->
 <div class="names-strip rv">
   <div class="names-row">
-    <span class="name-en">Jinseop Bae</span>
-    <span class="name-sep">·</span>
-    <span class="name-en">Bomi Seo</span>
+    <span class="name-kr">배진섭</span>
+    <span class="name-sep">♥</span>
+    <span class="name-kr">서보미</span>
   </div>
-  <p class="names-sub">결혼합니다</p>
-  <p class="names-sub">2026년 11월 7일 토요일 오후 3시 · 사랑의교회 언약채플</p>
+  <p class="names-detail">2026년 11월 7일 토요일 오후 3시</p>
+  <p class="names-venue">사랑의교회 언약채플</p>
 </div>
 
 
@@ -740,7 +733,7 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
     <div class="acc-card">
       <div class="acc-info">
         <p class="acc-role">Groom's Father · 신랑 아버지</p>
-        <p class="acc-name">배XX</p>
+        <p class="acc-name">배흥국</p>
         <p class="acc-bank">은행명</p>
         <p class="acc-num">000-000-000000</p>
       </div>
@@ -749,7 +742,7 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
     <div class="acc-card">
       <div class="acc-info">
         <p class="acc-role">Groom's Mother · 신랑 어머니</p>
-        <p class="acc-name">배XX</p>
+        <p class="acc-name">우정희</p>
         <p class="acc-bank">은행명</p>
         <p class="acc-num">000-000-000000</p>
       </div>
@@ -771,7 +764,7 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
     <div class="acc-card">
       <div class="acc-info">
         <p class="acc-role">Bride's Mother · 신부 어머니</p>
-        <p class="acc-name">서XX</p>
+        <p class="acc-name">윤진숙</p>
         <p class="acc-bank">은행명</p>
         <p class="acc-num">000-000-000000</p>
       </div>
