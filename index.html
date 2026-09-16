@@ -802,7 +802,10 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   </div>
   <div class="gb-list rv" id="gbList"></div>
   <button class="gb-more rv" onclick="showGbModal()">방명록 전체보기</button>
-  <p class="rv" style="margin-top:clamp(24px,6vw,32px);font-family:var(--lbl);font-weight:200;font-size:clamp(10px,2.6vw,12px);letter-spacing:2px;color:var(--t3)">화환은 정중히 사양합니다</p>
+  <div class="rv" style="margin-top:clamp(28px,7vw,40px);padding:clamp(16px,4vw,22px) 0">
+    <p style="font-family:var(--nser);font-size:clamp(13px,3.5vw,15px);font-weight:400;color:var(--t2);letter-spacing:.5px;margin-bottom:8px">축하 화환은 정중히 사양합니다.</p>
+    <p style="font-family:var(--serif);font-size:clamp(12px,3.2vw,13px);font-weight:300;color:var(--t3);line-height:1.8">따뜻한 축하의 마음만 소중히 받겠습니다.</p>
+  </div>
 </section>
 
 
@@ -811,8 +814,6 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   <p class="ending-quote rv">"사랑은 서로를 바라보는 것이 아니라,<br>함께 같은 방향을 바라보는 것"</p>
   <p class="ending-src rv">— Antoine de Saint-Exupéry</p>
   <div class="ending-hr rv"></div>
-  <p class="ending-calli rv">배진섭<span class="ending-heart">♥</span>서보미</p>
-  <p class="ending-date rv">2026 · 11 · 07</p>
 </section>
 
 
@@ -844,7 +845,9 @@ window.addEventListener('load',()=>{setTimeout(skipIntro,5200)});
     const shape=Math.random()>.5?'150% 0 150% 0':'0 150% 0 150%';
     const alpha=(.55+Math.random()*.35).toFixed(2);
     p.className='pt';
-    p.style.cssText=`left:${(Math.random()*112-6).toFixed(1)}vw;width:${sz.toFixed(1)}px;height:${(sz*.62).toFixed(1)}px;border-radius:${shape};background:rgba(255,248,252,${alpha});box-shadow:0 1px 3px rgba(255,200,220,.3);animation-duration:${dur.toFixed(1)}s;animation-delay:${dly.toFixed(1)}s;--ptd:${drift}px`;
+    const colors=['rgba(240,195,210,','rgba(225,170,190,','rgba(248,215,225,','rgba(235,185,205,'];
+    const col=colors[Math.floor(Math.random()*colors.length)];
+    p.style.cssText=`left:${(Math.random()*112-6).toFixed(1)}vw;width:${sz.toFixed(1)}px;height:${(sz*.62).toFixed(1)}px;border-radius:${shape};background:${col}${alpha});filter:drop-shadow(0 1px 3px rgba(200,130,155,.25));animation-duration:${dur.toFixed(1)}s;animation-delay:${dly.toFixed(1)}s;--ptd:${drift}px`;
     ct.appendChild(p);
     setTimeout(()=>p.remove(),(dur+dly)*1000+300);
   }
