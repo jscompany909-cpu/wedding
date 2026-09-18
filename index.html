@@ -42,23 +42,23 @@ body{font-family:var(--serif);background-color:var(--bg);background-image:repeat
 }
 
 /* ─── CINEMATIC INTRO ─── */
-#intro{position:fixed;inset:0;z-index:9999;overflow:hidden;cursor:pointer}
+#intro{position:fixed;inset:0;z-index:9999;overflow:hidden;cursor:pointer;background:#F5EFE4}
 #intro.hide{display:none}
-.it-bg{position:absolute;inset:0;background:#F5EFE4;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1}
-.it-deco{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:clamp(10px,3vw,16px) auto;animation:itLW .6s .2s ease forwards}
-/* 글자별 clip-path 리빌 — 진짜 필기 효과 */
-.it-line-sm{font-family:'Great Vibes',cursive;font-size:clamp(30px,9.5vw,50px);color:var(--t1);line-height:1.4;text-align:center;display:block}
-.it-line-lg{font-family:'Great Vibes',cursive;font-size:clamp(60px,19.5vw,98px);color:var(--t1);line-height:1.05;text-align:center;display:block;margin-top:2px}
-.it-c{display:inline-block;clip-path:inset(0 102% -20% 0);animation:itWrite var(--w,.13s) cubic-bezier(.25,.1,.25,1) var(--d,0s) forwards}
-@keyframes itWrite{to{clip-path:inset(0 0% -20% 0)}}
-.it-sub{font-family:var(--lbl);font-weight:100;font-size:clamp(9px,2.4vw,11px);letter-spacing:5px;color:var(--t3);text-transform:uppercase;text-align:center;margin-top:clamp(8px,2.5vw,14px);opacity:0;transition:opacity .5s ease}
+.it-bg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.it-deco{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:clamp(12px,3.5vw,20px) auto;animation:itLW .6s .2s ease forwards}
+.it-line-sm{font-family:'Great Vibes',cursive;font-size:clamp(32px,10vw,54px);color:var(--t1);line-height:1.4;text-align:center;display:block}
+.it-line-lg{font-family:'Great Vibes',cursive;font-size:clamp(64px,20vw,102px);color:var(--t1);line-height:1.0;text-align:center;display:block}
+/* 글자: 기본 숨김 — JS가 하나씩 보여줌 */
+.it-c{opacity:0;transition:opacity .06s ease}
+.it-c.on{opacity:1}
+.it-sub{font-family:var(--lbl);font-weight:100;font-size:clamp(9px,2.4vw,11px);letter-spacing:5px;color:var(--t3);text-transform:uppercase;text-align:center;margin-top:clamp(10px,3vw,16px);opacity:0;transition:opacity .6s ease}
 .it-sub.show{opacity:1}
-.it-curtain-l,.it-curtain-r{position:absolute;top:0;bottom:0;width:50%;background:#F5EFE4;z-index:2;transition:transform .9s cubic-bezier(.77,0,.18,1)}
+.it-curtain-l,.it-curtain-r{position:absolute;top:0;bottom:0;width:50%;background:#F5EFE4;z-index:2;transition:transform .85s cubic-bezier(.77,0,.18,1)}
 .it-curtain-l{left:0}
 .it-curtain-r{right:0}
 #intro.opening .it-curtain-l{transform:translateX(-100%)}
 #intro.opening .it-curtain-r{transform:translateX(100%)}
-.it-skip{position:absolute;bottom:clamp(24px,6vw,36px);font-family:var(--lbl);font-weight:100;font-size:9px;letter-spacing:3px;color:var(--t4);text-transform:uppercase;z-index:3;opacity:0;animation:itFd .5s 2.8s ease forwards}
+.it-skip{position:absolute;bottom:clamp(24px,6vw,36px);font-family:var(--lbl);font-weight:100;font-size:9px;letter-spacing:3px;color:var(--t4);text-transform:uppercase;z-index:3;opacity:0;animation:itFd .5s 2.5s ease forwards}
 @keyframes itFd{from{opacity:0}to{opacity:1}}
 @keyframes itLW{from{width:0}to{width:clamp(80px,28vw,140px)}}
 
@@ -700,56 +700,67 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 
 
 <script>
-/* ─── INTRO: 한 글자씩 필기 리빌 (총 3.5초) ─── */
+/* ─── INTRO: setTimeout 한 글자씩 (총 3.5초) ─── */
 (function(){
   const intro=document.getElementById('intro');
   const L1=document.getElementById('itLine1');
   const L2=document.getElementById('itLine2');
   const sub=document.getElementById('itSub');
+  const timers=[];
   let done=false;
 
-  function openCurtain(){
+  function skipAll(){
     if(done)return;done=true;
+    timers.forEach(clearTimeout);
+    document.querySelectorAll('.it-c').forEach(s=>s.classList.add('on'));
     sub.classList.add('show');
     setTimeout(()=>{
       intro.classList.add('opening');
-      setTimeout(()=>intro.classList.add('hide'),1050);
-    },320);
+      setTimeout(()=>intro.classList.add('hide'),880);
+    },100);
   }
+
+  /* 글자 span 미리 삽입 (opacity:0) */
+  function insert(container,text){
+    return text.split('').map(ch=>{
+      const s=document.createElement('span');
+      s.className='it-c';
+      s.textContent=ch;
+      container.appendChild(s);
+      return s;
+    });
+  }
+
+  const s1=insert(L1,"We're getting");
+  const s2=insert(L2,"married");
 
   /*
-   * 타이밍 설계 (총 3.5초)
-   * 0.30s  : 데코 라인
-   * 0.35s  : line1 "We're getting" 쓰기 시작
-   *          13글자 × 평균 0.095s 간격 = 1.14s → 완료 1.49s
-   * 1.60s  : line2 "married" 쓰기 시작 (0.11s 간격)
-   *          7글자 × 0.11s = 0.66s → 완료 2.37s
-   * 2.40s  : 서브 텍스트 등장
-   * 2.70s  : 커텐 오픈 (1.0s) → 3.70s... 약간 초과
-   *
-   * → 커텐을 0.9s로 줄이고 openCurtain을 2.60s에 호출 → 3.5s ✓
+   * 타이밍 (ms 단위)
+   * 300ms  : 첫 글자 W
+   * line1  : 글자당 95ms (space=50ms) × 13자 → 약 1175ms → 끝 1475ms
+   * 1650ms : "married" 첫 글자 m 시작 (줄 간격 175ms)
+   * line2  : 글자당 120ms × 7자 → 840ms → 끝 2490ms
+   * 2550ms : 서브텍스트
+   * 2650ms : 커텐 오픈(850ms) → 총 3500ms ✓
    */
+  let t=300;
+  s1.forEach(s=>{
+    const ch=s.textContent;
+    timers.push(setTimeout(()=>s.classList.add('on'),t));
+    t+=ch===' '?50:95;
+  });
+  t=1650;
+  s2.forEach(s=>{
+    timers.push(setTimeout(()=>s.classList.add('on'),t));
+    t+=120;
+  });
+  timers.push(setTimeout(()=>sub.classList.add('show'),2550));
+  timers.push(setTimeout(()=>{
+    intro.classList.add('opening');
+    setTimeout(()=>intro.classList.add('hide'),880);
+  },2650));
 
-  function buildLine(container, text, startDelay, gap, charDur){
-    let d = startDelay;
-    text.split('').forEach(ch => {
-      const s = document.createElement('span');
-      s.className = 'it-c';
-      s.textContent = ch;
-      s.style.setProperty('--d', d.toFixed(3)+'s');
-      s.style.setProperty('--w', charDur.toFixed(3)+'s');
-      container.appendChild(s);
-      d += ch===' ' ? gap*0.6 : gap;
-    });
-    return d; /* 마지막 글자 시작 시각 */
-  }
-
-  const line1End = buildLine(L1, "We're getting", 0.35, 0.095, 0.13);
-  buildLine(L2, "married", 1.60, 0.11, 0.15);
-
-  /* 2.60s에 커텐 시작 → 총 2.60 + 0.9 ≈ 3.5s */
-  setTimeout(openCurtain, 2600);
-  intro.addEventListener('click', openCurtain);
+  intro.addEventListener('click',skipAll);
 })();
 
 /* ─── PETALS ─── */
