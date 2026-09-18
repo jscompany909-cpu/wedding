@@ -48,9 +48,7 @@ body{font-family:var(--serif);background-color:var(--bg);background-image:repeat
 .it-deco{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:clamp(12px,3.5vw,20px) auto;animation:itLW .6s .2s ease forwards}
 .it-line-sm{font-family:'Great Vibes',cursive;font-size:clamp(32px,10vw,54px);color:var(--t1);line-height:1.4;text-align:center;display:block}
 .it-line-lg{font-family:'Great Vibes',cursive;font-size:clamp(64px,20vw,102px);color:var(--t1);line-height:1.0;text-align:center;display:block}
-/* 글자: 기본 숨김 — JS가 하나씩 보여줌 */
-.it-c{opacity:0;transition:opacity .06s ease}
-.it-c.on{opacity:1}
+/* 글자 opacity는 JS에서 inline style로 직접 제어 */
 .it-sub{font-family:var(--lbl);font-weight:100;font-size:clamp(9px,2.4vw,11px);letter-spacing:5px;color:var(--t3);text-transform:uppercase;text-align:center;margin-top:clamp(10px,3vw,16px);opacity:0;transition:opacity .6s ease}
 .it-sub.show{opacity:1}
 .it-curtain-l,.it-curtain-r{position:absolute;top:0;bottom:0;width:50%;background:#F5EFE4;z-index:2;transition:transform .85s cubic-bezier(.77,0,.18,1)}
@@ -133,10 +131,12 @@ body{font-family:var(--serif);background-color:var(--bg);background-image:repeat
    혼주 정보
 ══════════════════════ */
 .sec-parents{background:var(--bg)}
-.parents-row{padding:clamp(8px,2.5vw,12px) 0;text-align:center}
-.parents-names{font-size:clamp(14px,3.8vw,16px);font-weight:300;color:var(--t2);line-height:2;text-align:center}
-.parents-names strong{color:var(--t1);font-weight:500}
-.parents-rel{font-family:var(--lbl);font-weight:200;font-size:clamp(8px,2vw,9px);letter-spacing:1px;color:var(--t3);text-align:right;white-space:nowrap}
+.parents-row{padding:clamp(6px,2vw,10px) 0}
+.parents-names{display:grid;grid-template-columns:1fr auto 1fr;column-gap:clamp(6px,2vw,12px);align-items:baseline;max-width:300px;margin:0 auto}
+.p-par{text-align:right;font-size:clamp(13px,3.5vw,15px);font-weight:300;color:var(--t2)}
+.p-par strong{color:var(--t1);font-weight:500}
+.p-rel{text-align:center;font-size:clamp(11px,3vw,13px);font-weight:300;color:var(--t3);white-space:nowrap}
+.p-child{text-align:left;font-size:clamp(14px,3.8vw,16px);font-weight:500;color:var(--t1)}
 
 /* ══════════════════════
    성경 말씀
@@ -433,10 +433,18 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   <h2 class="sec-ttl rv">혼주 소개</h2>
   <div class="rv">
     <div class="parents-row">
-      <div class="parents-names"><strong>배흥국</strong> · <strong>우정희</strong>의 아들 <strong>배진섭</strong></div>
+      <div class="parents-names">
+        <span class="p-par"><strong>배흥국</strong> · <strong>우정희</strong></span>
+        <span class="p-rel">의 아들</span>
+        <span class="p-child">배진섭</span>
+      </div>
     </div>
     <div class="parents-row">
-      <div class="parents-names"><strong>서한철</strong> · <strong>윤진숙</strong>의 딸 <strong>서보미</strong></div>
+      <div class="parents-names">
+        <span class="p-par"><strong>서한철</strong> · <strong>윤진숙</strong></span>
+        <span class="p-rel">의 딸</span>
+        <span class="p-child">서보미</span>
+      </div>
     </div>
   </div>
 </section>
@@ -692,7 +700,7 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 
 
 <script>
-/* ─── INTRO: setTimeout 한 글자씩 (총 3.5초) ─── */
+/* ─── INTRO: 한 글자씩 필기 (총 3.5초) ─── */
 (function(){
   const intro=document.getElementById('intro');
   const L1=document.getElementById('itLine1');
@@ -701,58 +709,60 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   const timers=[];
   let done=false;
 
-  function skipAll(){
+  function openCurtain(){
     if(done)return;done=true;
     timers.forEach(clearTimeout);
-    document.querySelectorAll('.it-c').forEach(s=>s.classList.add('on'));
-    sub.classList.add('show');
+    /* 스킵시 전부 즉시 표시 */
+    [L1,L2].forEach(l=>l.querySelectorAll('span').forEach(s=>{s.style.opacity='1'}));
+    sub.style.opacity='1';
     setTimeout(()=>{
       intro.classList.add('opening');
-      setTimeout(()=>intro.classList.add('hide'),880);
-    },100);
+      setTimeout(()=>intro.classList.add('hide'),870);
+    },80);
   }
 
-  /* 글자 span 미리 삽입 (opacity:0) */
-  function insert(container,text){
+  /* 글자 span 생성 — 초기 opacity:0 */
+  function buildSpans(container, text){
     return text.split('').map(ch=>{
       const s=document.createElement('span');
-      s.className='it-c';
+      s.style.cssText='opacity:0;transition:opacity 0.12s ease';
       s.textContent=ch;
       container.appendChild(s);
       return s;
     });
   }
 
-  const s1=insert(L1,"We're getting");
-  const s2=insert(L2,"married");
+  const sp1=buildSpans(L1,"We're getting");
+  const sp2=buildSpans(L2,"married");
 
   /*
-   * 타이밍 (ms 단위)
-   * 300ms  : 첫 글자 W
-   * line1  : 글자당 95ms (space=50ms) × 13자 → 약 1175ms → 끝 1475ms
-   * 1650ms : "married" 첫 글자 m 시작 (줄 간격 175ms)
-   * line2  : 글자당 120ms × 7자 → 840ms → 끝 2490ms
-   * 2550ms : 서브텍스트
-   * 2650ms : 커텐 오픈(850ms) → 총 3500ms ✓
+   * 타이밍 설계 (ms)
+   * 250ms 시작
+   * line1: 글자당 100ms, 스페이스 55ms → 12×100+55 = 1255ms → 1505ms 완료
+   * 줄간격: 145ms → 1650ms에 married 시작
+   * line2: 글자당 120ms → 6×120 = 720ms → 마지막 2370ms 시작 → 2490ms 완료
+   * 서브: 2550ms
+   * 커텐: 2650ms + 870ms = 3520ms ≈ 3.5s ✓
    */
-  let t=300;
-  s1.forEach(s=>{
-    const ch=s.textContent;
-    timers.push(setTimeout(()=>s.classList.add('on'),t));
-    t+=ch===' '?50:95;
+  let t=250;
+  sp1.forEach(s=>{
+    const gap=s.textContent===' '?55:100;
+    const delay=t;
+    timers.push(setTimeout(()=>{s.style.opacity='1'},delay));
+    t+=gap;
   });
+
   t=1650;
-  s2.forEach(s=>{
-    timers.push(setTimeout(()=>s.classList.add('on'),t));
+  sp2.forEach(s=>{
+    const delay=t;
+    timers.push(setTimeout(()=>{s.style.opacity='1'},delay));
     t+=120;
   });
-  timers.push(setTimeout(()=>sub.classList.add('show'),2550));
-  timers.push(setTimeout(()=>{
-    intro.classList.add('opening');
-    setTimeout(()=>intro.classList.add('hide'),880);
-  },2650));
 
-  intro.addEventListener('click',skipAll);
+  timers.push(setTimeout(()=>{sub.style.opacity='1'},2550));
+  timers.push(setTimeout(openCurtain,2650));
+
+  intro.addEventListener('click',openCurtain);
 })();
 
 /* ─── PETALS ─── */
