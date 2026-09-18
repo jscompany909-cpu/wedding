@@ -44,23 +44,21 @@ body{font-family:var(--serif);background-color:var(--bg);background-image:repeat
 /* ─── CINEMATIC INTRO ─── */
 #intro{position:fixed;inset:0;z-index:9999;overflow:hidden;cursor:pointer}
 #intro.hide{display:none}
-.it-bg{position:absolute;inset:0;background:#F5EFE4;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1;gap:clamp(4px,1.5vw,10px)}
-.it-deco{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:itLW .6s .25s ease forwards}
-/* 텍스트 줄 래퍼 — 마스크로 왼→오른쪽 리빌 */
-.it-row{position:relative;overflow:hidden;display:block;text-align:center}
-.it-line1{font-family:'Great Vibes',cursive;font-size:clamp(30px,9.5vw,52px);color:var(--t1);line-height:1.25;display:block;padding:0 4px}
-.it-line2{font-family:'Great Vibes',cursive;font-size:clamp(58px,19vw,96px);color:var(--t1);line-height:1.1;display:block;padding:0 4px}
-.it-mask{position:absolute;inset:-4px;background:#F5EFE4;transform-origin:right;transform:scaleX(1)}
-.it-mask.go{animation:itMask var(--d,.9s) cubic-bezier(.4,0,.15,1) var(--dl,0s) forwards}
-@keyframes itMask{to{transform:scaleX(0)}}
-.it-sub{font-family:var(--lbl);font-weight:100;font-size:clamp(9px,2.4vw,11px);letter-spacing:5px;color:var(--t3);text-transform:uppercase;margin-top:clamp(10px,3vw,16px);opacity:0;transition:opacity .5s}
+.it-bg{position:absolute;inset:0;background:#F5EFE4;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1}
+.it-deco{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:clamp(10px,3vw,16px) auto;animation:itLW .6s .2s ease forwards}
+/* 글자별 clip-path 리빌 — 진짜 필기 효과 */
+.it-line-sm{font-family:'Great Vibes',cursive;font-size:clamp(30px,9.5vw,50px);color:var(--t1);line-height:1.4;text-align:center;display:block}
+.it-line-lg{font-family:'Great Vibes',cursive;font-size:clamp(60px,19.5vw,98px);color:var(--t1);line-height:1.05;text-align:center;display:block;margin-top:2px}
+.it-c{display:inline-block;clip-path:inset(0 102% -20% 0);animation:itWrite var(--w,.13s) cubic-bezier(.25,.1,.25,1) var(--d,0s) forwards}
+@keyframes itWrite{to{clip-path:inset(0 0% -20% 0)}}
+.it-sub{font-family:var(--lbl);font-weight:100;font-size:clamp(9px,2.4vw,11px);letter-spacing:5px;color:var(--t3);text-transform:uppercase;text-align:center;margin-top:clamp(8px,2.5vw,14px);opacity:0;transition:opacity .5s ease}
 .it-sub.show{opacity:1}
-.it-curtain-l,.it-curtain-r{position:absolute;top:0;bottom:0;width:50%;background:#F5EFE4;z-index:2;transition:transform 1.0s cubic-bezier(.77,0,.18,1)}
+.it-curtain-l,.it-curtain-r{position:absolute;top:0;bottom:0;width:50%;background:#F5EFE4;z-index:2;transition:transform .9s cubic-bezier(.77,0,.18,1)}
 .it-curtain-l{left:0}
 .it-curtain-r{right:0}
 #intro.opening .it-curtain-l{transform:translateX(-100%)}
 #intro.opening .it-curtain-r{transform:translateX(100%)}
-.it-skip{position:absolute;bottom:clamp(24px,6vw,36px);font-family:var(--lbl);font-weight:100;font-size:9px;letter-spacing:3px;color:var(--t4);text-transform:uppercase;z-index:3;opacity:0;animation:itFd .5s 2.5s ease forwards}
+.it-skip{position:absolute;bottom:clamp(24px,6vw,36px);font-family:var(--lbl);font-weight:100;font-size:9px;letter-spacing:3px;color:var(--t4);text-transform:uppercase;z-index:3;opacity:0;animation:itFd .5s 2.8s ease forwards}
 @keyframes itFd{from{opacity:0}to{opacity:1}}
 @keyframes itLW{from{width:0}to{width:clamp(80px,28vw,140px)}}
 
@@ -361,10 +359,10 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   <div class="it-curtain-r"></div>
   <div class="it-bg">
     <div class="it-deco"></div>
-    <div class="it-row"><span class="it-line1">We're getting</span><div class="it-mask" id="mask1"></div></div>
-    <div class="it-row"><span class="it-line2">married</span><div class="it-mask" id="mask2"></div></div>
+    <div class="it-line-sm" id="itLine1"></div>
+    <div class="it-line-lg" id="itLine2"></div>
     <p class="it-sub" id="itSub">2026 · 11 · 07</p>
-    <div class="it-deco" style="animation-delay:.4s"></div>
+    <div class="it-deco" style="animation-delay:.3s"></div>
   </div>
   <p class="it-skip">tap to skip</p>
 </div>
@@ -702,36 +700,55 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 
 
 <script>
-/* ─── INTRO: 마스크 리빌 + 커텐 (총 3.5초) ─── */
+/* ─── INTRO: 한 글자씩 필기 리빌 (총 3.5초) ─── */
 (function(){
   const intro=document.getElementById('intro');
+  const L1=document.getElementById('itLine1');
+  const L2=document.getElementById('itLine2');
+  const sub=document.getElementById('itSub');
   let done=false;
 
   function openCurtain(){
     if(done)return;done=true;
-    document.getElementById('itSub').classList.add('show');
+    sub.classList.add('show');
     setTimeout(()=>{
       intro.classList.add('opening');
       setTimeout(()=>intro.classList.add('hide'),1050);
-    },350);
+    },320);
   }
 
-  /* 타이밍: 0.25s 데코 → 0.3s line1 시작(0.95s) → 0.85s line2 시작(1.0s) → 2.1s 완료 → 2.45s 커텐 → 3.5s */
-  setTimeout(()=>{
-    const m1=document.getElementById('mask1');
-    m1.style.setProperty('--d','0.95s');
-    m1.style.setProperty('--dl','0s');
-    m1.classList.add('go');
-  },300);
+  /*
+   * 타이밍 설계 (총 3.5초)
+   * 0.30s  : 데코 라인
+   * 0.35s  : line1 "We're getting" 쓰기 시작
+   *          13글자 × 평균 0.095s 간격 = 1.14s → 완료 1.49s
+   * 1.60s  : line2 "married" 쓰기 시작 (0.11s 간격)
+   *          7글자 × 0.11s = 0.66s → 완료 2.37s
+   * 2.40s  : 서브 텍스트 등장
+   * 2.70s  : 커텐 오픈 (1.0s) → 3.70s... 약간 초과
+   *
+   * → 커텐을 0.9s로 줄이고 openCurtain을 2.60s에 호출 → 3.5s ✓
+   */
 
-  setTimeout(()=>{
-    const m2=document.getElementById('mask2');
-    m2.style.setProperty('--d','1.0s');
-    m2.style.setProperty('--dl','0s');
-    m2.classList.add('go');
-  },850);
+  function buildLine(container, text, startDelay, gap, charDur){
+    let d = startDelay;
+    text.split('').forEach(ch => {
+      const s = document.createElement('span');
+      s.className = 'it-c';
+      s.textContent = ch;
+      s.style.setProperty('--d', d.toFixed(3)+'s');
+      s.style.setProperty('--w', charDur.toFixed(3)+'s');
+      container.appendChild(s);
+      d += ch===' ' ? gap*0.6 : gap;
+    });
+    return d; /* 마지막 글자 시작 시각 */
+  }
 
-  setTimeout(openCurtain, 2100);
+  const line1End = buildLine(L1, "We're getting", 0.35, 0.095, 0.13);
+  buildLine(L2, "married", 1.60, 0.11, 0.15);
+
+  /* 2.60s에 커텐 시작 → 총 2.60 + 0.9 ≈ 3.5s */
+  setTimeout(openCurtain, 2600);
   intro.addEventListener('click', openCurtain);
 })();
 
