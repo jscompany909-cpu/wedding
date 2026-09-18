@@ -7,12 +7,12 @@
   <title>배진섭 · 서보미 — 결혼합니다</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Josefin+Sans:wght@100;200;300&family=Nanum+Brush+Script&family=Noto+Sans+KR:wght@300;400;500&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Great+Vibes&family=Josefin+Sans:wght@100;200;300&family=Nanum+Brush+Script&family=Noto+Sans+KR:wght@300;400;500&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 *{-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#FAFAF8;--bg2:#F5F2EE;--bg3:#EFEAE4;
+  --bg:#F5EFE4;--bg2:#EDE6D8;--bg3:#E4DBCC;
   --wh:#FFFFFF;
   --t1:#1A1714;--t2:#5C524C;--t3:#9B918A;--t4:#C4BAB3;
   --bd:#E6E0D9;
@@ -29,7 +29,7 @@
   --r:6px;
 }
 html{scroll-behavior:smooth}
-body{font-family:var(--serif);background:var(--bg);color:var(--t1);line-height:1.8;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom,0)}
+body{font-family:var(--serif);background-color:var(--bg);background-image:repeating-linear-gradient(120deg,transparent,transparent 3px,rgba(255,255,255,.04) 3px,rgba(255,255,255,.04) 6px),repeating-linear-gradient(240deg,transparent,transparent 3px,rgba(0,0,0,.012) 3px,rgba(0,0,0,.012) 6px);color:var(--t1);line-height:1.8;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom,0)}
 
 /* ─── PETALS ─── */
 #petals{position:fixed;inset:0;pointer-events:none;z-index:10000;overflow:hidden}
@@ -42,21 +42,24 @@ body{font-family:var(--serif);background:var(--bg);color:var(--t1);line-height:1
 }
 
 /* ─── CINEMATIC INTRO ─── */
-#intro{position:fixed;inset:0;background:var(--wh);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity 1.3s ease,visibility 1.3s ease;cursor:pointer}
-#intro.hide{opacity:0;visibility:hidden;pointer-events:none}
-.it-tag{font-family:var(--lbl);font-weight:100;font-size:clamp(8px,2.2vw,10px);letter-spacing:clamp(5px,2vw,8px);text-transform:uppercase;color:var(--t3);margin-bottom:clamp(16px,4.5vw,24px);opacity:0;animation:itUp .6s ease forwards;animation-delay:.4s}
-.it-line{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin-bottom:clamp(18px,5.5vw,28px);animation:itLW .8s ease forwards;animation-delay:.9s}
-.it-names{display:flex;align-items:baseline;justify-content:center;gap:clamp(4px,1.5vw,8px);margin-bottom:clamp(18px,5.5vw,28px)}
-.it-chr{font-family:var(--brush);font-size:clamp(44px,14vw,68px);color:var(--t1);line-height:1;display:inline-block;opacity:0;transform:translateY(85%);animation:itChr .55s cubic-bezier(.16,1,.3,1) forwards}
-.it-amp{font-family:var(--disp);font-size:clamp(20px,6.5vw,32px);color:var(--t4);font-weight:300;line-height:1;margin:0 clamp(6px,2vw,12px);opacity:0;animation:itFd .5s ease forwards;animation-delay:2.1s}
-.it-date{font-family:var(--lbl);font-weight:100;font-size:clamp(10px,2.7vw,12px);letter-spacing:clamp(3px,1.5vw,5px);color:var(--t2);opacity:0;animation:itUp .6s ease forwards;animation-delay:2.7s}
-.it-venue{font-family:var(--lbl);font-weight:100;font-size:clamp(8px,2.2vw,10px);letter-spacing:clamp(1.5px,1vw,3px);color:var(--t3);margin-top:8px;opacity:0;animation:itUp .6s ease forwards;animation-delay:3.1s}
-.it-line-b{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin-top:clamp(18px,5.5vw,28px);animation:itLW .8s ease forwards;animation-delay:3.5s}
-.it-skip{position:absolute;bottom:clamp(28px,7vw,44px);font-family:var(--lbl);font-weight:100;font-size:9px;letter-spacing:3px;color:var(--t4);text-transform:uppercase;opacity:0;animation:itUp .6s ease forwards;animation-delay:4.0s}
-@keyframes itUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+#intro{position:fixed;inset:0;z-index:9999;overflow:hidden;cursor:pointer}
+#intro.hide{display:none}
+.it-bg{position:absolute;inset:0;background:#F5EFE4;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1;gap:clamp(14px,4vw,22px)}
+.it-deco{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:itLW .7s .3s ease forwards}
+.it-writing{font-family:'Great Vibes',cursive;font-size:clamp(34px,11vw,58px);color:var(--t1);text-align:center;line-height:1.55;min-height:3em}
+.it-char{display:inline-block;opacity:0;animation:itCh .04s ease forwards}
+@keyframes itCh{to{opacity:1}}
+.it-cursor{display:inline-block;width:2px;height:.9em;background:var(--rose);vertical-align:middle;margin-left:1px;animation:itBl .65s ease-in-out infinite}
+@keyframes itBl{0%,100%{opacity:1}50%{opacity:0}}
+.it-sub{font-family:var(--lbl);font-weight:100;font-size:clamp(9px,2.4vw,11px);letter-spacing:4px;color:var(--t3);text-transform:uppercase;opacity:0;animation:itFd .6s ease forwards}
+.it-curtain-l,.it-curtain-r{position:absolute;top:0;bottom:0;width:50%;background:#F5EFE4;z-index:2;transition:transform 1.1s cubic-bezier(.77,0,.18,1)}
+.it-curtain-l{left:0}
+.it-curtain-r{right:0}
+#intro.opening .it-curtain-l{transform:translateX(-100%)}
+#intro.opening .it-curtain-r{transform:translateX(100%)}
+.it-skip{position:absolute;bottom:clamp(24px,6vw,36px);font-family:var(--lbl);font-weight:100;font-size:9px;letter-spacing:3px;color:var(--t4);text-transform:uppercase;z-index:3;opacity:0;animation:itFd .6s 3s ease forwards}
 @keyframes itFd{from{opacity:0}to{opacity:1}}
-@keyframes itLW{from{width:0}to{width:clamp(100px,32vw,160px)}}
-@keyframes itChr{from{opacity:0;transform:translateY(85%)}to{opacity:1;transform:translateY(0)}}
+@keyframes itLW{from{width:0}to{width:clamp(80px,28vw,140px)}}
 
 /* ─── FIXED BTNS ─── */
 #musicBtn{position:fixed;bottom:calc(22px + env(safe-area-inset-bottom,0));right:clamp(16px,4vw,24px);width:44px;height:44px;border-radius:50%;background:var(--wh);border:1px solid var(--bd);color:var(--t3);cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh);z-index:500;transition:all .3s}
@@ -67,7 +70,7 @@ body{font-family:var(--serif);background:var(--bg);color:var(--t1);line-height:1
 #toast.show{opacity:1;transform:translateX(-50%)translateY(0)}
 
 /* ─── SCROLL REVEAL ─── */
-.rv{opacity:0;transform:translateY(20px);transition:opacity .8s,transform .8s}
+.rv{opacity:0;transform:translateY(28px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)}
 .rv.on{opacity:1;transform:translateY(0)}
 .rv2{transition-delay:.12s}.rv3{transition-delay:.22s}.rv4{transition-delay:.32s}
 
@@ -106,7 +109,9 @@ body{font-family:var(--serif);background:var(--bg);color:var(--t1);line-height:1
    INVITATION
 ══════════════════════ */
 .sec-inv{background:var(--wh)}
-.inv-text{font-family:var(--disp);font-size:clamp(16px,4.5vw,19px);font-weight:300;line-height:2.5;color:var(--t2);white-space:pre-line;word-break:keep-all;margin-bottom:clamp(24px,6.5vw,36px)}
+.inv-verse{font-family:var(--disp);font-style:italic;font-size:clamp(14px,3.8vw,17px);color:var(--t1);line-height:1.9;margin-bottom:clamp(22px,6vw,32px);word-break:keep-all}
+.inv-verse strong{font-weight:500;font-style:italic}
+.inv-text{font-family:var(--disp);font-size:clamp(15px,4.2vw,18px);font-weight:300;line-height:2.5;color:var(--t2);white-space:pre-line;word-break:keep-all;margin-bottom:clamp(24px,6.5vw,36px)}
 .inv-from{font-size:clamp(12px,3.2vw,14px);font-weight:300;color:var(--t3);line-height:2.4}
 .inv-from strong{color:var(--t2);font-weight:500}
 
@@ -181,8 +186,8 @@ body{font-family:var(--serif);background:var(--bg);color:var(--t1);line-height:1
 .cal-hdr{font-family:var(--lbl);font-weight:200;font-size:11px;letter-spacing:3px;color:var(--t2);text-align:center;margin-bottom:14px;text-transform:uppercase}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}
 .cal-dow{font-family:var(--lbl);font-weight:200;font-size:clamp(7px,2vw,9px);color:var(--t3);padding:3px 0;letter-spacing:.5px}
-.cal-day{font-size:clamp(11px,3vw,13px);font-weight:300;color:var(--t2);padding:clamp(5px,1.5vw,7px) 0;border-radius:50%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;line-height:1}
-.cal-day.s{color:#B87070}.cal-day.sa{color:var(--rose)}
+.cal-day{font-size:clamp(12px,3.2vw,14px);font-weight:400;color:var(--t1);padding:clamp(5px,1.5vw,7px) 0;border-radius:50%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;line-height:1}
+.cal-day.s{color:#C05050}.cal-day.sa{color:var(--rose)}
 .cal-day.wd{background:var(--t1);color:var(--wh)!important;font-weight:500;box-shadow:0 2px 10px rgba(26,23,20,.25)}
 .cer-card{background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
 .cer-row{display:flex;align-items:flex-start;gap:clamp(12px,3.5vw,18px);padding:clamp(14px,4vw,18px) clamp(16px,4.5vw,22px);border-bottom:1px solid var(--bd);text-align:left}
@@ -328,6 +333,12 @@ body{font-family:var(--serif);background:var(--bg);color:var(--t1);line-height:1
 .ending-heart{color:var(--rose);margin:0 8px}
 .ending-date{font-family:var(--lbl);font-weight:200;font-size:clamp(10px,2.6vw,11px);letter-spacing:3px;color:var(--t3)}
 
+/* ─── SHARE ─── */
+.share-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:clamp(20px,5vw,28px)}
+.share-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:var(--r);border:1px solid var(--bd);background:var(--wh);color:var(--t2);font-family:var(--serif);font-size:clamp(13px,3.5vw,14px);font-weight:300;cursor:pointer;transition:all .25s}
+.share-btn:hover{background:var(--t1);color:var(--wh);border-color:var(--t1)}
+.share-ico{font-size:18px}
+
 /* ─── FOOTER ─── */
 footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;padding:clamp(36px,10vw,56px) clamp(16px,5vw,28px) calc(clamp(36px,10vw,56px) + env(safe-area-inset-bottom,0));font-size:clamp(10px,2.6vw,11px);letter-spacing:2px;line-height:2.6}
 .ft-names{font-family:var(--brush);font-size:clamp(28px,9vw,40px);color:rgba(255,255,255,.6);margin-bottom:10px}
@@ -343,20 +354,14 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 
 <!-- CINEMATIC INTRO -->
 <div id="intro" onclick="skipIntro()">
-  <p class="it-tag">Wedding Invitation</p>
-  <div class="it-line"></div>
-  <div class="it-names">
-    <span class="it-chr" style="animation-delay:1.3s">배</span>
-    <span class="it-chr" style="animation-delay:1.52s">진</span>
-    <span class="it-chr" style="animation-delay:1.74s">섭</span>
-    <span class="it-amp">&amp;</span>
-    <span class="it-chr" style="animation-delay:2.3s">서</span>
-    <span class="it-chr" style="animation-delay:2.52s">보</span>
-    <span class="it-chr" style="animation-delay:2.74s">미</span>
+  <div class="it-curtain-l"></div>
+  <div class="it-curtain-r"></div>
+  <div class="it-bg">
+    <div class="it-deco"></div>
+    <p class="it-writing" id="itWriting"><span class="it-cursor"></span></p>
+    <p class="it-sub" id="itSub" style="animation-delay:999s">2026 · 11 · 07</p>
+    <div class="it-deco" style="animation-delay:.5s"></div>
   </div>
-  <p class="it-date">2026 · 11 · 07 · SAT · 3 PM</p>
-  <p class="it-venue">사랑의교회 언약채플</p>
-  <div class="it-line-b"></div>
   <p class="it-skip">tap to skip</p>
 </div>
 
@@ -378,17 +383,6 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   </div>
 </div>
 
-<!-- GUESTBOOK MODAL -->
-<div class="modal-bg" id="gbModal">
-  <div class="modal-box">
-    <div class="modal-hd">
-      <span class="modal-ttl">Guest Book</span>
-      <button class="modal-close" onclick="hideModal('gbModal')">✕</button>
-    </div>
-    <div class="modal-body" id="gbModalBody"></div>
-    <div class="modal-foot"><button class="modal-foot-btn" onclick="hideModal('gbModal')">닫기</button></div>
-  </div>
-</div>
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox">
@@ -410,9 +404,9 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 <!-- ══ NAMES STRIP ══ -->
 <div class="names-strip rv">
   <div class="names-row">
-    <span class="name-kr">배진섭</span>
-    <span class="name-sep">♥</span>
-    <span class="name-kr">서보미</span>
+    <span class="name-en">Jinseop Bae</span>
+    <span class="name-sep">·</span>
+    <span class="name-en">Bomi Seo</span>
   </div>
   <p class="names-detail">2026년 11월 7일 토요일 오후 3시</p>
   <p class="names-venue">사랑의교회 언약채플</p>
@@ -423,20 +417,15 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 <section class="sec sec-inv">
   <p class="sec-tag rv">Invitation</p>
   <div class="sec-hr rv"></div>
-  <p class="inv-text rv">저희 두 사람이
-꽃이 피는 아름다운 날,
-사랑의 결실로 하나가 되려 합니다.
+  <p class="inv-verse rv"><strong>"우리가 사랑함은 그가 먼저 우리를 사랑하셨음이라"</strong><br><span style="font-size:clamp(10px,2.6vw,12px);letter-spacing:2px;font-style:normal;font-weight:300;color:var(--t3)">요한일서 4 : 19</span></p>
+  <p class="inv-text rv">찬바람이 조금씩 스며드는 늦가을,
+주님의 선하신 인도하심으로 만난 저희 두 사람이
+서로의 따뜻한 온기가 되어 한 가정을 이룹니다.
 
-함께해 주신 소중한 분들의
-따뜻한 사랑과 응원 덕분에
-이 자리에 설 수 있었습니다.
-
-두 사람이 서로를 아끼고 존중하며
-행복한 가정을 이루어 나가겠습니다.
-
-부디 오셔서 자리를 빛내 주시고
-저희의 소중한 첫걸음을
-함께 축복해 주세요.</p>
+먼저 우리를 사랑해 주신 그 크신 은혜를 품고,
+쌀쌀한 계절에도 변함없이 서로를 귀히 섬기며
+하나님의 사랑 안에서 포근하게 피어나는
+가정이 되겠습니다.</p>
 
 </section>
 
@@ -459,34 +448,6 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 </section>
 
 
-<!-- ══ 성경 말씀 ══ -->
-<section class="sec sec-bible">
-  <p class="sec-tag rv">Scripture</p>
-  <div class="sec-hr rv"></div>
-  <div class="bible-frame rv">
-    <span class="bible-cross rv">†</span>
-    <p class="bible-verse rv">사랑은 오래 참고
-사랑은 온유하며
-시기하지 아니하며
-자랑하지 아니하며
-교만하지 아니하며
-
-무례히 행하지 아니하며
-자기의 유익을 구하지 아니하며
-성내지 아니하며
-악한 것을 생각하지 아니하며
-
-불의를 기뻐하지 아니하며
-진리와 함께 기뻐하고
-
-모든 것을 참으며
-모든 것을 믿으며
-모든 것을 바라며
-모든 것을 견디느니라</p>
-    <div class="bible-hr rv"></div>
-    <p class="bible-ref rv">고린도전서 13장 4 – 7절</p>
-  </div>
-</section>
 
 
 
@@ -582,7 +543,13 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
     </div>
     <div class="tr-row">
       <span class="tr-type">🚗 자가용</span>
-      <div>네비게이션 <strong>"사랑의교회"</strong> 검색<br>• 교회 지하주차장 B6·B7층<br><span style="color:var(--rose);font-size:12px">※ 예식 당일 주차 혼잡 — 대중교통을 권장합니다</span></div>
+      <div>
+        청첩장(모바일·종이) 제시 후 교회 주차장 입차 가능<br>
+        만차 시 아래 주차장 이용 안내<br>
+        • <strong>마제스타시티</strong> (롯데마트 서초점)<br>
+        &nbsp;&nbsp;주차권 : 언약채플 2층 로비 수령<br>
+        <span style="color:var(--rose);font-size:12px">※ 주차 공간이 협소하오니 가급적 대중교통 이용 부탁드립니다</span>
+      </div>
     </div>
   </div>
 </section>
@@ -596,7 +563,7 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   <div class="meal-card rv">
     <div class="meal-row">
       <span class="meal-ico">🕐</span>
-      <div><strong>식사 시간</strong> — 14:00 ~ 16:00</div>
+      <div><strong>식사 시간</strong> — 14:30 ~ 16:30</div>
     </div>
     <div class="meal-row">
       <span class="meal-ico">📍</span>
@@ -680,10 +647,10 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
       <div class="acc-info">
         <p class="acc-role">Groom · 신랑</p>
         <p class="acc-name">배진섭</p>
-        <p class="acc-bank">은행명</p>
-        <p class="acc-num">000-000-000000</p>
+        <p class="acc-bank">국민은행</p>
+        <p class="acc-num">933502-00-476963</p>
       </div>
-      <button class="copy-btn" onclick="copyAcc('000-000-000000')">복사</button>
+      <button class="copy-btn" onclick="copyAcc('93350200476963')">복사</button>
     </div>
   </div>
 
@@ -693,58 +660,82 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
       <div class="acc-info">
         <p class="acc-role">Bride's Mother · 신부 어머니</p>
         <p class="acc-name">윤진숙</p>
-        <p class="acc-bank">은행명</p>
-        <p class="acc-num">000-000-000000</p>
+        <p class="acc-bank">국민은행</p>
+        <p class="acc-num">811402-04-288659</p>
       </div>
-      <button class="copy-btn" onclick="copyAcc('000-000-000000')">복사</button>
+      <button class="copy-btn" onclick="copyAcc('81140204288659')">복사</button>
     </div>
     <div class="acc-card">
       <div class="acc-info">
         <p class="acc-role">Bride · 신부</p>
         <p class="acc-name">서보미</p>
-        <p class="acc-bank">은행명</p>
-        <p class="acc-num">000-000-000000</p>
+        <p class="acc-bank">신한은행</p>
+        <p class="acc-num">110-375-086026</p>
       </div>
-      <button class="copy-btn" onclick="copyAcc('000-000-000000')">복사</button>
+      <button class="copy-btn" onclick="copyAcc('110375086026')">복사</button>
     </div>
   </div>
 </section>
 
 
-<!-- ══ 방명록 ══ -->
-<section class="sec sec-gb">
-  <p class="sec-tag rv">Guest Book</p>
-  <div class="sec-hr rv"></div>
-  <h2 class="sec-ttl rv">방명록</h2>
-  <div class="gb-list rv" id="gbList"></div>
-  <button class="gb-more rv" onclick="showGbModal()">방명록 전체보기</button>
-  <div class="rv" style="margin-top:clamp(28px,7vw,40px);padding:clamp(16px,4vw,22px) 0">
+<!-- ══ 화환 + 공유 ══ -->
+<section class="sec" style="background:var(--bg2)">
+  <div class="rv" style="margin-bottom:clamp(24px,6vw,32px)">
     <p style="font-family:var(--nser);font-size:clamp(13px,3.5vw,15px);font-weight:400;color:var(--t2);letter-spacing:.5px;margin-bottom:8px">🌸 축하 화환은 정중히 사양합니다.</p>
     <p style="font-family:var(--serif);font-size:clamp(12px,3.2vw,13px);font-weight:300;color:var(--t3);line-height:1.8">따뜻한 축하의 마음만 소중히 받겠습니다.</p>
   </div>
-</section>
-
-
-<!-- ══ 엔딩 ══ -->
-<section class="sec sec-ending">
-  <p class="ending-quote rv">"사랑은 서로를 바라보는 것이 아니라,<br>함께 같은 방향을 바라보는 것"</p>
-  <p class="ending-src rv">— Antoine de Saint-Exupéry</p>
-  <div class="ending-hr rv"></div>
+  <div class="share-wrap rv">
+    <button class="share-btn" onclick="copyLink()"><span class="share-ico">🔗</span>링크 복사</button>
+    <button class="share-btn" onclick="shareNative()"><span class="share-ico">💌</span>공유하기</button>
+  </div>
 </section>
 
 
 <!-- FOOTER -->
 <footer>
-  <p class="ft-names">배진섭 · 서보미</p>
   <p>사랑으로 함께해 주셔서 진심으로 감사합니다</p>
-  <p style="margin-top:8px;font-size:10px;opacity:.3">2026년 11월 7일 · 사랑의교회 언약채플</p>
 </footer>
 
 
 <script>
-/* ─── INTRO ─── */
-function skipIntro(){document.getElementById('intro').classList.add('hide')}
-window.addEventListener('load',()=>{setTimeout(skipIntro,5200)});
+/* ─── INTRO: We're getting married 필기 + 커텐 ─── */
+(function(){
+  const intro=document.getElementById('intro');
+  const el=document.getElementById('itWriting');
+  const sub=document.getElementById('itSub');
+  const text="We're getting\nmarried";
+  let done=false;
+
+  function open(){
+    if(done)return;done=true;
+    sub.style.animationDelay='0s';
+    setTimeout(()=>{
+      intro.classList.add('opening');
+      setTimeout(()=>intro.classList.add('hide'),1200);
+    },700);
+  }
+
+  /* 커서 span 먼저 저장 */
+  const cur=el.querySelector('.it-cursor');
+  el.innerHTML='';el.appendChild(cur);
+
+  let i=0,lineBreakAt=14;
+  function typeNext(){
+    if(i>=text.length){open();return}
+    const ch=text[i];
+    if(ch==='\n'){el.insertBefore(document.createElement('br'),cur)}
+    else{
+      const s=document.createElement('span');
+      s.className='it-char';s.textContent=ch;
+      s.style.animationDelay='0s';
+      el.insertBefore(s,cur);
+    }
+    i++;
+    setTimeout(typeNext, ch===' '?55:ch==='\n'?180:72);
+  }
+  setTimeout(typeNext,600);
+  intro.addEventListener('click',()=>{i=text.length+1;open()});
+})();
 
 /* ─── PETALS ─── */
 (function(){
@@ -932,32 +923,29 @@ function toggleAcc(side){
   btn.textContent=!isOpen?(side==='gr'?'신랑측 계좌번호 닫기':'신부측 계좌번호 닫기'):(side==='gr'?'신랑측 계좌번호':'신부측 계좌번호');
 }
 
-/* ─── GUEST BOOK ─── */
-function getGuests(){return JSON.parse(localStorage.getItem('wb_guests')||'[]')}
-function saveGuests(g){localStorage.setItem('wb_guests',JSON.stringify(g))}
-function submitGuest(){
-  const name=document.getElementById('gbName').value.trim();
-  const msg=document.getElementById('gbMsg').value.trim();
-  if(!name||!msg){toast('이름과 메시지를 입력해 주세요');return}
-  const gs=getGuests();
-  gs.unshift({name,msg,date:new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit'})});
-  saveGuests(gs);document.getElementById('gbName').value='';document.getElementById('gbMsg').value='';
-  renderGuests();toast('방명록이 등록되었습니다 💕');
+/* ─── SHARE ─── */
+function copyLink(){
+  const url=location.href;
+  (navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject())
+    .then(()=>toast('링크가 복사되었습니다 💕'))
+    .catch(()=>{
+      const el=document.createElement('textarea');el.value=url;
+      el.style.cssText='position:fixed;opacity:0;top:-9999px';
+      document.body.appendChild(el);el.select();document.execCommand('copy');
+      document.body.removeChild(el);toast('링크가 복사되었습니다 💕');
+    });
 }
-function gbItemHtml(g){
-  return`<div class="gb-item"><div class="gb-hd"><span class="gb-name">${g.name}</span><span class="gb-date">${g.date}</span></div><p class="gb-msg">${g.msg}</p></div>`;
+function shareNative(){
+  if(navigator.share){
+    navigator.share({
+      title:'배진섭 · 서보미 결혼합니다',
+      text:'2026년 11월 7일 토요일 오후 3시\n사랑의교회 언약채플',
+      url:location.href
+    }).catch(()=>{});
+  } else {
+    copyLink();
+  }
 }
-function renderGuests(){
-  const gs=getGuests(),list=document.getElementById('gbList');
-  list.innerHTML=gs.slice(0,3).map(gbItemHtml).join('')||'<p style="color:var(--t3);font-size:13px;text-align:center;padding:16px;font-weight:300">아직 방명록이 없습니다<br>첫 번째로 축하 메시지를 남겨주세요 💕</p>';
-}
-function showGbModal(){
-  const gs=getGuests(),body=document.getElementById('gbModalBody');
-  body.innerHTML=gs.length?gs.map(g=>`<div class="gb-modal-item"><div class="gb-hd"><span class="gb-name">${g.name}</span><span class="gb-date">${g.date}</span></div><p class="gb-msg">${g.msg}</p></div>`).join('')
-    :'<p style="color:var(--t3);font-size:14px;text-align:center;padding:24px;font-weight:300">아직 방명록이 없습니다 💕</p>';
-  showModal('gbModal');
-}
-renderGuests();
 
 /* ─── MODALS ─── */
 function showModal(id){document.getElementById(id).classList.add('show');document.body.style.overflow='hidden'}
