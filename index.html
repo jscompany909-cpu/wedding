@@ -195,17 +195,19 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
    갤러리
 ══════════════════════ */
 .sec-gallery{background:var(--bg2)}
-.gallery-grid{columns:2;column-gap:8px}
-.gallery-item{break-inside:avoid;margin-bottom:8px;border-radius:var(--r);overflow:hidden;cursor:pointer;display:block;background:var(--bg3)}
-.gallery-item img{width:100%;display:block;transition:transform .4s}
-.gallery-item:hover img{transform:scale(1.04)}
-.gallery-item:nth-child(even){margin-top:12px}
+/* 정사각형 3열 그리드 */
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.gallery-item{aspect-ratio:1/1;overflow:hidden;cursor:pointer;background:var(--bg3);position:relative}
+.gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+.gallery-item:hover img{transform:scale(1.06)}
 .gallery-item.g-hide{display:none}
-.gallery-more{display:block;width:100%;margin-top:clamp(14px,4vw,20px);padding:13px;border-radius:var(--r);border:1px solid var(--bd);background:var(--wh);color:var(--t2);font-family:var(--serif);font-size:clamp(13px,3.5vw,15px);cursor:pointer;transition:all .25s}
+.gallery-more{display:block;width:100%;margin-top:clamp(12px,3.5vw,18px);padding:13px;border-radius:var(--r);border:1px solid var(--bd);background:var(--wh);color:var(--t2);font-family:var(--serif);font-size:clamp(13px,3.5vw,15px);cursor:pointer;transition:all .25s}
 .gallery-more:hover{background:var(--t1);color:var(--wh);border-color:var(--t1)}
-.lightbox{position:fixed;inset:0;background:rgba(12,10,8,.95);z-index:1100;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+/* 라이트박스 — 페이드 전환 */
+.lightbox{position:fixed;inset:0;background:rgba(8,6,4,.92);z-index:1100;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
 .lightbox.show{opacity:1;visibility:visible}
-.lb-img{max-width:92vw;max-height:88vh;object-fit:contain;display:block;border-radius:4px}
+.lb-img{max-width:92vw;max-height:88vh;object-fit:contain;display:block;border-radius:4px;transition:opacity .28s ease}
+.lb-img.fade{opacity:0}
 .lb-close{position:absolute;top:18px;right:18px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .25s}
 .lb-close:hover{background:rgba(255,255,255,.25)}
 .lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .25s}
@@ -849,7 +851,7 @@ const GALLERY_FILES=[
   'photo11.jpg','photo2.jpg','photo7.jpg','photo4.jpg','photo9.jpg',
   'photo5.jpg','photo13.jpg','photo12.jpg','photo10.jpg','photo6.jpg'
 ];
-const GALLERY_INIT=4;
+const GALLERY_INIT=9;
 (function(){
   const grid=document.getElementById('galleryGrid');
   if(!grid)return;
@@ -863,22 +865,22 @@ const GALLERY_INIT=4;
     (function(p){item.addEventListener('click',()=>openLb(p))})(pos);
     grid.appendChild(item);
   });
-  /* 더보기 / 줄이기 버튼 */
+  /* 갤러리 더보기 / 줄이기 버튼 */
   const btn=document.createElement('button');
   btn.className='gallery-more';
-  btn.textContent='사진 더보기 ▾';
+  btn.textContent='갤러리 더보기 ▾';
   btn.onclick=function(){
     const hidden=grid.querySelectorAll('.g-hide');
     if(hidden.length>0){
       hidden.forEach(el=>el.classList.remove('g-hide'));
-      btn.textContent='사진 줄이기 ▴';
+      btn.textContent='갤러리 줄이기 ▴';
     } else {
       let idx=0;
       grid.querySelectorAll('.gallery-item').forEach(el=>{
         if(idx>=GALLERY_INIT) el.classList.add('g-hide');
         idx++;
       });
-      btn.textContent='사진 더보기 ▾';
+      btn.textContent='갤러리 더보기 ▾';
       grid.scrollIntoView({behavior:'smooth',block:'start'});
     }
   };
@@ -890,7 +892,15 @@ let lbIdx=0,lbTotal=GALLERY_FILES.length;
 function openLb(i){lbIdx=i;updateLb();document.getElementById('lightbox').classList.add('show');document.body.style.overflow='hidden'}
 function closeLb(){document.getElementById('lightbox').classList.remove('show');document.body.style.overflow=''}
 function lbNav(d){lbIdx=(lbIdx+d+lbTotal)%lbTotal;updateLb()}
-function updateLb(){document.getElementById('lbImg').src=`photos/${GALLERY_FILES[lbIdx]}`;document.getElementById('lbCtr').textContent=`${lbIdx+1} / ${lbTotal}`}
+function updateLb(){
+  const img=document.getElementById('lbImg');
+  img.classList.add('fade');
+  setTimeout(()=>{
+    img.src=`photos/${GALLERY_FILES[lbIdx]}`;
+    document.getElementById('lbCtr').textContent=`${lbIdx+1} / ${lbTotal}`;
+    img.classList.remove('fade');
+  },220);
+}
 document.getElementById('lightbox').addEventListener('click',function(e){if(e.target===this)closeLb()});
 document.addEventListener('keydown',function(e){
   if(!document.getElementById('lightbox').classList.contains('show'))return;
