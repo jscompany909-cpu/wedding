@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta id="vp" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#FAFAF8">
+  <meta name="theme-color" content="#E8D8BE">
   <title>배진섭 · 서보미 — 결혼합니다</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,8 +12,8 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 *{-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#F5EFE4;--bg2:#EDE6D8;--bg3:#E4DBCC;
-  --wh:#FFFFFF;
+  --bg:#EAD9BE;--bg2:#DFC9A6;--bg3:#D2BA8E;
+  --wh:#F5EDDB;
   --t1:#1A1714;--t2:#5C524C;--t3:#9B918A;--t4:#C4BAB3;
   --bd:#E6E0D9;
   --acc:#8C7B6E;
@@ -29,7 +29,10 @@
   --r:6px;
 }
 html{scroll-behavior:smooth}
-body{font-family:var(--serif);background-color:var(--bg);background-image:repeating-linear-gradient(120deg,transparent,transparent 3px,rgba(255,255,255,.04) 3px,rgba(255,255,255,.04) 6px),repeating-linear-gradient(240deg,transparent,transparent 3px,rgba(0,0,0,.012) 3px,rgba(0,0,0,.012) 6px);color:var(--t1);line-height:1.8;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom,0)}
+body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-height:1.8;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom,0)}
+
+/* ─── PAPER TEXTURE OVERLAY ─── */
+#paper{position:fixed;inset:0;pointer-events:none;z-index:9997;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='350' height='350'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='350' height='350' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");background-size:350px 350px;background-repeat:repeat}
 
 /* ─── PETALS ─── */
 #petals{position:fixed;inset:0;pointer-events:none;z-index:10000;overflow:hidden}
@@ -42,7 +45,7 @@ body{font-family:var(--serif);background-color:var(--bg);background-image:repeat
 }
 
 /* ─── CINEMATIC INTRO ─── */
-#intro{position:fixed;inset:0;z-index:9999;overflow:hidden;cursor:pointer;background:#F5EFE4}
+#intro{position:fixed;inset:0;z-index:9999;overflow:hidden;cursor:pointer;background:#EAD9BE}
 #intro.hide{display:none}
 .it-bg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .it-deco{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:clamp(12px,3.5vw,20px) auto;animation:itLW .6s .2s ease forwards}
@@ -51,7 +54,7 @@ body{font-family:var(--serif);background-color:var(--bg);background-image:repeat
 /* 글자 opacity는 JS에서 inline style로 직접 제어 */
 .it-sub{font-family:var(--lbl);font-weight:100;font-size:clamp(9px,2.4vw,11px);letter-spacing:5px;color:var(--t3);text-transform:uppercase;text-align:center;margin-top:clamp(10px,3vw,16px);opacity:0;transition:opacity .6s ease}
 .it-sub.show{opacity:1}
-.it-curtain-l,.it-curtain-r{position:absolute;top:0;bottom:0;width:50%;background:#F5EFE4;z-index:2;transition:transform .85s cubic-bezier(.77,0,.18,1)}
+.it-curtain-l,.it-curtain-r{position:absolute;top:0;bottom:0;width:50%;background:#EAD9BE;z-index:2;transition:transform .85s cubic-bezier(.77,0,.18,1)}
 .it-curtain-l{left:0}
 .it-curtain-r{right:0}
 #intro.opening .it-curtain-l{transform:translateX(-100%)}
@@ -364,6 +367,7 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   <p class="it-skip">tap to skip</p>
 </div>
 
+<div id="paper" aria-hidden="true"></div>
 <div id="petals"></div>
 <div id="toast"></div>
 <audio id="bgm" loop preload="auto"><source src="static/music/bgm.mp3" type="audio/mpeg"></audio>
