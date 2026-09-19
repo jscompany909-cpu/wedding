@@ -17,10 +17,10 @@
 :root{
   --bg:#EAD9BE;--bg2:#DFC9A6;--bg3:#D2BA8E;
   --wh:#F5EDDB;
-  --t1:#1A1714;--t2:#5C524C;--t3:#9B918A;--t4:#C4BAB3;
+  --t1:#1A1714;--t2:#5C524C;--t3:#4A3F3A;--t4:#7A6E68;
   --bd:#E6E0D9;
   --acc:#8C7B6E;
-  --rose:#BE9A8A;
+  --rose:#7A4A38;
   --gold:#C4A882;
   --sh:0 2px 20px rgba(26,23,20,.07);
   --sh2:0 1px 8px rgba(26,23,20,.05);
@@ -69,7 +69,7 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 
 /* ─── SECTION BASE ─── */
 .sec{max-width:480px;margin:0 auto;padding:clamp(60px,15vw,96px) clamp(24px,6.5vw,36px);text-align:center}
-.sec-tag{font-family:var(--lbl);font-weight:200;font-size:clamp(9px,2.3vw,10px);letter-spacing:clamp(4px,1.5vw,6px);text-transform:uppercase;color:var(--t3);margin-bottom:14px}
+.sec-tag{font-family:var(--lbl);font-weight:300;font-size:clamp(9px,2.3vw,10px);letter-spacing:clamp(4px,1.5vw,6px);text-transform:uppercase;color:var(--t2);margin-bottom:14px}
 .sec-hr{width:30px;height:1px;background:var(--bd);margin:0 auto 28px}
 .sec-ttl{font-family:var(--nser);font-size:clamp(17px,4.8vw,21px);font-weight:400;color:var(--t1);margin-bottom:clamp(20px,5.5vw,32px);line-height:1.55}
 .sec-body{font-size:clamp(14px,3.8vw,16px);font-weight:300;color:var(--t2);line-height:2.2;word-break:keep-all}
@@ -847,40 +847,54 @@ updateDD();setInterval(updateDD,1000);
 })();
 
 /* ─── GALLERY ─── */
-/* 비슷한 사진 그룹 순서:
-   포멀/실내: 14,7,11,2 / 로맨틱/야외: 8,3,4,1 / 발랄/리본: 12,13,10 / 축제: 9,5,6 */
-const GALLERY_ORDER=[14,7,11,2,8,3,4,1,12,13,10,9,5,6];
+/* 616-341-360-315-536-195-392-841-953-1039-1048-449-500-1120-1142 */
+const GALLERY_FILES=[
+  'photo14.jpg','main.jpg','photo8.jpg','photo1.jpg','photo3.jpg',
+  'photo11.jpg','photo2.jpg','photo7.jpg','photo4.jpg','photo9.jpg',
+  'photo5.jpg','photo13.jpg','photo12.jpg','photo10.jpg','photo6.jpg'
+];
 const GALLERY_INIT=4;
 (function(){
   const grid=document.getElementById('galleryGrid');
   if(!grid)return;
-  GALLERY_ORDER.forEach((n,pos)=>{
+  GALLERY_FILES.forEach((f,pos)=>{
     const item=document.createElement('div');
     item.className='gallery-item'+(pos>=GALLERY_INIT?' g-hide':'');
     const img=document.createElement('img');
-    img.src=`photos/photo${n}.jpg`;img.alt=`사진${n}`;img.loading='lazy';
+    img.src=`photos/${f}`;img.alt=`사진${pos+1}`;img.loading='lazy';
     img.onerror=function(){this.closest('.gallery-item').style.display='none'};
     item.appendChild(img);
     (function(p){item.addEventListener('click',()=>openLb(p))})(pos);
     grid.appendChild(item);
   });
-  /* 더보기 버튼 */
+  /* 더보기 / 줄이기 버튼 */
   const btn=document.createElement('button');
-  btn.className='gallery-more rv';
+  btn.className='gallery-more';
   btn.textContent='사진 더보기 ▾';
   btn.onclick=function(){
-    grid.querySelectorAll('.g-hide').forEach(el=>el.classList.remove('g-hide'));
-    btn.style.display='none';
+    const hidden=grid.querySelectorAll('.g-hide');
+    if(hidden.length>0){
+      hidden.forEach(el=>el.classList.remove('g-hide'));
+      btn.textContent='사진 줄이기 ▴';
+    } else {
+      let idx=0;
+      grid.querySelectorAll('.gallery-item').forEach(el=>{
+        if(idx>=GALLERY_INIT) el.classList.add('g-hide');
+        idx++;
+      });
+      btn.textContent='사진 더보기 ▾';
+      grid.scrollIntoView({behavior:'smooth',block:'start'});
+    }
   };
   grid.parentElement.appendChild(btn);
 })();
 
 /* ─── LIGHTBOX ─── */
-let lbIdx=0,lbTotal=GALLERY_ORDER.length;
+let lbIdx=0,lbTotal=GALLERY_FILES.length;
 function openLb(i){lbIdx=i;updateLb();document.getElementById('lightbox').classList.add('show');document.body.style.overflow='hidden'}
 function closeLb(){document.getElementById('lightbox').classList.remove('show');document.body.style.overflow=''}
 function lbNav(d){lbIdx=(lbIdx+d+lbTotal)%lbTotal;updateLb()}
-function updateLb(){document.getElementById('lbImg').src=`photos/photo${GALLERY_ORDER[lbIdx]}.jpg`;document.getElementById('lbCtr').textContent=`${lbIdx+1} / ${lbTotal}`}
+function updateLb(){document.getElementById('lbImg').src=`photos/${GALLERY_FILES[lbIdx]}`;document.getElementById('lbCtr').textContent=`${lbIdx+1} / ${lbTotal}`}
 document.getElementById('lightbox').addEventListener('click',function(e){if(e.target===this)closeLb()});
 document.addEventListener('keydown',function(e){
   if(!document.getElementById('lightbox').classList.contains('show'))return;
