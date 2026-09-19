@@ -175,9 +175,9 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .dd-unit+.dd-unit{border-left:1px solid var(--bd)}
 .dd-num{font-family:var(--disp);font-size:clamp(24px,7vw,36px);color:var(--rose);line-height:1;font-weight:300}
 .dd-lbl{font-family:var(--lbl);font-weight:200;font-size:clamp(8px,2vw,9px);letter-spacing:2px;color:var(--t3);margin-top:4px;text-transform:uppercase}
-.dd-msg{font-size:clamp(12px,3.2vw,14px);font-weight:300;color:var(--t2);margin-bottom:clamp(18px,5vw,26px)}
+.dd-msg{font-size:clamp(14px,3.8vw,17px);font-weight:400;color:var(--t1);margin-bottom:clamp(18px,5vw,26px)}
 .cal-wrap{background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:clamp(16px,4.5vw,24px);margin-bottom:clamp(18px,5vw,26px)}
-.cal-hdr{font-family:var(--lbl);font-weight:200;font-size:11px;letter-spacing:3px;color:var(--t2);text-align:center;margin-bottom:14px;text-transform:uppercase}
+.cal-hdr{font-family:var(--nser);font-weight:400;font-size:clamp(14px,3.8vw,17px);letter-spacing:1px;color:var(--t1);text-align:center;margin-bottom:14px}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}
 .cal-dow{font-family:var(--lbl);font-weight:200;font-size:clamp(7px,2vw,9px);color:var(--t3);padding:3px 0;letter-spacing:.5px}
 .cal-day{font-size:clamp(12px,3.2vw,14px);font-weight:400;color:var(--t1);padding:clamp(5px,1.5vw,7px) 0;border-radius:50%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;line-height:1}
@@ -230,17 +230,16 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .nav-btn:hover{background:var(--bg);border-color:var(--acc);color:var(--t1)}
 .nav-ico{font-size:clamp(18px,5vw,22px)}
 .transport-card{background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
-.tr-row{display:flex;align-items:flex-start;gap:12px;padding:clamp(12px,3.5vw,16px) clamp(14px,4.5vw,20px);border-bottom:1px solid var(--bd);font-size:clamp(12px,3.2vw,13px);font-weight:300;color:var(--t2);line-height:1.7;text-align:left}
+.tr-row{display:flex;align-items:flex-start;gap:12px;padding:clamp(14px,4vw,18px) clamp(14px,4.5vw,20px);border-bottom:1px solid var(--bd);font-size:clamp(13px,3.5vw,15px);font-weight:400;color:var(--t1);line-height:1.8;text-align:left}
 .tr-row:last-child{border-bottom:none}
-.tr-type{font-family:var(--lbl);font-weight:300;font-size:clamp(10px,2.8vw,11px);letter-spacing:1px;color:var(--rose);min-width:58px;flex-shrink:0}
+.tr-type{font-family:var(--lbl);font-weight:500;font-size:clamp(12px,3.2vw,14px);letter-spacing:.5px;color:var(--t1);min-width:54px;flex-shrink:0}
 
 /* ══════════════════════
    식사 안내
 ══════════════════════ */
 .sec-meal{background:var(--bg2)}
-.meal-card{background:var(--wh);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
-.meal-row{display:flex;align-items:center;gap:14px;padding:clamp(14px,4vw,18px) clamp(16px,4.5vw,22px);border-bottom:1px solid var(--bd);font-size:clamp(13px,3.6vw,15px);font-weight:300;color:var(--t2)}
-.meal-row:last-child{border-bottom:none}
+.meal-card{background:var(--bg);border-radius:var(--r);overflow:hidden}
+.meal-row{display:flex;align-items:center;gap:14px;padding:clamp(10px,3vw,14px) 0;font-size:clamp(13px,3.6vw,15px);font-weight:300;color:var(--t2)}
 .meal-ico{font-size:18px;flex-shrink:0}
 .meal-row strong{color:var(--t1);font-weight:500}
 
@@ -458,32 +457,6 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 
   <div class="cal-wrap rv" id="cal-box"></div>
 
-  <div class="cer-card rv">
-    <div class="cer-row">
-      <span class="cer-ico">📅</span>
-      <div>
-        <p class="cer-lbl">Date &amp; Time</p>
-        <p class="cer-val">2026년 11월 7일 토요일</p>
-        <p class="cer-sub">오후 3시</p>
-      </div>
-    </div>
-    <div class="cer-row">
-      <span class="cer-ico">🏛</span>
-      <div>
-        <p class="cer-lbl">Venue</p>
-        <p class="cer-val">사랑의교회 언약채플</p>
-        <p class="cer-sub">서울 서초구 반포대로 121 북측 2층</p>
-      </div>
-    </div>
-    <div class="cer-row">
-      <span class="cer-ico">📞</span>
-      <div>
-        <p class="cer-lbl">Contact</p>
-        <p class="cer-val">사랑의교회</p>
-        <p class="cer-sub">02-3495-1000</p>
-      </div>
-    </div>
-  </div>
 </section>
 
 
@@ -524,6 +497,10 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 
   <div class="transport-card rv">
     <div class="tr-row">
+      <span class="tr-type">📍 장소</span>
+      <div>서초구 반포대로 121<br>사랑의교회 북측 2층 언약채플</div>
+    </div>
+    <div class="tr-row">
       <span class="tr-type">🚇 지하철</span>
       <div>2호선 <strong>서초역 3·4번 출구</strong> 직결 (도보 0분)<br>3호선 교대역 5번 출구 도보 5분</div>
     </div>
@@ -534,22 +511,21 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
     <div class="tr-row">
       <span class="tr-type">🚗 자가용</span>
       <div>
-        청첩장(모바일·종이) 제시 후 교회 주차장 입차 가능<br>
-        만차 시 아래 주차장 이용 안내<br>
-        • <strong>마제스타시티</strong> (롯데마트 서초점)<br>
-        &nbsp;&nbsp;주차권 : 언약채플 2층 로비 수령<br>
-        <span style="color:var(--rose);font-size:12px">※ 주차 공간이 협소하오니 가급적 대중교통 이용 부탁드립니다</span>
+        청첩장(모바일·종이) 제시 후 교회 주차장 <strong>B6·B7</strong> 입차 가능<br><br>
+        <strong>마제스타시티</strong> (롯데마트 서초점)<br>
+        주차권 : 언약채플 2층 로비 수령<br><br>
+        <span style="font-size:clamp(11px,2.8vw,12px);color:var(--t2)">주차 공간이 협소하오니 가급적 대중교통 이용 부탁드립니다</span>
       </div>
     </div>
   </div>
 </section>
 
 
-<!-- ══ 식사 안내 ══ -->
+<!-- ══ 식사 및 안내 ══ -->
 <section class="sec sec-meal">
   <p class="sec-tag rv">Meal</p>
   <div class="sec-hr rv"></div>
-  <h2 class="sec-ttl rv">식사 안내</h2>
+  <h2 class="sec-ttl rv">식사 및 안내</h2>
   <div class="meal-card rv">
     <div class="meal-row">
       <span class="meal-ico">🕐</span>
@@ -559,6 +535,84 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
       <span class="meal-ico">📍</span>
       <div><strong>장소</strong> — 사랑의교회 남측 6층 연회장</div>
     </div>
+  </div>
+  <div class="rv" style="margin-top:clamp(22px,6vw,30px);padding-top:clamp(18px,5vw,26px);border-top:1px solid var(--bd)">
+    <p style="font-family:var(--nser);font-size:clamp(13px,3.5vw,15px);font-weight:400;color:var(--t2);letter-spacing:.5px;margin-bottom:8px">🌸 축하 화환은 정중히 사양합니다.</p>
+    <p style="font-family:var(--serif);font-size:clamp(12px,3.2vw,13px);font-weight:300;color:var(--t3);line-height:1.8">따뜻한 축하의 마음만 소중히 받겠습니다.</p>
+  </div>
+</section>
+
+
+<!-- ══ 마음 전하기 ══ -->
+<section class="sec sec-gift">
+  <p class="sec-tag rv">Gift</p>
+  <div class="sec-hr rv"></div>
+  <h2 class="sec-ttl rv">마음 전하기</h2>
+  <p class="gift-intro rv">참석이 어려우신 분들을 위해<br>계좌번호를 안내드립니다.</p>
+
+  <button class="acc-btn rv" id="grBtn" onclick="toggleAcc('gr')">신랑측 계좌번호</button>
+  <div class="acc-expand" id="gr-expand">
+    <div class="acc-card">
+      <div class="acc-info">
+        <p class="acc-role">Groom's Father · 신랑 아버지</p>
+        <p class="acc-name">배흥국</p>
+        <p class="acc-bank">우리은행</p>
+        <p class="acc-num">185-029102-12-001</p>
+      </div>
+      <button class="copy-btn" onclick="copyAcc('18502910212001')">복사</button>
+    </div>
+    <div class="acc-card">
+      <div class="acc-info">
+        <p class="acc-role">Groom's Mother · 신랑 어머니</p>
+        <p class="acc-name">우정희</p>
+        <p class="acc-bank">농협은행</p>
+        <p class="acc-num">176141-56-056679</p>
+      </div>
+      <button class="copy-btn" onclick="copyAcc('17614156056679')">복사</button>
+    </div>
+    <div class="acc-card">
+      <div class="acc-info">
+        <p class="acc-role">Groom · 신랑</p>
+        <p class="acc-name">배진섭</p>
+        <p class="acc-bank">국민은행</p>
+        <p class="acc-num">933502-00-476963</p>
+      </div>
+      <button class="copy-btn" onclick="copyAcc('93350200476963')">복사</button>
+    </div>
+  </div>
+
+  <button class="acc-btn rv" id="brBtn" onclick="toggleAcc('br')">신부측 계좌번호</button>
+  <div class="acc-expand" id="br-expand">
+    <div class="acc-card">
+      <div class="acc-info">
+        <p class="acc-role">Bride's Mother · 신부 어머니</p>
+        <p class="acc-name">윤진숙</p>
+        <p class="acc-bank">국민은행</p>
+        <p class="acc-num">811402-04-288659</p>
+      </div>
+      <button class="copy-btn" onclick="copyAcc('81140204288659')">복사</button>
+    </div>
+    <div class="acc-card">
+      <div class="acc-info">
+        <p class="acc-role">Bride · 신부</p>
+        <p class="acc-name">서보미</p>
+        <p class="acc-bank">신한은행</p>
+        <p class="acc-num">110-375-086026</p>
+      </div>
+      <button class="copy-btn" onclick="copyAcc('110375086026')">복사</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ 공유 ══ -->
+<section class="sec" style="background:var(--bg2)">
+  <div class="share-wrap rv">
+    <button class="share-btn" onclick="copyLink()"><span class="share-ico">🔗</span>링크 복사</button>
+    <button class="share-btn kakao" onclick="shareKakao()">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path fill="#1A1300" d="M10 2C5.58 2 2 4.91 2 8.5c0 2.26 1.37 4.25 3.44 5.42L4.5 17l3.91-2.08A9.4 9.4 0 0 0 10 15c4.42 0 8-2.91 8-6.5S14.42 2 10 2z"/></svg>
+      카카오톡 공유
+    </button>
   </div>
 </section>
 
@@ -602,84 +656,6 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
     <span class="rsvp-done-ico">💌</span>
     <p class="rsvp-done-ttl">감사합니다</p>
     <p class="rsvp-done-sub">소중한 답변 주셔서 감사드립니다.<br>그날 함께해 주세요.</p>
-  </div>
-</section>
-
-
-<!-- ══ 마음 전하기 ══ -->
-<section class="sec sec-gift">
-  <p class="sec-tag rv">Gift</p>
-  <div class="sec-hr rv"></div>
-  <h2 class="sec-ttl rv">마음 전하기</h2>
-  <p class="gift-intro rv">참석이 어려우신 분들을 위해<br>계좌번호를 안내드립니다.</p>
-
-  <button class="acc-btn rv" id="grBtn" onclick="toggleAcc('gr')">신랑측 계좌번호</button>
-  <div class="acc-expand" id="gr-expand">
-    <div class="acc-card">
-      <div class="acc-info">
-        <p class="acc-role">Groom's Father · 신랑 아버지</p>
-        <p class="acc-name">배흥국</p>
-        <p class="acc-bank">은행명</p>
-        <p class="acc-num">000-000-000000</p>
-      </div>
-      <button class="copy-btn" onclick="copyAcc('000-000-000000')">복사</button>
-    </div>
-    <div class="acc-card">
-      <div class="acc-info">
-        <p class="acc-role">Groom's Mother · 신랑 어머니</p>
-        <p class="acc-name">우정희</p>
-        <p class="acc-bank">은행명</p>
-        <p class="acc-num">000-000-000000</p>
-      </div>
-      <button class="copy-btn" onclick="copyAcc('000-000-000000')">복사</button>
-    </div>
-    <div class="acc-card">
-      <div class="acc-info">
-        <p class="acc-role">Groom · 신랑</p>
-        <p class="acc-name">배진섭</p>
-        <p class="acc-bank">국민은행</p>
-        <p class="acc-num">933502-00-476963</p>
-      </div>
-      <button class="copy-btn" onclick="copyAcc('93350200476963')">복사</button>
-    </div>
-  </div>
-
-  <button class="acc-btn rv" id="brBtn" onclick="toggleAcc('br')">신부측 계좌번호</button>
-  <div class="acc-expand" id="br-expand">
-    <div class="acc-card">
-      <div class="acc-info">
-        <p class="acc-role">Bride's Mother · 신부 어머니</p>
-        <p class="acc-name">윤진숙</p>
-        <p class="acc-bank">국민은행</p>
-        <p class="acc-num">811402-04-288659</p>
-      </div>
-      <button class="copy-btn" onclick="copyAcc('81140204288659')">복사</button>
-    </div>
-    <div class="acc-card">
-      <div class="acc-info">
-        <p class="acc-role">Bride · 신부</p>
-        <p class="acc-name">서보미</p>
-        <p class="acc-bank">신한은행</p>
-        <p class="acc-num">110-375-086026</p>
-      </div>
-      <button class="copy-btn" onclick="copyAcc('110375086026')">복사</button>
-    </div>
-  </div>
-</section>
-
-
-<!-- ══ 화환 + 공유 ══ -->
-<section class="sec" style="background:var(--bg2)">
-  <div class="rv" style="margin-bottom:clamp(24px,6vw,32px)">
-    <p style="font-family:var(--nser);font-size:clamp(13px,3.5vw,15px);font-weight:400;color:var(--t2);letter-spacing:.5px;margin-bottom:8px">🌸 축하 화환은 정중히 사양합니다.</p>
-    <p style="font-family:var(--serif);font-size:clamp(12px,3.2vw,13px);font-weight:300;color:var(--t3);line-height:1.8">따뜻한 축하의 마음만 소중히 받겠습니다.</p>
-  </div>
-  <div class="share-wrap rv">
-    <button class="share-btn" onclick="copyLink()"><span class="share-ico">🔗</span>링크 복사</button>
-    <button class="share-btn kakao" onclick="shareKakao()">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path fill="#1A1300" d="M10 2C5.58 2 2 4.91 2 8.5c0 2.26 1.37 4.25 3.44 5.42L4.5 17l3.91-2.08A9.4 9.4 0 0 0 10 15c4.42 0 8-2.91 8-6.5S14.42 2 10 2z"/></svg>
-      카카오톡 공유
-    </button>
   </div>
 </section>
 
