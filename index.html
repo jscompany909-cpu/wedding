@@ -48,23 +48,13 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 }
 
 /* ─── CINEMATIC INTRO ─── */
-#intro{position:fixed;inset:0;z-index:9999;overflow:hidden;cursor:pointer;background:#EAD9BE}
-#intro.hide{display:none}
-.it-bg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.it-deco{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:clamp(12px,3.5vw,20px) auto;animation:itLW .6s .2s ease forwards}
-.it-line-sm{font-family:'Great Vibes',cursive;font-size:clamp(32px,10vw,54px);color:var(--t1);line-height:1.4;text-align:center;display:block}
+#intro{position:fixed;inset:0;z-index:9999;cursor:pointer;background:#EAD9BE;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 1.2s ease}
+#intro.hide{opacity:0;pointer-events:none}
+.it-line-sm{font-family:'Great Vibes',cursive;font-size:clamp(32px,10vw,54px);color:var(--t1);line-height:1.4;text-align:center;display:block;margin-bottom:4px}
 .it-line-lg{font-family:'Great Vibes',cursive;font-size:clamp(64px,20vw,102px);color:var(--t1);line-height:1.0;text-align:center;display:block}
-/* 글자 opacity는 JS에서 inline style로 직접 제어 */
-.it-sub{font-family:var(--lbl);font-weight:100;font-size:clamp(9px,2.4vw,11px);letter-spacing:5px;color:var(--t3);text-transform:uppercase;text-align:center;margin-top:clamp(10px,3vw,16px);opacity:0;transition:opacity .6s ease}
-.it-sub.show{opacity:1}
-.it-curtain-l,.it-curtain-r{position:absolute;top:0;bottom:0;width:50%;background:#EAD9BE;z-index:2;transition:transform .85s cubic-bezier(.77,0,.18,1)}
-.it-curtain-l{left:0}
-.it-curtain-r{right:0}
-#intro.opening .it-curtain-l{transform:translateX(-100%)}
-#intro.opening .it-curtain-r{transform:translateX(100%)}
-.it-skip{position:absolute;bottom:clamp(24px,6vw,36px);font-family:var(--lbl);font-weight:100;font-size:9px;letter-spacing:3px;color:var(--t4);text-transform:uppercase;z-index:3;opacity:0;animation:itFd .5s 2.5s ease forwards}
+.it-sub{font-family:var(--lbl);font-weight:100;font-size:clamp(9px,2.4vw,11px);letter-spacing:5px;color:var(--t3);text-transform:uppercase;text-align:center;margin-top:clamp(14px,4vw,22px);opacity:0;transition:opacity .8s ease}
+.it-skip{position:absolute;bottom:clamp(24px,6vw,36px);font-family:var(--lbl);font-weight:100;font-size:9px;letter-spacing:3px;color:var(--t4);text-transform:uppercase;opacity:0;animation:itFd .5s 3s ease forwards}
 @keyframes itFd{from{opacity:0}to{opacity:1}}
-@keyframes itLW{from{width:0}to{width:clamp(80px,28vw,140px)}}
 
 /* ─── FIXED BTNS ─── */
 #musicBtn{position:fixed;bottom:calc(22px + env(safe-area-inset-bottom,0));right:clamp(16px,4vw,24px);width:44px;height:44px;border-radius:50%;background:var(--wh);border:1px solid var(--bd);color:var(--t3);cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh);z-index:500;transition:all .3s}
@@ -358,15 +348,9 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 
 <!-- CINEMATIC INTRO -->
 <div id="intro" onclick="skipIntro()">
-  <div class="it-curtain-l"></div>
-  <div class="it-curtain-r"></div>
-  <div class="it-bg">
-    <div class="it-deco"></div>
-    <div class="it-line-sm" id="itLine1"></div>
-    <div class="it-line-lg" id="itLine2"></div>
-    <p class="it-sub" id="itSub">2026 · 11 · 07</p>
-    <div class="it-deco" style="animation-delay:.3s"></div>
-  </div>
+  <div class="it-line-sm" id="itLine1"></div>
+  <div class="it-line-lg" id="itLine2"></div>
+  <p class="it-sub" id="itSub">2026 · 11 · 07</p>
   <p class="it-skip">tap to skip</p>
 </div>
 
@@ -721,13 +705,13 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   function openCurtain(){
     if(done)return;done=true;
     timers.forEach(clearTimeout);
-    /* 스킵시 전부 즉시 표시 */
     [L1,L2].forEach(l=>l.querySelectorAll('span').forEach(s=>{s.style.opacity='1'}));
     sub.style.opacity='1';
+    /* 커텐 없이 그냥 페이드아웃 */
     setTimeout(()=>{
-      intro.classList.add('opening');
-      setTimeout(()=>intro.classList.add('hide'),900);
-    },80);
+      intro.classList.add('hide');
+      setTimeout(()=>{intro.style.display='none'},1200);
+    },400);
   }
 
   /* 글자 span 생성 — 초기 opacity:0 */
