@@ -628,45 +628,23 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 
 
 <!-- ══ RSVP ══ -->
-<section class="sec sec-rsvp">
-  <p class="sec-tag rv">R · S · V · P</p>
-  <div class="sec-hr rv"></div>
-  <h2 class="sec-ttl rv">참석 여부 확인</h2>
-  <p class="sec-body rv" style="margin-bottom:clamp(20px,5.5vw,28px)">참석 여부를 미리 알려주시면<br>더욱 감사하겠습니다.</p>
-
-  <div class="rsvp-card rv" id="rsvpForm">
-    <div class="rsvp-group">
-      <label class="rsvp-lbl">Name · 성함</label>
-      <input class="rsvp-input" id="rsvpName" type="text" placeholder="성함을 입력해 주세요" maxlength="20">
-    </div>
-    <div class="rsvp-group">
-      <label class="rsvp-lbl">Attendance · 참석 여부</label>
-      <div class="rsvp-radios">
-        <input class="rsvp-opt" type="radio" name="rsvpAttend" id="rsvpYes" value="yes">
-        <label for="rsvpYes">✓ 참석합니다</label>
-        <input class="rsvp-opt" type="radio" name="rsvpAttend" id="rsvpNo" value="no">
-        <label for="rsvpNo">✗ 불참합니다</label>
-      </div>
-    </div>
-    <div class="rsvp-group" id="rsvpMealGrp" style="display:none">
-      <label class="rsvp-lbl">Meal · 식사 여부</label>
-      <div class="rsvp-radios three">
-        <input class="rsvp-opt" type="radio" name="rsvpMeal" id="mealY" value="yes"><label for="mealY">식사</label>
-        <input class="rsvp-opt" type="radio" name="rsvpMeal" id="mealN" value="no"><label for="mealN">안 함</label>
-        <input class="rsvp-opt" type="radio" name="rsvpMeal" id="mealM" value="maybe"><label for="mealM">미정</label>
-      </div>
-    </div>
-    <div class="rsvp-group" id="rsvpCntGrp" style="display:none">
-      <label class="rsvp-lbl">Guests · 참석 인원</label>
-      <input class="rsvp-input" id="rsvpCount" type="number" min="1" max="10" value="1">
-    </div>
-    <button class="rsvp-btn" onclick="submitRsvp()">확인 완료</button>
+<section class="sec sec-rsvp" style="padding-left:0;padding-right:0">
+  <div style="padding:0 clamp(24px,6.5vw,36px)">
+    <p class="sec-tag rv">R · S · V · P</p>
+    <div class="sec-hr rv"></div>
+    <h2 class="sec-ttl rv">참석 여부 확인</h2>
+    <p class="sec-body rv" style="margin-bottom:clamp(16px,4vw,22px)">참석 여부를 미리 알려주시면<br>더욱 감사하겠습니다.</p>
   </div>
-  <div class="rsvp-done rv" id="rsvpDone">
-    <span class="rsvp-done-ico">💌</span>
-    <p class="rsvp-done-ttl">감사합니다</p>
-    <p class="rsvp-done-sub">소중한 답변 주셔서 감사드립니다.<br>그날 함께해 주세요.</p>
-  </div>
+  <iframe
+    src="https://docs.google.com/forms/d/e/1FAIpQLSdlAkUtfFt9RE4vBqQtT9rUbz5yhTHB0vTUQzBop95rdzA-bg/viewform?embedded=true"
+    width="100%"
+    height="560"
+    frameborder="0"
+    marginheight="0"
+    marginwidth="0"
+    style="display:block;border:none">
+    로딩 중...
+  </iframe>
 </section>
 
 
