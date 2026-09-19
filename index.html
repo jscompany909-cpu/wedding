@@ -373,7 +373,7 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 <div id="paper" aria-hidden="true"></div>
 <div id="petals"></div>
 <div id="toast"></div>
-<audio id="bgm" loop preload="auto"><source src="STJ-%201.mp3" type="audio/mpeg"></audio>
+<audio id="bgm" loop preload="auto"><source src="%EC%84%B8%EC%9D%B4%EB%B8%8C%EB%A7%88%EC%9D%B4%EB%9D%BC%EC%9D%B4%ED%94%84.mp3" type="audio/mpeg"></audio>
 <button id="musicBtn" aria-label="음악">♪</button>
 
 <!-- PHOTO MODAL -->
@@ -634,7 +634,7 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   <h2 class="sec-ttl rv">참석 여부 확인</h2>
   <p class="sec-body rv" style="margin-bottom:clamp(20px,5.5vw,28px)">참석 여부를 미리 알려주시면<br>더욱 감사하겠습니다.</p>
 
-  <div class="rsvp-card rv" id="rsvpForm">
+  <div class="rsvp-card" id="rsvpForm">
     <div class="rsvp-group">
       <label class="rsvp-lbl">Name · 성함</label>
       <input class="rsvp-input" id="rsvpName" type="text" placeholder="성함을 입력해 주세요" maxlength="20">
@@ -662,7 +662,7 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
     </div>
     <button class="rsvp-btn" onclick="submitRsvp()">확인 완료</button>
   </div>
-  <div class="rsvp-done rv" id="rsvpDone">
+  <div class="rsvp-done" id="rsvpDone">
     <span class="rsvp-done-ico">💌</span>
     <p class="rsvp-done-ttl">감사합니다</p>
     <p class="rsvp-done-sub">소중한 답변 주셔서 감사드립니다.<br>그날 함께해 주세요.</p>
@@ -943,10 +943,6 @@ function toggleMapLock(){
 }
 
 /* ─── RSVP ─── */
-(function(){
-  const list=JSON.parse(localStorage.getItem('wb_rsvp')||'[]');
-  if(list.length>0){document.getElementById('rsvpForm').style.display='none';document.getElementById('rsvpDone').style.display='block'}
-})();
 document.querySelectorAll('input[name="rsvpAttend"]').forEach(function(r){
   r.addEventListener('change',function(){
     const isYes=this.value==='yes';
