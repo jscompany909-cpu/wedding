@@ -847,7 +847,7 @@ updateDD();setInterval(updateDD,1000);
 (function(){
   const grid=document.getElementById('galleryGrid');
   if(!grid)return;
-  for(let i=1;i<=10;i++){
+  for(let i=1;i<=14;i++){
     const item=document.createElement('div');
     item.className='gallery-item';
     const img=document.createElement('img');
@@ -860,7 +860,7 @@ updateDD();setInterval(updateDD,1000);
 })();
 
 /* ─── LIGHTBOX ─── */
-let lbIdx=0,lbTotal=10;
+let lbIdx=0,lbTotal=14;
 function openLb(i){lbIdx=i;updateLb();document.getElementById('lightbox').classList.add('show');document.body.style.overflow='hidden'}
 function closeLb(){document.getElementById('lightbox').classList.remove('show');document.body.style.overflow=''}
 function lbNav(d){lbIdx=(lbIdx+d+lbTotal)%lbTotal;updateLb()}
