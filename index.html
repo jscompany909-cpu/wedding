@@ -723,7 +723,7 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
     sub.style.opacity='1';
     setTimeout(()=>{
       intro.classList.add('opening');
-      setTimeout(()=>intro.classList.add('hide'),870);
+      setTimeout(()=>intro.classList.add('hide'),900);
     },80);
   }
 
@@ -731,7 +731,7 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   function buildSpans(container, text){
     return text.split('').map(ch=>{
       const s=document.createElement('span');
-      s.style.cssText='opacity:0;transition:opacity 0.12s ease';
+      s.style.cssText='opacity:0;transition:opacity 0.05s ease';
       s.textContent=ch;
       container.appendChild(s);
       return s;
@@ -750,21 +750,29 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
    * 서브: 2550ms
    * 커텐: 2650ms + 870ms = 3520ms ≈ 3.5s ✓
    */
-  /* Together,(9자)×110ms + Always(6자)×130ms → 커텐 2480ms → 총 ~3.35s */
-  let t=300;
+  /*
+   * 총 5초 타이밍
+   * 400ms  : T 첫 글자
+   * line1 "Together," : 9자 × 210ms = 1890ms → 마지막 400+8×210=2080ms
+   * 줄 간격 : 500ms → 2580ms에 Always 시작
+   * line2 "Always"   : 6자 × 250ms = 1500ms → 마지막 2580+5×250=3830ms
+   * 서브   : 3950ms
+   * 커텐   : 4100ms + 900ms = 5000ms ✓
+   */
+  let t=400;
   sp1.forEach(s=>{
     timers.push(setTimeout(()=>{s.style.opacity='1'},t));
-    t+=110;
+    t+=210;
   });
 
-  t=1490;
+  t=2580;
   sp2.forEach(s=>{
     timers.push(setTimeout(()=>{s.style.opacity='1'},t));
-    t+=130;
+    t+=250;
   });
 
-  timers.push(setTimeout(()=>{sub.style.opacity='1'},2350));
-  timers.push(setTimeout(openCurtain,2480));
+  timers.push(setTimeout(()=>{sub.style.opacity='1'},3950));
+  timers.push(setTimeout(openCurtain,4100));
 
   intro.addEventListener('click',openCurtain);
 })();
