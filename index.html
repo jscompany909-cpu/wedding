@@ -50,8 +50,8 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 /* ─── CINEMATIC INTRO ─── */
 #intro{position:fixed;inset:0;z-index:9999;cursor:pointer;background:#EAD9BE;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 1.2s ease}
 #intro.hide{opacity:0;pointer-events:none}
-.it-line-sm{font-family:'Allura',cursive;font-size:clamp(32px,10vw,54px);color:var(--t1);line-height:1.4;text-align:center;display:block;margin-bottom:4px}
-.it-line-lg{font-family:'Allura',cursive;font-size:clamp(68px,21vw,108px);color:var(--t1);line-height:1.0;text-align:center;display:block}
+.it-line-sm{font-family:'Allura',cursive;font-size:clamp(46px,14.5vw,72px);color:var(--t1);line-height:1.35;text-align:center;display:block;margin-bottom:2px}
+.it-line-lg{font-family:'Allura',cursive;font-size:clamp(46px,14.5vw,72px);color:var(--t1);line-height:1.35;text-align:center;display:block}
 .it-sub{font-family:var(--lbl);font-weight:100;font-size:clamp(9px,2.4vw,11px);letter-spacing:5px;color:var(--t3);text-transform:uppercase;text-align:center;margin-top:clamp(14px,4vw,22px);opacity:0;transition:opacity .8s ease}
 .it-skip{position:absolute;bottom:clamp(24px,6vw,36px);font-family:var(--lbl);font-weight:100;font-size:9px;letter-spacing:3px;color:var(--t4);text-transform:uppercase;opacity:0;animation:itFd .5s 3s ease forwards}
 @keyframes itFd{from{opacity:0}to{opacity:1}}
@@ -102,9 +102,9 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
    INVITATION
 ══════════════════════ */
 .sec-inv{background:var(--wh)}
-.inv-verse{font-family:var(--disp);font-style:italic;font-size:clamp(14px,3.8vw,17px);color:var(--t1);line-height:1.9;margin-bottom:clamp(22px,6vw,32px);word-break:keep-all}
+.inv-verse{font-family:var(--disp);font-style:italic;font-size:clamp(12px,3.2vw,15px);color:var(--t1);line-height:1.9;margin-bottom:clamp(20px,5.5vw,28px);word-break:keep-all}
 .inv-verse strong{font-weight:500;font-style:italic}
-.inv-text{font-family:var(--disp);font-size:clamp(15px,4.2vw,18px);font-weight:300;line-height:2.5;color:var(--t2);white-space:pre-line;word-break:keep-all;margin-bottom:clamp(24px,6.5vw,36px)}
+.inv-text{font-family:var(--disp);font-size:clamp(13px,3.5vw,16px);font-weight:300;line-height:2.4;color:var(--t2);white-space:pre-line;word-break:keep-all;margin-bottom:clamp(20px,5.5vw,30px)}
 .inv-from{font-size:clamp(12px,3.2vw,14px);font-weight:300;color:var(--t3);line-height:2.4}
 .inv-from strong{color:var(--t2);font-weight:500}
 
@@ -125,8 +125,8 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
    혼주 정보
 ══════════════════════ */
 .sec-parents{background:var(--bg)}
-.parents-row{padding:clamp(6px,2vw,10px) 0}
-.parents-names{display:grid;grid-template-columns:1fr auto 1fr;column-gap:clamp(6px,2vw,12px);align-items:baseline;max-width:300px;margin:0 auto}
+/* 혼주: 6칸 단일 그리드로 두 행이 동일 열에 정렬 */
+.parents-grid{display:grid;grid-template-columns:1fr auto 1fr;column-gap:clamp(6px,2vw,12px);row-gap:clamp(10px,3vw,16px);max-width:290px;margin:0 auto;align-items:baseline}
 .p-par{text-align:right;font-size:clamp(13px,3.5vw,15px);font-weight:300;color:var(--t2)}
 .p-par strong{color:var(--t1);font-weight:500}
 .p-rel{text-align:center;font-size:clamp(11px,3vw,13px);font-weight:300;color:var(--t3);white-space:nowrap}
@@ -424,21 +424,13 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   <p class="sec-tag rv">Family</p>
   <div class="sec-hr rv"></div>
   <h2 class="sec-ttl rv">혼주 소개</h2>
-  <div class="rv">
-    <div class="parents-row">
-      <div class="parents-names">
-        <span class="p-par"><strong>배흥국</strong> · <strong>우정희</strong></span>
-        <span class="p-rel">의 아들</span>
-        <span class="p-child">배진섭</span>
-      </div>
-    </div>
-    <div class="parents-row">
-      <div class="parents-names">
-        <span class="p-par"><strong>서한철</strong> · <strong>윤진숙</strong></span>
-        <span class="p-rel">의 딸</span>
-        <span class="p-child">서보미</span>
-      </div>
-    </div>
+  <div class="parents-grid rv">
+    <span class="p-par"><strong>배흥국</strong> · <strong>우정희</strong></span>
+    <span class="p-rel">의 아들</span>
+    <span class="p-child">배진섭</span>
+    <span class="p-par"><strong>서한철</strong> · <strong>윤진숙</strong></span>
+    <span class="p-rel">의 딸</span>
+    <span class="p-child">서보미</span>
   </div>
 </section>
 
