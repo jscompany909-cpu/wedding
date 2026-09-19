@@ -66,8 +66,6 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 /* ─── FIXED BTNS ─── */
 #musicBtn{position:fixed;bottom:calc(22px + env(safe-area-inset-bottom,0));right:clamp(16px,4vw,24px);width:44px;height:44px;border-radius:50%;background:var(--wh);border:1px solid var(--bd);color:var(--t3);cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh);z-index:500;transition:all .3s}
 #musicBtn.playing{color:var(--rose);border-color:var(--rose)}
-#zoomBtn{position:fixed;bottom:calc(22px + env(safe-area-inset-bottom,0));left:clamp(16px,4vw,24px);padding:8px 14px;border-radius:20px;background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border:1px solid var(--bd);color:var(--t3);font-family:var(--lbl);font-size:10px;font-weight:200;letter-spacing:2px;cursor:pointer;z-index:500;box-shadow:var(--sh)}
-#zoomBtn.on{background:var(--t1);color:var(--wh);border-color:var(--t1)}
 #toast{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom,0));left:50%;transform:translateX(-50%)translateY(16px);background:var(--t1);color:var(--wh);padding:11px 22px;border-radius:30px;font-size:13px;opacity:0;transition:all .35s;z-index:999;white-space:nowrap;pointer-events:none;max-width:90vw}
 #toast.show{opacity:1;transform:translateX(-50%)translateY(0)}
 
@@ -338,6 +336,8 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .share-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:clamp(20px,5vw,28px)}
 .share-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:var(--r);border:1px solid var(--bd);background:var(--wh);color:var(--t2);font-family:var(--serif);font-size:clamp(13px,3.5vw,14px);font-weight:300;cursor:pointer;transition:all .25s}
 .share-btn:hover{background:var(--t1);color:var(--wh);border-color:var(--t1)}
+.share-btn.kakao{background:#FEE500;border-color:#FEE500;color:#1A1300;font-weight:400}
+.share-btn.kakao:hover{background:#F0D800;border-color:#F0D800;color:#1A1300}
 .share-ico{font-size:18px}
 
 /* ─── FOOTER ─── */
@@ -372,7 +372,6 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 <div id="toast"></div>
 <audio id="bgm" loop preload="auto"><source src="static/music/bgm.mp3" type="audio/mpeg"></audio>
 <button id="musicBtn" aria-label="음악">♪</button>
-<button id="zoomBtn" onclick="toggleZoom()">ZOOM</button>
 
 <!-- PHOTO MODAL -->
 <div class="modal-bg" id="photoModal">
@@ -692,7 +691,10 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   </div>
   <div class="share-wrap rv">
     <button class="share-btn" onclick="copyLink()"><span class="share-ico">🔗</span>링크 복사</button>
-    <button class="share-btn" onclick="shareNative()"><span class="share-ico">💌</span>공유하기</button>
+    <button class="share-btn kakao" onclick="shareKakao()">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path fill="#1A1300" d="M10 2C5.58 2 2 4.91 2 8.5c0 2.26 1.37 4.25 3.44 5.42L4.5 17l3.91-2.08A9.4 9.4 0 0 0 10 15c4.42 0 8-2.91 8-6.5S14.42 2 10 2z"/></svg>
+      카카오톡 공유
+    </button>
   </div>
 </section>
 
@@ -805,17 +807,6 @@ function playBgm(){bgm.play().then(()=>{mPlaying=true;mBtn.textContent='♫';mBt
 mBtn.addEventListener('click',()=>{if(mPlaying){bgm.pause();mPlaying=false;mBtn.textContent='♪';mBtn.classList.remove('playing')}else playBgm()});
 document.addEventListener('touchstart',function t(){playBgm();document.removeEventListener('touchstart',t)},{once:true});
 
-/* ─── ZOOM ─── */
-let zoomOn=false;
-const zBtn=document.getElementById('zoomBtn');
-function toggleZoom(){
-  zoomOn=!zoomOn;
-  document.getElementById('vp').content=zoomOn
-    ?'width=device-width, initial-scale=1.0, viewport-fit=cover'
-    :'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover';
-  zBtn.textContent=zoomOn?'ZOOM ON':'ZOOM';
-  zBtn.className=zoomOn?'on':'';
-}
 
 /* ─── SCROLL REVEAL ─── */
 const ro=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on')}),{threshold:.08});
@@ -967,14 +958,22 @@ function copyLink(){
       document.body.removeChild(el);toast('링크가 복사되었습니다 💕');
     });
 }
-function shareNative(){
-  if(navigator.share){
-    navigator.share({
-      title:'배진섭 · 서보미 결혼합니다',
-      text:'2026년 11월 7일 토요일 오후 3시\n사랑의교회 언약채플',
-      url:location.href
-    }).catch(()=>{});
+function shareKakao(){
+  /* 카카오톡 앱 딥링크 (모바일 우선) */
+  const msg=encodeURIComponent('💌 배진섭 · 서보미 결혼합니다\n\n2026년 11월 7일 (토) 오후 3시\n사랑의교회 언약채플\n\n'+location.href);
+  const ua=navigator.userAgent||'';
+  if(/Android/i.test(ua)){
+    /* 안드로이드 → 카카오톡 인텐트 */
+    location.href='intent://send?text='+encodeURIComponent('💌 배진섭 · 서보미 결혼합니다\n\n2026년 11월 7일 (토) 오후 3시\n사랑의교회 언약채플\n\n'+location.href)+'#Intent;scheme=kakaotalk;package=com.kakao.talk;end';
+  } else if(/iPhone|iPad/i.test(ua)){
+    /* iOS → 카카오톡 URL 스킴 */
+    location.href='kakaotalk://send?text='+msg;
+    /* 미설치 대비: 1.2초 후 앱스토어 or 공유 */
+    setTimeout(()=>{
+      if(navigator.share) navigator.share({title:'배진섭 · 서보미 결혼합니다',url:location.href}).catch(()=>{});
+    },1200);
   } else {
+    /* PC → 링크 복사 */
     copyLink();
   }
 }
