@@ -738,8 +738,8 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
     });
   }
 
-  const sp1=buildSpans(L1,"We're getting");
-  const sp2=buildSpans(L2,"married");
+  const sp1=buildSpans(L1,"Together,");
+  const sp2=buildSpans(L2,"Always");
 
   /*
    * 타이밍 설계 (ms)
@@ -750,23 +750,21 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
    * 서브: 2550ms
    * 커텐: 2650ms + 870ms = 3520ms ≈ 3.5s ✓
    */
-  let t=250;
+  /* Together,(9자)×110ms + Always(6자)×130ms → 커텐 2480ms → 총 ~3.35s */
+  let t=300;
   sp1.forEach(s=>{
-    const gap=s.textContent===' '?55:100;
-    const delay=t;
-    timers.push(setTimeout(()=>{s.style.opacity='1'},delay));
-    t+=gap;
+    timers.push(setTimeout(()=>{s.style.opacity='1'},t));
+    t+=110;
   });
 
-  t=1650;
+  t=1490;
   sp2.forEach(s=>{
-    const delay=t;
-    timers.push(setTimeout(()=>{s.style.opacity='1'},delay));
-    t+=120;
+    timers.push(setTimeout(()=>{s.style.opacity='1'},t));
+    t+=130;
   });
 
-  timers.push(setTimeout(()=>{sub.style.opacity='1'},2550));
-  timers.push(setTimeout(openCurtain,2650));
+  timers.push(setTimeout(()=>{sub.style.opacity='1'},2350));
+  timers.push(setTimeout(openCurtain,2480));
 
   intro.addEventListener('click',openCurtain);
 })();
