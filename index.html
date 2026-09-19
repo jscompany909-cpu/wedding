@@ -32,7 +32,7 @@
   --r:6px;
 }
 html{scroll-behavior:smooth}
-body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-height:1.8;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom,0)}
+body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-height:1.8;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:calc(56px + env(safe-area-inset-bottom,0))}
 
 /* ─── PAPER TEXTURE OVERLAY ─── */
 #paper{position:fixed;inset:0;pointer-events:none;z-index:9997;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='350' height='350'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='350' height='350' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");background-size:350px 350px;background-repeat:repeat}
@@ -57,8 +57,10 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 @keyframes itFd{from{opacity:0}to{opacity:1}}
 
 /* ─── FIXED BTNS ─── */
-#musicBtn{position:fixed;bottom:calc(22px + env(safe-area-inset-bottom,0));right:clamp(16px,4vw,24px);width:44px;height:44px;border-radius:50%;background:var(--wh);border:1px solid var(--bd);color:var(--t3);cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh);z-index:500;transition:all .3s}
+#musicBtn{position:fixed;bottom:calc(72px + env(safe-area-inset-bottom,0));right:clamp(14px,4vw,20px);width:42px;height:42px;border-radius:50%;background:var(--wh);border:1px solid var(--bd);color:var(--t2);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh);z-index:510;transition:all .3s;overflow:hidden}
 #musicBtn.playing{color:var(--rose);border-color:var(--rose)}
+/* 음소거 상태: 대각선 사선 */
+#musicBtn.muted::after{content:'';position:absolute;inset:0;background:linear-gradient(to top right,transparent calc(50% - 1.5px),var(--t2) calc(50% - 1.5px),var(--t2) calc(50% + 1.5px),transparent calc(50% + 1.5px));pointer-events:none}
 #toast{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom,0));left:50%;transform:translateX(-50%)translateY(16px);background:var(--t1);color:var(--wh);padding:11px 22px;border-radius:30px;font-size:13px;opacity:0;transition:all .35s;z-index:999;white-space:nowrap;pointer-events:none;max-width:90vw}
 #toast.show{opacity:1;transform:translateX(-50%)translateY(0)}
 
@@ -340,6 +342,13 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .share-btn.kakao:hover{background:#F0D800;border-color:#F0D800;color:#1A1300}
 .share-ico{font-size:18px}
 
+/* ─── 하단 고정 공유 바 ─── */
+#share-bar{position:fixed;bottom:0;left:0;right:0;display:grid;grid-template-columns:1fr 1fr;background:var(--wh);border-top:1px solid var(--bd);z-index:509;padding-bottom:env(safe-area-inset-bottom,0)}
+.sbar-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:14px 8px;font-family:var(--serif);font-size:clamp(12px,3.2vw,14px);font-weight:400;color:var(--t2);cursor:pointer;border:none;background:transparent;border-right:1px solid var(--bd);transition:background .2s}
+.sbar-btn:last-child{border-right:none}
+.sbar-btn.kakao-bar{background:#FEE500;color:#1A1300;font-weight:500}
+.sbar-btn:not(.kakao-bar):hover{background:var(--bg)}
+
 /* ─── FOOTER ─── */
 footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;padding:clamp(36px,10vw,56px) clamp(16px,5vw,28px) calc(clamp(36px,10vw,56px) + env(safe-area-inset-bottom,0));font-size:clamp(10px,2.6vw,11px);letter-spacing:2px;line-height:2.6}
 .ft-names{font-family:var(--brush);font-size:clamp(28px,9vw,40px);color:rgba(255,255,255,.6);margin-bottom:10px}
@@ -427,6 +436,8 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 
 <!-- ══ 혼주 정보 ══ -->
 <section class="sec sec-parents">
+  <p class="sec-tag rv">Family</p>
+  <div class="sec-hr rv"></div>
   <div class="parents-grid rv">
     <span class="p-par"><strong>배흥국</strong> · <strong>우정희</strong></span>
     <span class="p-rel">의 자녀</span>
@@ -659,6 +670,15 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 </section>
 
 
+<!-- 하단 고정 공유 바 -->
+<div id="share-bar">
+  <button class="sbar-btn" onclick="copyLink()">🔗 공유하기</button>
+  <button class="sbar-btn kakao-bar" onclick="shareKakao()">
+    <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path fill="#1A1300" d="M10 2C5.58 2 2 4.91 2 8.5c0 2.26 1.37 4.25 3.44 5.42L4.5 17l3.91-2.08A9.4 9.4 0 0 0 10 15c4.42 0 8-2.91 8-6.5S14.42 2 10 2z"/></svg>
+    카카오톡 공유하기
+  </button>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <p>사랑으로 함께해 주셔서 진심으로 감사합니다</p>
@@ -769,14 +789,19 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 /* ─── MUSIC ─── */
 const bgm=document.getElementById('bgm'),mBtn=document.getElementById('musicBtn');
 let mPlaying=false;
-function playBgm(){bgm.play().then(()=>{mPlaying=true;mBtn.textContent='♫';mBtn.classList.add('playing')}).catch(()=>{})}
-mBtn.addEventListener('click',()=>{if(mPlaying){bgm.pause();mPlaying=false;mBtn.textContent='♪';mBtn.classList.remove('playing')}else playBgm()});
-/* 첫 터치/클릭 후 3초 뒤 자동 재생 */
-function tryAutoPlay(){
-  if(!mPlaying) setTimeout(playBgm, 3000);
+function setMusicState(on){
+  mPlaying=on;
+  mBtn.textContent='♪';
+  mBtn.classList.toggle('playing',on);
+  mBtn.classList.toggle('muted',!on);
 }
-document.addEventListener('touchstart', function t(){ tryAutoPlay(); document.removeEventListener('touchstart',t); }, {once:true});
-document.addEventListener('click', function t(){ tryAutoPlay(); document.removeEventListener('click',t); }, {once:true});
+function playBgm(){bgm.play().then(()=>setMusicState(true)).catch(()=>setMusicState(false))}
+function stopBgm(){bgm.pause();setMusicState(false)}
+mBtn.addEventListener('click',()=>{mPlaying?stopBgm():playBgm()});
+/* 즉시 자동재생 시도 — 브라우저 정책상 첫 터치 후 재생 */
+window.addEventListener('load',()=>playBgm());
+document.addEventListener('touchstart',function t(){playBgm();document.removeEventListener('touchstart',t)},{once:true});
+document.addEventListener('click',function t(){playBgm();document.removeEventListener('click',t)},{once:true});
 
 
 /* ─── SCROLL REVEAL ─── */
@@ -929,16 +954,43 @@ document.querySelectorAll('input[name="rsvpAttend"]').forEach(function(r){
     document.getElementById('rsvpCntGrp').style.display=isYes?'':'none';
   });
 });
+/* ── Google Forms 설정 ──────────────────────────────
+   아래 FORM_ID와 entry 번호를 실제 구글폼 값으로 교체하세요.
+   방법: 구글폼 만들기 → 설문 응답 탭 → ⋮ → "사전 작성된 링크 가져오기"
+         → 링크에서 /e/XXXX 부분이 FORM_ID, entry.NNNNNNNN 이 필드 ID
+──────────────────────────────────────────────────── */
+const GF={
+  id:'YOUR_FORM_ID',           /* 예: 1FAIpQLSd... */
+  name:'entry.000000001',      /* 성함 필드 ID */
+  attend:'entry.000000002',    /* 참석여부 필드 ID */
+  meal:'entry.000000003',      /* 식사여부 필드 ID */
+  count:'entry.000000004'      /* 참석인원 필드 ID */
+};
+
 function submitRsvp(){
   const name=document.getElementById('rsvpName').value.trim();
   const attend=document.querySelector('input[name="rsvpAttend"]:checked');
   if(!name||!attend){toast('성함과 참석 여부를 선택해 주세요');return}
-  const data={name,attend:attend.value,
-    count:attend.value==='yes'?(document.getElementById('rsvpCount').value||1):0,
-    meal:attend.value==='yes'?(document.querySelector('input[name="rsvpMeal"]:checked')?.value||'미정'):'없음',
-    date:new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit'})};
+  const meal=attend.value==='yes'?(document.querySelector('input[name="rsvpMeal"]:checked')?.value||'미정'):'없음';
+  const count=attend.value==='yes'?(document.getElementById('rsvpCount').value||1):0;
+
+  /* Google Forms 전송 (no-cors: 응답 확인 불가, 전송은 됨) */
+  if(GF.id!=='YOUR_FORM_ID'){
+    const fd=new FormData();
+    fd.append(GF.name,name);
+    fd.append(GF.attend,attend.value==='yes'?'참석':'불참');
+    fd.append(GF.meal,meal);
+    fd.append(GF.count,count);
+    fetch(`https://docs.google.com/forms/d/e/${GF.id}/formResponse`,
+      {method:'POST',mode:'no-cors',body:fd});
+  }
+
+  /* 로컬 백업 저장 */
   const list=JSON.parse(localStorage.getItem('wb_rsvp')||'[]');
-  list.push(data);localStorage.setItem('wb_rsvp',JSON.stringify(list));
+  list.push({name,attend:attend.value,count,meal,
+    date:new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit'})});
+  localStorage.setItem('wb_rsvp',JSON.stringify(list));
+
   document.getElementById('rsvpForm').style.display='none';
   document.getElementById('rsvpDone').style.display='block';
   toast('참석 여부가 전달되었습니다 💕');
