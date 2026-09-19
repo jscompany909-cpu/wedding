@@ -127,7 +127,7 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 ══════════════════════ */
 .sec-parents{background:var(--bg)}
 /* 혼주: 6칸 단일 그리드, 정확한 가운데 정렬 */
-.sec-parents{background:var(--bg);display:flex;flex-direction:column;align-items:center}
+.sec-parents{background:var(--bg);display:flex;flex-direction:column;align-items:center;padding:clamp(24px,6vw,36px) clamp(24px,6.5vw,36px)}
 .parents-grid{display:grid;grid-template-columns:max-content auto max-content;column-gap:clamp(8px,2.5vw,14px);row-gap:clamp(10px,3vw,16px);align-items:baseline}
 .p-par{text-align:right;font-size:clamp(13px,3.5vw,15px);font-weight:300;color:var(--t2)}
 .p-par strong{color:var(--t1);font-weight:500}
@@ -427,15 +427,12 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 
 <!-- ══ 혼주 정보 ══ -->
 <section class="sec sec-parents">
-  <p class="sec-tag rv">Family</p>
-  <div class="sec-hr rv"></div>
-  <h2 class="sec-ttl rv">혼주 소개</h2>
   <div class="parents-grid rv">
     <span class="p-par"><strong>배흥국</strong> · <strong>우정희</strong></span>
-    <span class="p-rel">의 아들</span>
+    <span class="p-rel">의 자녀</span>
     <span class="p-child">진섭</span>
     <span class="p-par"><strong>서한철</strong> · <strong>윤진숙</strong></span>
-    <span class="p-rel">의 딸</span>
+    <span class="p-rel">의 자녀</span>
     <span class="p-child">보미</span>
   </div>
 </section>
