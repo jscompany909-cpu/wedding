@@ -198,6 +198,9 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .gallery-item img{width:100%;display:block;transition:transform .4s}
 .gallery-item:hover img{transform:scale(1.04)}
 .gallery-item:nth-child(even){margin-top:12px}
+.gallery-item.g-hide{display:none}
+.gallery-more{display:block;width:100%;margin-top:clamp(14px,4vw,20px);padding:13px;border-radius:var(--r);border:1px solid var(--bd);background:var(--wh);color:var(--t2);font-family:var(--serif);font-size:clamp(13px,3.5vw,15px);cursor:pointer;transition:all .25s}
+.gallery-more:hover{background:var(--t1);color:var(--wh);border-color:var(--t1)}
 .lightbox{position:fixed;inset:0;background:rgba(12,10,8,.95);z-index:1100;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
 .lightbox.show{opacity:1;visibility:visible}
 .lb-img{max-width:92vw;max-height:88vh;object-fit:contain;display:block;border-radius:4px}
@@ -844,27 +847,40 @@ updateDD();setInterval(updateDD,1000);
 })();
 
 /* ─── GALLERY ─── */
+/* 비슷한 사진 그룹 순서:
+   포멀/실내: 14,7,11,2 / 로맨틱/야외: 8,3,4,1 / 발랄/리본: 12,13,10 / 축제: 9,5,6 */
+const GALLERY_ORDER=[14,7,11,2,8,3,4,1,12,13,10,9,5,6];
+const GALLERY_INIT=4;
 (function(){
   const grid=document.getElementById('galleryGrid');
   if(!grid)return;
-  for(let i=1;i<=14;i++){
+  GALLERY_ORDER.forEach((n,pos)=>{
     const item=document.createElement('div');
-    item.className='gallery-item';
+    item.className='gallery-item'+(pos>=GALLERY_INIT?' g-hide':'');
     const img=document.createElement('img');
-    img.src=`photos/photo${i}.jpg`;img.alt=`사진${i}`;img.loading='lazy';
+    img.src=`photos/photo${n}.jpg`;img.alt=`사진${n}`;img.loading='lazy';
     img.onerror=function(){this.closest('.gallery-item').style.display='none'};
     item.appendChild(img);
-    (function(idx){item.addEventListener('click',()=>openLb(idx))})(i-1);
+    (function(p){item.addEventListener('click',()=>openLb(p))})(pos);
     grid.appendChild(item);
-  }
+  });
+  /* 더보기 버튼 */
+  const btn=document.createElement('button');
+  btn.className='gallery-more rv';
+  btn.textContent='사진 더보기 ▾';
+  btn.onclick=function(){
+    grid.querySelectorAll('.g-hide').forEach(el=>el.classList.remove('g-hide'));
+    btn.style.display='none';
+  };
+  grid.parentElement.appendChild(btn);
 })();
 
 /* ─── LIGHTBOX ─── */
-let lbIdx=0,lbTotal=14;
+let lbIdx=0,lbTotal=GALLERY_ORDER.length;
 function openLb(i){lbIdx=i;updateLb();document.getElementById('lightbox').classList.add('show');document.body.style.overflow='hidden'}
 function closeLb(){document.getElementById('lightbox').classList.remove('show');document.body.style.overflow=''}
 function lbNav(d){lbIdx=(lbIdx+d+lbTotal)%lbTotal;updateLb()}
-function updateLb(){document.getElementById('lbImg').src=`photos/photo${lbIdx+1}.jpg`;document.getElementById('lbCtr').textContent=`${lbIdx+1} / ${lbTotal}`}
+function updateLb(){document.getElementById('lbImg').src=`photos/photo${GALLERY_ORDER[lbIdx]}.jpg`;document.getElementById('lbCtr').textContent=`${lbIdx+1} / ${lbTotal}`}
 document.getElementById('lightbox').addEventListener('click',function(e){if(e.target===this)closeLb()});
 document.addEventListener('keydown',function(e){
   if(!document.getElementById('lightbox').classList.contains('show'))return;
