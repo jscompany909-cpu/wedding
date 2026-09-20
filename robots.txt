@@ -1,0 +1,52 @@
+# ─────────────────────────────────────────────────────────────
+#  검색엔진에는 노출하지 않되,
+#  카카오톡·SNS 링크 미리보기 봇은 반드시 허용해야 합니다.
+#  (미리보기 봇까지 막으면 카톡에 사진이 아예 안 뜹니다)
+# ─────────────────────────────────────────────────────────────
+
+# ── 링크 미리보기 봇 : 허용 ──
+# 카카오톡 스크랩 봇의 실제 UA
+#   facebookexternalhit/1.1;kakaotalk-scrap/1.0
+User-agent: kakaotalk-scrap
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Facebot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: Slackbot
+Allow: /
+
+User-agent: LINE
+Allow: /
+
+User-agent: Discordbot
+Allow: /
+
+# ── 검색엔진 : 차단 ──
+User-agent: Googlebot
+Disallow: /
+
+User-agent: Googlebot-Image
+Disallow: /
+
+User-agent: Yeti
+Disallow: /
+
+User-agent: Daum
+Disallow: /
+
+User-agent: bingbot
+Disallow: /
+
+User-agent: NaverBot
+Disallow: /
+
+# ── 그 외 전부 차단 ──
+User-agent: *
+Disallow: /
