@@ -20,6 +20,7 @@
  *   RSVP     : 정상 접수된 응답
  *   차단로그  : 토큰 불일치 / 중복 / 과다요청으로 걸러진 시도
  *              (실수로 걸러진 하객이 있는지 가끔 확인해 보세요)
+ *              CONFIG 의 상한에 걸리면 기록이 멈추므로, 무한정 쌓이지 않습니다.
  * ──────────────────────────────────────────────────── */
 
 var CONFIG = {
@@ -29,8 +30,17 @@ var CONFIG = {
   SHEET_NAME: 'RSVP',
   BLOCK_SHEET_NAME: '차단로그',
 
-  MAX_PER_MINUTE: 30,   // 전체 분당 최대 접수 (하객 정상 사용은 절대 안 걸림)
+  MAX_PER_MINUTE: 30,   // 시트에 기록되는 분당 최대 접수 (하객 정상 사용은 절대 안 걸림)
   MAX_TOTAL: 1000,      // 누적 최대 접수 건수
+
+  // ── 시트를 건드리기 전에 적용되는 상한 ──────────────────
+  // 웹앱 주소는 청첩장 소스에 보이므로, 토큰을 모르는 사람도 요청은 보낼 수 있습니다.
+  // 아래 상한이 없으면 그런 요청 하나하나가 '차단로그'에 계속 쌓여서
+  // 시트 용량과 Apps Script 할당량을 소진시킬 수 있습니다.
+  MAX_REQ_PER_MINUTE: 60,     // 모든 요청(토큰 불일치 포함) 분당 상한
+  MAX_BLOCK_LOG_PER_HOUR: 60, // 차단로그 시간당 기록 상한
+  MAX_BLOCK_LOG_TOTAL: 5000,  // 차단로그 절대 상한(행)
+
   DUP_WINDOW_SEC: 180,  // 같은 내용 재제출 차단 시간(초)
   MAX_NAME_LEN: 20,
   MAX_COUNT: 10,
@@ -46,6 +56,10 @@ function doGet() {
 function doPost(e) {
   try {
     var p = (e && e.parameter) || {};
+
+    // 0) 시트에 손대기 전 전체 요청 상한 — 캐시만 사용하므로 시트/할당량을 쓰지 않습니다.
+    //    대량 요청은 여기서 조용히 끊기고 차단로그도 남기지 않습니다.
+    if (!allowRequest()) return json({ result: 'rejected' });
 
     // 1) 허니팟 — 사람은 절대 채우지 않는 숨김칸. 채워져 있으면 봇.
     if (p.website) return logBlocked('허니팟', p);
@@ -152,10 +166,48 @@ function hash(s) {
 /** 걸러진 시도를 버리지 않고 기록 — 정상 하객이 잘못 걸렸는지 확인용 */
 function logBlocked(reason, p) {
   try {
-    var sheet = getSheet(CONFIG.BLOCK_SHEET_NAME, ['시각', '차단사유', '성함', '참석', '인원']);
-    sheet.appendRow([now(), reason, safe(String(p.name || '')), String(p.attend || ''), String(p.count || '')]);
+    if (allowBlockLog()) {
+      var sheet = getSheet(CONFIG.BLOCK_SHEET_NAME, ['시각', '차단사유', '성함', '참석', '인원']);
+      sheet.appendRow([now(), reason, safe(String(p.name || '')), String(p.attend || ''), String(p.count || '')]);
+    }
   } catch (err) { /* 로그 실패는 무시 */ }
   return json({ result: 'rejected' });
+}
+
+/**
+ * 시트를 건드리기 전 전체 요청 상한.
+ * 캐시만 읽고 쓰므로 스프레드시트 접근이 전혀 없습니다.
+ */
+function allowRequest() {
+  try {
+    var cache = CacheService.getScriptCache();
+    var key = 'req_' + Math.floor(Date.now() / 60000);
+    var hits = parseInt(cache.get(key) || '0', 10) + 1;
+    cache.put(key, String(hits), 120);
+    return hits <= CONFIG.MAX_REQ_PER_MINUTE;
+  } catch (err) {
+    return true;   // 캐시가 말썽이어도 정상 하객을 막지는 않습니다
+  }
+}
+
+/** 차단로그가 무한정 쌓이지 않도록 시간당·누적 상한을 둡니다. */
+function allowBlockLog() {
+  try {
+    var cache = CacheService.getScriptCache();
+    var key = 'blog_' + Math.floor(Date.now() / 3600000);
+    var n = parseInt(cache.get(key) || '0', 10) + 1;
+    cache.put(key, String(n), 3900);
+    if (n > CONFIG.MAX_BLOCK_LOG_PER_HOUR) return false;
+
+    // 시간당 첫 기록에서만 시트 크기를 확인 — 절대 상한을 넘으면 더 쌓지 않습니다.
+    if (n === 1) {
+      var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONFIG.BLOCK_SHEET_NAME);
+      if (sheet && sheet.getLastRow() - 1 >= CONFIG.MAX_BLOCK_LOG_TOTAL) return false;
+    }
+    return true;
+  } catch (err) {
+    return true;
+  }
 }
 
 function notify(name, attend, count) {
