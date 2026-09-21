@@ -83,11 +83,10 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 }
 
 /* ─── CINEMATIC INTRO ─── */
-#intro{position:fixed;inset:0;z-index:9999;cursor:pointer;background:#EAD9BE;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 1.2s ease}
+#intro{position:fixed;inset:0;z-index:9999;cursor:pointer;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 1.2s ease}
 #intro.hide{opacity:0;pointer-events:none}
 .it-line-sm{font-family:'Allura',cursive;font-size:clamp(48px,14.5vw,74px);color:var(--t1);line-height:1.35;text-align:center;display:block;margin-bottom:2px}
 .it-line-lg{font-family:'Allura',cursive;font-size:clamp(48px,14.5vw,74px);color:var(--t1);line-height:1.35;text-align:center;display:block}
-.it-sub{font-family:var(--lbl);font-weight:100;font-size:clamp(10px,2.4vw,12px);letter-spacing:5px;color:var(--t3);text-transform:uppercase;text-align:center;margin-top:clamp(14px,4vw,22px);opacity:0;transition:opacity 1.8s ease}
 .it-skip{position:absolute;bottom:clamp(24px,6vw,36px);font-family:var(--lbl);font-weight:100;font-size:10px;letter-spacing:3px;color:var(--t4);text-transform:uppercase;opacity:0;animation:itFd .5s 3s ease forwards}
 @keyframes itFd{from{opacity:0}to{opacity:1}}
 
@@ -380,8 +379,8 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .share-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:clamp(20px,5vw,28px)}
 .share-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:var(--r);border:1px solid var(--bd);background:var(--wh);color:var(--t2);font-family:var(--serif);font-size:clamp(14px,3.5vw,15px);font-weight:300;cursor:pointer;transition:all .25s}
 .share-btn:hover{background:var(--t1);color:var(--wh);border-color:var(--t1)}
-.share-btn.kakao{background:#FEE500;border-color:#FEE500;color:#1A1300;font-weight:400}
-.share-btn.kakao:hover{background:#F0D800;border-color:#F0D800;color:#1A1300}
+/* 카카오 노란색을 쓰지 않고 '링크 복사'와 같은 서식으로 통일. 아이콘 색도 글자색을 따라간다. */
+.share-btn.kakao .share-ico,.share-btn.kakao svg{color:inherit}
 .share-ico{font-size:18px}
 
 /* ─── FOOTER ─── */
@@ -401,7 +400,6 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 <div id="intro" onclick="skipIntro()">
   <div class="it-line-sm" id="itLine1"></div>
   <div class="it-line-lg" id="itLine2"></div>
-  <p class="it-sub" id="itSub">2026 · 11 · 07</p>
   <p class="it-skip">tap to skip</p>
 </div>
 
@@ -692,7 +690,9 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
     </div>
     <div class="rsvp-group" id="rsvpCntGrp" style="display:none">
       <label class="rsvp-lbl">Guests · 참석 인원</label>
-      <input class="rsvp-input" id="rsvpCount" type="number" min="1" max="10" value="1">
+      <!-- onfocus=select : 기본값 1 이 남아 있어 5 를 치면 15 가 되던 문제 방지 -->
+      <input class="rsvp-input" id="rsvpCount" type="number" min="1" max="10" value="1"
+             inputmode="numeric" onfocus="this.select()">
     </div>
     <!-- 허니팟: 화면에 안 보이는 칸. 자동 제출 봇만 여기를 채웁니다. -->
     <input id="rsvpWebsite" name="website" type="text" tabindex="-1" autocomplete="off"
@@ -712,7 +712,7 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   <div class="share-wrap rv">
     <button class="share-btn" onclick="copyLink()"><span class="share-ico">🔗</span>링크 복사</button>
     <button class="share-btn kakao" onclick="shareKakao()">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path fill="#1A1300" d="M10 2C5.58 2 2 4.91 2 8.5c0 2.26 1.37 4.25 3.44 5.42L4.5 17l3.91-2.08A9.4 9.4 0 0 0 10 15c4.42 0 8-2.91 8-6.5S14.42 2 10 2z"/></svg>
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path fill="currentColor" d="M10 2C5.58 2 2 4.91 2 8.5c0 2.26 1.37 4.25 3.44 5.42L4.5 17l3.91-2.08A9.4 9.4 0 0 0 10 15c4.42 0 8-2.91 8-6.5S14.42 2 10 2z"/></svg>
       카카오톡 공유
     </button>
   </div>
@@ -731,7 +731,6 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   const intro=document.getElementById('intro');
   const L1=document.getElementById('itLine1');
   const L2=document.getElementById('itLine2');
-  const sub=document.getElementById('itSub');
   const timers=[];
   let done=false;
 
@@ -739,7 +738,6 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
     if(done)return;done=true;
     timers.forEach(clearTimeout);
     [L1,L2].forEach(l=>l.querySelectorAll('span').forEach(s=>{s.style.opacity='1'}));
-    sub.style.opacity='1';
     /* 커텐 없이 그냥 페이드아웃 */
     setTimeout(()=>{
       intro.classList.add('hide');
@@ -791,9 +789,8 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
     t+=250;
   });
 
-  /* 날짜(2026 · 11 · 07)를 천천히 띄우고 충분히 머무른 뒤 전환 */
-  timers.push(setTimeout(()=>{sub.style.opacity='1'},4000));
-  timers.push(setTimeout(openCurtain,6600));
+  /* 마지막 글자(3830ms) 뒤 2.27초 머무르고 전환 — 총 6.6초 → 6.1초 */
+  timers.push(setTimeout(openCurtain,6100));
 
   intro.addEventListener('click',openCurtain);
 })();
@@ -941,9 +938,28 @@ const GALLERY_INIT=9;
 })();
 
 /* ─── LIGHTBOX ─── */
+/* ─── 오버레이 뒤로가기 ───────────────────────────────
+   사진 뷰어·갤러리 모달을 열 때 히스토리를 한 칸 쌓아두고,
+   기기 뒤로가기(popstate)가 오면 페이지를 떠나는 대신 그것만 닫는다.
+   ✕·Esc·배경 탭으로 닫을 때도 history.back() 을 거쳐 같은 경로로
+   닫으므로 히스토리가 어긋나지 않는다. */
+const _ovStack=[];
+function ovOpen(closeFn){
+  _ovStack.push(closeFn);
+  try{ history.pushState({ov:_ovStack.length},''); }catch(e){ /* file:// 등 */ }
+}
+function ovClose(){ if(_ovStack.length) history.back(); }
+window.addEventListener('popstate',function(){
+  const fn=_ovStack.pop();
+  if(fn) fn();
+});
+
 let lbIdx=0,lbTotal=GALLERY_FILES.length;
-function openLb(i){lbIdx=i;updateLb();document.getElementById('lightbox').classList.add('show');document.body.style.overflow='hidden';zReset()}
-function closeLb(){document.getElementById('lightbox').classList.remove('show');document.body.style.overflow='';zReset()}
+function openLb(i){lbIdx=i;updateLb();document.getElementById('lightbox').classList.add('show');document.body.style.overflow='hidden';zReset();ovOpen(closeLbNow)}
+function closeLb(){ovClose()}
+function closeLbNow(){document.getElementById('lightbox').classList.remove('show');zReset();
+  /* 갤러리 모달 위에서 연 경우 모달은 그대로이므로 스크롤 잠금을 풀지 않는다 */
+  if(!document.querySelector('.modal-bg.show')) document.body.style.overflow=''}
 function lbNav(d){lbIdx=(lbIdx+d+lbTotal)%lbTotal;updateLb();zReset()}
 function updateLb(){
   const img=document.getElementById('lbImg');
@@ -1236,8 +1252,9 @@ function shareKakao(){
 }
 
 /* ─── MODALS ─── */
-function showModal(id){document.getElementById(id).classList.add('show');document.body.style.overflow='hidden'}
-function hideModal(id){document.getElementById(id).classList.remove('show');document.body.style.overflow=''}
+function showModal(id){document.getElementById(id).classList.add('show');document.body.style.overflow='hidden';ovOpen(function(){hideModalNow(id)})}
+function hideModal(id){ovClose()}
+function hideModalNow(id){document.getElementById(id).classList.remove('show');document.body.style.overflow=''}
 document.querySelectorAll('.modal-bg').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m)hideModal(m.id)})});
 
 /* ─── COPY & TOAST ─── */
