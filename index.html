@@ -1211,17 +1211,17 @@ function shareKakao(){
   }
 
   /* ② 기존 방식 — 카카오톡 앱 딥링크 (모바일 우선) */
-  const msg=encodeURIComponent('💌 배진섭 · 서보미 결혼합니다\n\n2026년 11월 7일 (토) 오후 3시\n사랑의교회 언약채플\n\n'+location.href);
+  const msg=encodeURIComponent('💌 배진섭 ❤️ 서보미\n\n2026년 11월 7일 (토) 오후 3시\n사랑의교회 언약채플\n\n'+location.href);
   const ua=navigator.userAgent||'';
   if(/Android/i.test(ua)){
     /* 안드로이드 → 카카오톡 인텐트 */
-    location.href='intent://send?text='+encodeURIComponent('💌 배진섭 · 서보미 결혼합니다\n\n2026년 11월 7일 (토) 오후 3시\n사랑의교회 언약채플\n\n'+location.href)+'#Intent;scheme=kakaotalk;package=com.kakao.talk;end';
+    location.href='intent://send?text='+encodeURIComponent('💌 배진섭 ❤️ 서보미\n\n2026년 11월 7일 (토) 오후 3시\n사랑의교회 언약채플\n\n'+location.href)+'#Intent;scheme=kakaotalk;package=com.kakao.talk;end';
   } else if(/iPhone|iPad/i.test(ua)){
     /* iOS → 카카오톡 URL 스킴 */
     location.href='kakaotalk://send?text='+msg;
     /* 미설치 대비: 1.2초 후 앱스토어 or 공유 */
     setTimeout(()=>{
-      if(navigator.share) navigator.share({title:'배진섭 · 서보미 결혼합니다',url:location.href}).catch(()=>{});
+      if(navigator.share) navigator.share({title:'배진섭 ❤️ 서보미',url:location.href}).catch(()=>{});
     },1200);
   } else {
     /* PC → 링크 복사 */
