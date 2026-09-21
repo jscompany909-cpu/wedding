@@ -276,7 +276,7 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .nav-btn:hover{background:var(--bg);border-color:var(--acc);color:var(--t1)}
 .nav-ico{font-size:clamp(19px,5vw,24px)}
 .transport-card{background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
-.tr-row{display:flex;align-items:flex-start;gap:12px;padding:clamp(14px,4vw,18px) clamp(14px,4.5vw,20px);border-bottom:1px solid var(--bd);font-size:clamp(15px,3.9vw,18px);font-weight:400;color:var(--t1);line-height:1.9;text-align:left}
+.tr-row{display:flex;align-items:baseline;gap:12px;padding:clamp(14px,4vw,18px) clamp(14px,4.5vw,20px);border-bottom:1px solid var(--bd);font-size:clamp(15px,3.9vw,18px);font-weight:400;color:var(--t1);line-height:1.9;text-align:left}
 .tr-row:last-child{border-bottom:none}
 .tr-row>div{flex:1;min-width:0;word-break:keep-all}
 /* 주차 안내 — 번호 기준 왼쪽 정렬, 설명은 들여쓰기 유지 */
@@ -289,8 +289,10 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .park-sub{margin-top:5px}
 .park-sub::before{content:"- "}
 .park-note{margin-top:2px;font-size:clamp(12px,3vw,14px)}
-/* 라벨과 본문 첫 줄의 행 높이를 동일하게 맞춰 나란히 정렬 */
-.tr-type{font-family:var(--lbl);font-weight:500;font-size:clamp(14px,3.5vw,16px);letter-spacing:.5px;color:var(--t1);min-width:68px;flex-shrink:0;line-height:1.9}
+/* 라벨 칸 폭은 em 기준 — 글자 크기가 커져도 본문 시작 위치가 전 행 동일하게 유지된다 */
+.tr-type{font-family:var(--lbl);font-weight:500;font-size:clamp(14px,3.5vw,16px);letter-spacing:.5px;color:var(--t1);min-width:4.8em;flex-shrink:0;line-height:1.9;white-space:nowrap}
+/* 이모지 폭이 기기마다 달라 라벨 글자 시작점이 틀어지므로 고정 폭 슬롯에 넣는다 */
+.tr-ico{display:inline-block;width:1.55em;text-align:center;letter-spacing:0}
 
 /* ══════════════════════
    식사 안내
@@ -540,19 +542,19 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 
   <div class="transport-card rv">
     <div class="tr-row">
-      <span class="tr-type">📍 장소</span>
+      <span class="tr-type"><span class="tr-ico">📍</span>장소</span>
       <div>서초구 반포대로 121<br>사랑의교회 북측 2층 언약채플</div>
     </div>
     <div class="tr-row">
-      <span class="tr-type">🚇 지하철</span>
+      <span class="tr-type"><span class="tr-ico">🚇</span>지하철</span>
       <div><strong>2호선 서초역 3, 4번 출구</strong><br>에 연결된 지하 연결 통로 이용</div>
     </div>
     <div class="tr-row">
-      <span class="tr-type">🚌 버스</span>
+      <span class="tr-type"><span class="tr-ico">🚌</span>버스</span>
       <div>서초동 사랑의교회 정류장<br>143, 406, 양재1 등 다수 노선</div>
     </div>
     <div class="tr-row">
-      <span class="tr-type">🚗 자가용</span>
+      <span class="tr-type"><span class="tr-ico">🚗</span>자가용</span>
       <div class="park-box">
         <p class="park-ttl">🅿️ 주차 안내</p>
         <ol class="park-list">
