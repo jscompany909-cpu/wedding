@@ -44,8 +44,8 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 *{-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#F5F0E7;--bg2:#ECE7DC;--bg3:#E1DACC;
-  --wh:#FFFCF7;
+  --bg:#F4EFE6;--bg2:#EBE6DB;--bg3:#E0D9CB;
+  --wh:#FEFBF6;
   --t1:#1A1714;--t2:#5C524C;--t3:#4A3F3A;--t4:#7A6E68;
   --bd:#E4DDD1;
   --acc:#8C7B6E;
@@ -65,13 +65,12 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 
 /* ─── PAPER TEXTURE OVERLAY ─── */
 #paper{position:fixed;inset:0;pointer-events:none;z-index:9997;
+  /* 결 라인(모눈 느낌)은 제거. 잔잔한 스티플 그레인 + 아주 옅은 가장자리 그늘만 둔다. */
   background-image:
     radial-gradient(ellipse at center,transparent 70%,rgba(94,84,70,.05) 100%),
-    repeating-linear-gradient(94deg,rgba(112,102,86,.010) 0 1px,transparent 1px 3px),
-    repeating-linear-gradient(2deg,rgba(112,102,86,.008) 0 1px,transparent 1px 4px),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='0.22'/%3E%3C/svg%3E");
-  background-size:cover,auto,auto,260px 260px;
-  background-repeat:no-repeat,repeat,repeat,repeat}
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='0.22'/%3E%3C/svg%3E");
+  background-size:cover,260px 260px;
+  background-repeat:no-repeat,repeat}
 
 /* ─── PETALS ─── */
 #petals{position:fixed;inset:0;pointer-events:none;z-index:10000;overflow:hidden}
