@@ -3,7 +3,8 @@
  *
  * ── 배포 방법 ─────────────────────────────────────────
  * 1. sheets.google.com 에서 새 스프레드시트 생성 (예: "청첩장 RSVP")
- * 2. 상단 메뉴 확장 프로그램(Extensions) > Apps Script 클릭
+ * 2. 그 시트 주소의 .../spreadsheets/d/<여기>/edit 가운데 부분을
+ *    아래 CONFIG.SHEET_ID 에 넣기
  * 3. 기본으로 열린 코드를 전부 지우고 이 파일 내용을 붙여넣기
  * 4. 아래 CONFIG.TOKEN 값이 index.html 의 RSVP_TOKEN 과 똑같은지 확인
  * 5. 오른쪽 위 배포(Deploy) > 새 배포(New deployment)
@@ -13,8 +14,14 @@
  *    - 배포 → 권한 승인 → 웹 앱 URL 복사
  * 6. 복사한 URL 을 index.html 의 RSVP_ENDPOINT 에 붙여넣기
  *
- * ※ 코드를 수정하면 반드시 "새 배포"를 다시 해야 반영됩니다.
- *   (기존 배포 관리 > 편집 > 버전: 새 버전 으로 해도 됩니다)
+ * ※ 코드를 고친 뒤에는 반드시 다시 배포해야 반영됩니다.
+ *   웹앱 주소를 그대로 두고 싶으면 '새 배포'가 아니라
+ *   배포 관리 > 기존 배포 편집(연필) > 버전: 새 버전 > 배포 를 쓰세요.
+ *   '새 배포'는 주소가 새로 생기고, 옛 주소는 옛 코드를 계속 서비스합니다.
+ *
+ * ※ 연결이 잘 됐는지는 웹앱 주소를 브라우저로 열어 확인할 수 있습니다.
+ *   {"result":"ok","tabs":[...]}  → 시트 연결 정상
+ *   {"result":"error",...}        → SHEET_ID 확인 필요
  *
  * ── 만들어지는 시트 ───────────────────────────────────
  *   RSVP     : 정상 접수된 응답
@@ -26,6 +33,11 @@
 var CONFIG = {
   // index.html 의 RSVP_TOKEN 과 반드시 동일해야 합니다.
   TOKEN: 'wd-olPiLGtYwyJdWUovwBHDvljgOoPG',
+
+  // 기록할 스프레드시트의 ID (주소의 /spreadsheets/d/<여기>/edit 부분).
+  // 이걸 지정하면 스크립트를 시트 안에서 만들었든 따로 만들었든
+  // 항상 이 시트에 기록됩니다. 비워 두면 스크립트가 붙어 있는 시트를 씁니다.
+  SHEET_ID: '1d9JW9D14tphfglTSpt_z5slXQUOUERSbd7yDGO2XZf8',
 
   SHEET_NAME: 'RSVP',
   BLOCK_SHEET_NAME: '차단로그',
@@ -49,8 +61,19 @@ var CONFIG = {
   NOTIFY_EMAIL: ''
 };
 
+/**
+ * 브라우저로 웹앱 주소를 열면 시트 연결 상태를 알려줍니다.
+ * 응답에 시트 이름이나 ID 는 담지 않습니다(주소가 공개돼 있으므로).
+ */
 function doGet() {
-  return json({ result: 'ok' });
+  var out = { result: 'ok' };
+  try {
+    out.tabs = getSS().getSheets().map(function (s) { return s.getName(); });
+  } catch (err) {
+    out.result = 'error';
+    out.message = '시트 연결 실패 — CONFIG.SHEET_ID 를 확인하세요';
+  }
+  return json(out);
 }
 
 function doPost(e) {
@@ -126,8 +149,20 @@ function doPost(e) {
 
 /* ── 보조 함수 ──────────────────────────────────────── */
 
-function getSheet(sheetName, header) {
+/**
+ * 기록 대상 스프레드시트.
+ * SHEET_ID 가 있으면 그 시트를, 없으면 이 스크립트가 붙어 있는 시트를 씁니다.
+ * 둘 다 없으면 조용히 실패하지 않고 오류를 냅니다.
+ */
+function getSS() {
+  if (CONFIG.SHEET_ID) return SpreadsheetApp.openById(CONFIG.SHEET_ID);
   var ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (!ss) throw new Error('기록할 시트가 없습니다. CONFIG.SHEET_ID 를 채우세요.');
+  return ss;
+}
+
+function getSheet(sheetName, header) {
+  var ss = getSS();
   var sheet = ss.getSheetByName(sheetName);
   if (!sheet) sheet = ss.insertSheet(sheetName);
   if (sheet.getLastRow() === 0) {
@@ -201,7 +236,7 @@ function allowBlockLog() {
 
     // 시간당 첫 기록에서만 시트 크기를 확인 — 절대 상한을 넘으면 더 쌓지 않습니다.
     if (n === 1) {
-      var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONFIG.BLOCK_SHEET_NAME);
+      var sheet = getSS().getSheetByName(CONFIG.BLOCK_SHEET_NAME);
       if (sheet && sheet.getLastRow() - 1 >= CONFIG.MAX_BLOCK_LOG_TOTAL) return false;
     }
     return true;
