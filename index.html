@@ -938,9 +938,28 @@ const GALLERY_INIT=9;
 })();
 
 /* ─── LIGHTBOX ─── */
+/* ─── 오버레이 뒤로가기 ───────────────────────────────
+   사진 뷰어·갤러리 모달을 열 때 히스토리를 한 칸 쌓아두고,
+   기기 뒤로가기(popstate)가 오면 페이지를 떠나는 대신 그것만 닫는다.
+   ✕·Esc·배경 탭으로 닫을 때도 history.back() 을 거쳐 같은 경로로
+   닫으므로 히스토리가 어긋나지 않는다. */
+const _ovStack=[];
+function ovOpen(closeFn){
+  _ovStack.push(closeFn);
+  try{ history.pushState({ov:_ovStack.length},''); }catch(e){ /* file:// 등 */ }
+}
+function ovClose(){ if(_ovStack.length) history.back(); }
+window.addEventListener('popstate',function(){
+  const fn=_ovStack.pop();
+  if(fn) fn();
+});
+
 let lbIdx=0,lbTotal=GALLERY_FILES.length;
-function openLb(i){lbIdx=i;updateLb();document.getElementById('lightbox').classList.add('show');document.body.style.overflow='hidden';zReset()}
-function closeLb(){document.getElementById('lightbox').classList.remove('show');document.body.style.overflow='';zReset()}
+function openLb(i){lbIdx=i;updateLb();document.getElementById('lightbox').classList.add('show');document.body.style.overflow='hidden';zReset();ovOpen(closeLbNow)}
+function closeLb(){ovClose()}
+function closeLbNow(){document.getElementById('lightbox').classList.remove('show');zReset();
+  /* 갤러리 모달 위에서 연 경우 모달은 그대로이므로 스크롤 잠금을 풀지 않는다 */
+  if(!document.querySelector('.modal-bg.show')) document.body.style.overflow=''}
 function lbNav(d){lbIdx=(lbIdx+d+lbTotal)%lbTotal;updateLb();zReset()}
 function updateLb(){
   const img=document.getElementById('lbImg');
@@ -1233,8 +1252,9 @@ function shareKakao(){
 }
 
 /* ─── MODALS ─── */
-function showModal(id){document.getElementById(id).classList.add('show');document.body.style.overflow='hidden'}
-function hideModal(id){document.getElementById(id).classList.remove('show');document.body.style.overflow=''}
+function showModal(id){document.getElementById(id).classList.add('show');document.body.style.overflow='hidden';ovOpen(function(){hideModalNow(id)})}
+function hideModal(id){ovClose()}
+function hideModalNow(id){document.getElementById(id).classList.remove('show');document.body.style.overflow=''}
 document.querySelectorAll('.modal-bg').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m)hideModal(m.id)})});
 
 /* ─── COPY & TOAST ─── */
