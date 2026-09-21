@@ -245,7 +245,7 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .gallery-more{display:block;width:100%;margin-top:clamp(12px,3.5vw,18px);padding:13px;border-radius:var(--r);border:1px solid var(--bd);background:var(--wh);color:var(--t2);font-family:var(--serif);font-size:clamp(15px,3.9vw,17px);cursor:pointer;transition:all .25s}
 .gallery-more:hover{background:var(--t1);color:var(--wh);border-color:var(--t1)}
 /* 라이트박스 — 페이드 전환 */
-.lightbox{position:fixed;inset:0;background:#0a0806;z-index:10100;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+.lightbox{position:fixed;inset:0;background:#0a0806;touch-action:none;z-index:10100;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
 .lightbox.show{opacity:1;visibility:visible}
 .lb-img{max-width:92vw;max-height:88vh;object-fit:contain;display:block;border-radius:4px;transition:opacity .28s ease;touch-action:none;cursor:zoom-in;will-change:transform}
 .lightbox.zoomed .lb-img{cursor:grab}
@@ -256,7 +256,6 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .lb-close,.lb-nav,.lb-ctr,.lb-hint{z-index:2}
 .lb-hint{position:absolute;bottom:44px;left:50%;transform:translateX(-50%);font-family:var(--lbl);font-weight:200;font-size:11px;letter-spacing:1.5px;color:rgba(255,255,255,.42);white-space:nowrap}
 .lightbox.zoomed .lb-hint{opacity:0}
-.lb-img.fade{opacity:0}
 .lb-close{position:absolute;top:18px;right:18px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .25s}
 .lb-close:hover{background:rgba(255,255,255,.25)}
 .lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .25s}
@@ -959,20 +958,58 @@ window.addEventListener('popstate',function(){
 });
 
 let lbIdx=0,lbTotal=GALLERY_FILES.length;
-function openLb(i){lbIdx=i;updateLb();document.getElementById('lightbox').classList.add('show');document.body.style.overflow='hidden';zReset();ovOpen(closeLbNow)}
+function openLb(i){lbIdx=i;updateLb(0);document.getElementById('lightbox').classList.add('show');document.body.style.overflow='hidden';zReset();ovOpen(closeLbNow)}
 function closeLb(){ovClose()}
 function closeLbNow(){document.getElementById('lightbox').classList.remove('show');zReset();
   /* 갤러리 모달 위에서 연 경우 모달은 그대로이므로 스크롤 잠금을 풀지 않는다 */
   if(!document.querySelector('.modal-bg.show')) document.body.style.overflow=''}
-function lbNav(d){lbIdx=(lbIdx+d+lbTotal)%lbTotal;updateLb();zReset()}
-function updateLb(){
+let lbAnim=false;      /* 전환 중인지 (스와이프 시작 판단에만 쓴다) */
+let lbSeq=0;           /* 연타하면 최신 요청이 이전 전환을 이어받는다 */
+function lbNav(d){
+  lbIdx=(lbIdx+d+lbTotal)%lbTotal;
+  zReset(); updateLb(d);
+}
+/* 이웃 사진을 미리 받아두면 넘길 때 끊기지 않는다 */
+function lbPreload(){
+  [1,-1].forEach(function(d){
+    const im=new Image(); im.src='photos/'+GALLERY_FILES[(lbIdx+d+lbTotal)%lbTotal];
+  });
+}
+/* dir : 1 다음 / -1 이전 / 0 즉시(처음 열 때) */
+function updateLb(dir){
   const img=document.getElementById('lbImg');
-  img.classList.add('fade');
-  setTimeout(()=>{
-    img.src=`photos/${GALLERY_FILES[lbIdx]}`;
-    document.getElementById('lbCtr').textContent=`${lbIdx+1} / ${lbTotal}`;
-    img.classList.remove('fade');
-  },220);
+  const src='photos/'+GALLERY_FILES[lbIdx];
+  document.getElementById('lbCtr').textContent=`${lbIdx+1} / ${lbTotal}`;
+  const OFF=Math.round(window.innerWidth*0.32);
+  if(!dir){
+    img.style.transition='none'; img.style.transform='translate(0,0) scale(1)'; img.style.opacity='1';
+    img.src=src; lbPreload(); return;
+  }
+  const seq=++lbSeq;
+  lbAnim=true;
+  /* ① 밀린 방향으로 마저 빠지며 사라지고 */
+  img.style.transition='transform .15s ease-in,opacity .15s ease-in';
+  img.style.transform=`translate(${-dir*OFF}px,0) scale(1)`;
+  img.style.opacity='0';
+  setTimeout(function(){
+    if(seq!==lbSeq)return;                    /* 더 최신 전환이 시작됐으면 중단 */
+    /* ② 다음 사진을 다 받은 뒤 반대편에서 들어온다 */
+    const pre=new Image();
+    pre.onload=pre.onerror=function(){
+      if(seq!==lbSeq)return;
+      img.src=src;
+      img.style.transition='none';
+      img.style.transform=`translate(${dir*OFF}px,0) scale(1)`;
+      requestAnimationFrame(function(){requestAnimationFrame(function(){
+        if(seq!==lbSeq)return;
+        img.style.transition='transform .24s cubic-bezier(.2,.8,.3,1),opacity .24s ease-out';
+        img.style.transform='translate(0,0) scale(1)';
+        img.style.opacity='1';
+        setTimeout(function(){if(seq===lbSeq){lbAnim=false;lbPreload()}},250);
+      })});
+    };
+    pre.src=src;
+  },150);
 }
 
 /* ─── 사진 확대(줌) : 더블탭 / 두 손가락 / 휠 ─── */
@@ -1046,6 +1083,55 @@ function updateLb(){
   img.addEventListener('touchend',function(e){
     if(e.touches.length<2)startD=0;
     if(e.touches.length===0)panning=false;
+  });
+
+  /* ─── 밀어서 넘기기 ───
+     확대 상태가 아닐 때만. 가로/세로 방향을 먼저 판정해 세로 제스처와
+     싸우지 않게 하고, 손가락을 따라 사진이 실시간으로 끌려온다. */
+  const SW_MIN=48;                    /* 이만큼 밀면 넘어감 */
+  let swOn=false,swX=0,swY=0,swDx=0,swAxis=null,swMoved=false;
+  /* 스와이프가 끝나면 브라우저가 click 을 한 번 만들어 낸다. 그대로 두면
+     손을 뗀 자리의 ‹ › 버튼이 눌리거나(→ 방금 넘긴 게 되돌아감)
+     배경 탭으로 인식돼 사진이 닫힌다. 그 click 한 번을 삼킨다. */
+  box.addEventListener('click',function(e){
+    if(!swMoved)return;
+    swMoved=false; e.stopPropagation(); e.preventDefault();
+  },true);
+
+  box.addEventListener('touchstart',function(e){
+    if(sc>1.01||e.touches.length!==1||lbAnim){swOn=false;return}
+    swOn=true;swAxis=null;swDx=0;swMoved=false;
+    swX=e.touches[0].clientX;swY=e.touches[0].clientY;
+  },{passive:true});
+
+  box.addEventListener('touchmove',function(e){
+    if(!swOn||e.touches.length!==1)return;
+    const dx=e.touches[0].clientX-swX, dy=e.touches[0].clientY-swY;
+    if(swAxis===null){
+      if(Math.abs(dx)<6&&Math.abs(dy)<6)return;
+      swAxis=Math.abs(dx)>Math.abs(dy)?'x':'y';
+    }
+    if(swAxis!=='x'){swOn=false;return}
+    e.preventDefault();
+    swDx=dx;swMoved=true;
+    img.style.transition='none';
+    img.style.transform=`translate(${dx}px,0) scale(1)`;
+    img.style.opacity=String(Math.max(.4,1-Math.abs(dx)/(window.innerWidth*.9)));
+  },{passive:false});
+
+  box.addEventListener('touchend',function(){
+    if(!swOn||swAxis!=='x'){swOn=false;return}
+    swOn=false;
+    const d=swDx; swDx=0;
+    /* 삼킬 click 은 손 뗀 직후 한 번뿐이다. 오래 남겨두면 그 다음 버튼
+       클릭까지 잡아먹으므로 짧게 걸어두고 스스로 풀리게 한다. */
+    if(swMoved) setTimeout(function(){swMoved=false},400);
+    if(Math.abs(d)>=SW_MIN){ lbNav(d<0?1:-1) }
+    else{                              /* 덜 밀었으면 제자리로 */
+      img.style.transition='transform .22s cubic-bezier(.2,.8,.3,1),opacity .22s ease';
+      img.style.transform='translate(0,0) scale(1)';
+      img.style.opacity='1';
+    }
   });
 
   /* PC : 더블클릭 + 휠 */
