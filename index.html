@@ -250,6 +250,10 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .lb-img{max-width:92vw;max-height:88vh;object-fit:contain;display:block;border-radius:4px;transition:opacity .28s ease;touch-action:none;cursor:zoom-in;will-change:transform}
 .lightbox.zoomed .lb-img{cursor:grab}
 .lightbox.zoomed .lb-nav,.lightbox.zoomed .lb-ctr{opacity:0;pointer-events:none;transition:opacity .2s}
+/* 사진(.lb-img)은 will-change:transform 때문에 쌓임맥락을 만들어,
+   DOM 상 자기보다 앞에 있는 '이전(‹)' 버튼을 덮어버린다.
+   조작 UI 에는 명시적 z-index 를 줘서 항상 사진 위에 오게 한다. */
+.lb-close,.lb-nav,.lb-ctr,.lb-hint{z-index:2}
 .lb-hint{position:absolute;bottom:44px;left:50%;transform:translateX(-50%);font-family:var(--lbl);font-weight:200;font-size:11px;letter-spacing:1.5px;color:rgba(255,255,255,.42);white-space:nowrap}
 .lightbox.zoomed .lb-hint{opacity:0}
 .lb-img.fade{opacity:0}
