@@ -11,7 +11,7 @@
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
   <meta name="googlebot" content="noindex, nofollow, noimageindex">
   <meta name="referrer" content="no-referrer">
-  <title>배진섭 💙 서보미</title>
+  <title>배진섭 ❤️ 서보미</title>
 
   <!-- ── 카카오톡 / SNS 링크 미리보기 (Open Graph) ─────────────────
        ※ og:image 는 반드시 https 절대경로여야 하며, 800x400 이 카카오 권장 크기입니다.
@@ -19,8 +19,8 @@
             (카카오는 한 번 읽은 미리보기를 캐시에 보관합니다)
   ───────────────────────────────────────────────────────────── -->
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="배진섭 💙 서보미">
-  <meta property="og:title" content="배진섭 💙 서보미">
+  <meta property="og:site_name" content="배진섭 ❤️ 서보미">
+  <meta property="og:title" content="배진섭 ❤️ 서보미">
   <meta property="og:description" content="2026년 11월 7일 토요일 오후 3시&#10;사랑의교회 북측 2층 언약채플">
   <meta property="og:url" content="https://jscompany909-cpu.github.io/wedding/">
   <meta property="og:image" content="https://jscompany909-cpu.github.io/wedding/photos/og.jpg?v=1">
@@ -31,7 +31,7 @@
   <meta property="og:image:alt" content="배진섭 서보미 웨딩 사진">
   <meta property="og:locale" content="ko_KR">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="배진섭 💙 서보미">
+  <meta name="twitter:title" content="배진섭 ❤️ 서보미">
   <meta name="twitter:description" content="2026년 11월 7일 토요일 오후 3시 · 사랑의교회 북측 2층 언약채플">
   <meta name="twitter:image" content="https://jscompany909-cpu.github.io/wedding/photos/og.jpg?v=1">
 
@@ -143,7 +143,8 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
    INVITATION
 ══════════════════════ */
 .sec-inv{background:var(--wh)}
-.inv-verse{font-family:var(--disp);font-style:italic;font-size:clamp(15px,3.8vw,18px);color:var(--t1);line-height:1.9;margin-bottom:clamp(20px,5.5vw,28px);word-break:keep-all}
+/* 구절이 모바일에서 한 줄에 들어가도록 — 화면 폭에 비례(측정: 글자크기 × 23.09 = 문장 폭) */
+.inv-verse{font-family:var(--disp);font-style:italic;font-size:min(3.5vw,17px);color:var(--t1);line-height:1.9;margin-bottom:clamp(20px,5.5vw,28px);word-break:keep-all}
 .inv-verse strong{font-weight:500;font-style:italic}
 /* 성구 출처 — 한글이 영문 세리프로 대체되지 않도록 국문 세리프 지정 */
 .verse-ref{display:inline-block;margin-top:clamp(8px,2.2vw,12px);font-family:var(--nser);font-size:clamp(12px,3vw,14px);font-style:normal;font-weight:300;letter-spacing:1.5px;color:var(--t3)}
@@ -246,7 +247,7 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .gallery-more{display:block;width:100%;margin-top:clamp(12px,3.5vw,18px);padding:13px;border-radius:var(--r);border:1px solid var(--bd);background:var(--wh);color:var(--t2);font-family:var(--serif);font-size:clamp(15px,3.9vw,17px);cursor:pointer;transition:all .25s}
 .gallery-more:hover{background:var(--t1);color:var(--wh);border-color:var(--t1)}
 /* 라이트박스 — 페이드 전환 */
-.lightbox{position:fixed;inset:0;background:rgba(8,6,4,.92);z-index:1100;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+.lightbox{position:fixed;inset:0;background:#0a0806;z-index:10100;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
 .lightbox.show{opacity:1;visibility:visible}
 .lb-img{max-width:92vw;max-height:88vh;object-fit:contain;display:block;border-radius:4px;transition:opacity .28s ease;touch-action:none;cursor:zoom-in;will-change:transform}
 .lightbox.zoomed .lb-img{cursor:grab}
@@ -281,7 +282,9 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .tr-row>div{flex:1;min-width:0;word-break:keep-all}
 /* 주차 안내 — 번호 기준 왼쪽 정렬, 설명은 들여쓰기 유지 */
 .park-box{text-align:left}
-.park-ttl{font-weight:500;color:var(--t1);margin-bottom:10px}
+/* 자가용 라벨을 없애고 주차 안내가 라벨 자리를 대신한다 — 다른 행 라벨과 같은 서체 */
+.tr-row-full{display:block}
+.park-ttl{font-family:var(--lbl);font-weight:500;font-size:clamp(14px,3.5vw,16px);letter-spacing:.5px;color:var(--t1);margin-bottom:clamp(10px,3vw,14px)}
 .park-list{list-style:decimal;padding-left:1.35em;margin:0}
 .park-list>li{margin-bottom:12px;padding-left:2px}
 .park-list>li:last-child{margin-bottom:0}
@@ -553,10 +556,9 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
       <span class="tr-type"><span class="tr-ico">🚌</span>버스</span>
       <div>서초동 사랑의교회 정류장<br>143, 406, 양재1 등 다수 노선</div>
     </div>
-    <div class="tr-row">
-      <span class="tr-type"><span class="tr-ico">🚗</span>자가용</span>
+    <div class="tr-row tr-row-full">
       <div class="park-box">
-        <p class="park-ttl">🅿️ 주차 안내</p>
+        <p class="park-ttl"><span class="tr-ico">🅿️</span>주차 안내</p>
         <ol class="park-list">
           <li>
             교회 주차장 B6·B7 이용
@@ -1171,7 +1173,7 @@ function copyLink(){
 const KAKAO_JS_KEY='';   /* ← 여기에 JavaScript 키를 붙여넣으세요 */
 
 const SHARE_INFO={
-  title:'배진섭 💙 서보미',
+  title:'배진섭 ❤️ 서보미',
   desc:'2026년 11월 7일 토요일 오후 3시\n사랑의교회 북측 2층 언약채플',
   image:'https://jscompany909-cpu.github.io/wedding/photos/og.jpg?v=1',
   url:'https://jscompany909-cpu.github.io/wedding/',
