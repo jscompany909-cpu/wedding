@@ -28,6 +28,9 @@
  *   차단로그  : 토큰 불일치 / 중복 / 과다요청으로 걸러진 시도
  *              (실수로 걸러진 하객이 있는지 가끔 확인해 보세요)
  *              CONFIG 의 상한에 걸리면 기록이 멈추므로, 무한정 쌓이지 않습니다.
+ *   방문로그  : 페이지가 열릴 때마다 한 줄씩 쌓입니다. 접속시각 / 카카오톡
+ *              인앱 여부 / 기기·브라우저만 기록하며, 이름·전화번호·IP 등
+ *              개인을 특정할 수 있는 값은 저장하지 않습니다.
  * ──────────────────────────────────────────────────── */
 
 var CONFIG = {
@@ -41,6 +44,7 @@ var CONFIG = {
 
   SHEET_NAME: 'RSVP',
   BLOCK_SHEET_NAME: '차단로그',
+  VISIT_SHEET_NAME: '방문로그',
 
   MAX_PER_MINUTE: 30,   // 시트에 기록되는 분당 최대 접수 (하객 정상 사용은 절대 안 걸림)
   MAX_TOTAL: 1000,      // 누적 최대 접수 건수
@@ -52,6 +56,10 @@ var CONFIG = {
   MAX_REQ_PER_MINUTE: 60,     // 모든 요청(토큰 불일치 포함) 분당 상한
   MAX_BLOCK_LOG_PER_HOUR: 60, // 차단로그 시간당 기록 상한
   MAX_BLOCK_LOG_TOTAL: 5000,  // 차단로그 절대 상한(행)
+
+  // 방문로그는 하객이 새로고침만 해도 계속 쌓일 수 있어 RSVP보다 상한을 넉넉히 둔다.
+  MAX_VISIT_LOG_PER_HOUR: 300,
+  MAX_VISIT_LOG_TOTAL: 20000,
 
   DUP_WINDOW_SEC: 180,  // 같은 내용 재제출 차단 시간(초)
   MAX_NAME_LEN: 20,
@@ -83,6 +91,9 @@ function doPost(e) {
     // 0) 시트에 손대기 전 전체 요청 상한 — 캐시만 사용하므로 시트/할당량을 쓰지 않습니다.
     //    대량 요청은 여기서 조용히 끊기고 차단로그도 남기지 않습니다.
     if (!allowRequest()) return json({ result: 'rejected' });
+
+    // 방문 기록(페이지뷰) — RSVP 제출과는 다른 종류의 요청이라 먼저 갈라낸다.
+    if (p.type === 'visit') return logVisit(p);
 
     // 1) 허니팟 — 사람은 절대 채우지 않는 숨김칸. 채워져 있으면 봇.
     if (p.website) return logBlocked('허니팟', p);
@@ -196,6 +207,50 @@ function hash(s) {
   return Utilities.base64Encode(
     Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, s)
   );
+}
+
+/**
+ * 페이지 열람 기록. RSVP 와 달리 토큰만 맞으면 곧바로 기록하고,
+ * 내용 검증이랄 게 없다 — 브라우저가 스스로 보고하는 값 두 가지
+ * (카카오톡 인앱 여부, 기기/브라우저)와 접속시각만 남긴다.
+ * IP·이름·전화번호는 요청에 실려 오지도 않고 여기서 만들지도 않는다.
+ */
+function logVisit(p) {
+  try {
+    if (String(p.token || '') !== CONFIG.TOKEN) return json({ result: 'rejected' });
+    if (!allowVisitLog()) return json({ result: 'rejected' });
+
+    var lock = LockService.getScriptLock();
+    if (!lock.tryLock(5000)) return json({ result: 'busy' });
+    try {
+      var sheet = getSheet(CONFIG.VISIT_SHEET_NAME, ['접속시각', '유입경로', '기기/브라우저', '비고']);
+      if (sheet.getLastRow() - 1 >= CONFIG.MAX_VISIT_LOG_TOTAL) return json({ result: 'rejected' });
+      sheet.appendRow([
+        now(),
+        safe(String(p.ref || '알수없음')),
+        safe(String(p.dev || '알수없음')),
+        safe(String(p.note || ''))
+      ]);
+      return json({ result: 'success' });
+    } finally {
+      lock.releaseLock();
+    }
+  } catch (err) {
+    return json({ result: 'error', message: String(err) });
+  }
+}
+
+/** 방문로그도 차단로그와 마찬가지로 시간당·누적 상한을 둔다. */
+function allowVisitLog() {
+  try {
+    var cache = CacheService.getScriptCache();
+    var key = 'visit_' + Math.floor(Date.now() / 3600000);
+    var n = parseInt(cache.get(key) || '0', 10) + 1;
+    cache.put(key, String(n), 3900);
+    return n <= CONFIG.MAX_VISIT_LOG_PER_HOUR;
+  } catch (err) {
+    return true;
+  }
 }
 
 /** 걸러진 시도를 버리지 않고 기록 — 정상 하객이 잘못 걸렸는지 확인용 */
