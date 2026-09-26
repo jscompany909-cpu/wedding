@@ -903,9 +903,10 @@ const GALLERY_FILES=[
   'photo141.jpg',                             /* 141 — 맨 처음 */
   'main.jpg','photo8.jpg','photo1.jpg',
   'photo3.jpg','photo17.jpg','photo11.jpg',   /* 정원 벤치(앉은컷) 2장 → 창문 */
-  'photo606.jpg',                             /* 606 — 창문(photo11) 다음 */
-  'photo747.jpg',
-  'photo2.jpg','photo16.jpg',                 /* 계단 2장 */
+  'photo_groom_bench.jpg',                    /* 신랑 단독(벤치) — 창문과 베일단독 사이 */
+  'photo606.jpg',                             /* 606 — 베일 쓴 여자 단독 */
+  'photo2.jpg','photo16.jpg',                 /* 계단 서있는 커플 2장 */
+  'photo747.jpg',                             /* 747 — 계단에 앉은 커플. 계단 3장 중 마지막 */
   'photo14.jpg','photo4.jpg',                 /* photo4 = 한옥 */
   'photo1002.jpg',                            /* 1002 — 한옥 다음 */
   'photo9.jpg','photo5.jpg',
@@ -1224,6 +1225,49 @@ document.querySelectorAll('input[name="rsvpAttend"]').forEach(function(r){
 const RSVP_ENDPOINT='https://script.google.com/macros/s/AKfycbyIOlKjGmTAMcII4Pr2w98v9mcg2-sSU04Lj-PVre6WB2XbWGdm_heurQL0iqv3cdcB/exec';
 /* rsvp-apps-script.gs 의 CONFIG.TOKEN 과 반드시 같은 값이어야 합니다. */
 const RSVP_TOKEN='wd-olPiLGtYwyJdWUovwBHDvljgOoPG';
+
+/* ── 방문 기록 ─────────────────────────────────────────
+   페이지가 열릴 때 한 번, RSVP 시트와 같은 구글 시트의 '방문로그' 탭에
+   접속시각·유입경로·기기 정보만 남긴다. 이름·전화번호·IP 는 요청에
+   싣지도 않고, 서버(rsvp-apps-script.gs)에서도 기록하지 않는다.
+   응답은 확인하지 않는(no-cors) 방식이라 실패해도 페이지 동작에는
+   영향이 없다.
+──────────────────────────────────────────────────── */
+(function(){
+  if(RSVP_ENDPOINT==='YOUR_WEBAPP_URL')return;
+  const ua=navigator.userAgent||'';
+
+  /* 카카오톡 인앱 브라우저는 User-Agent 에 'KAKAOTALK' 이 붙는다.
+     그 외(Safari/Chrome/삼성인터넷 등 일반 브라우저로 연 경우)는
+     문자 메시지로 받았는지 주소를 직접 쳤는지 구분할 방법이 없어
+     뭉뚱그려 '일반 브라우저'로만 남긴다 — 없는 걸 있는 척하지 않는다. */
+  function refType(){
+    return /KAKAOTALK/i.test(ua) ? '카카오톡 인앱' : '일반 브라우저';
+  }
+  function devType(){
+    const os = /Android/i.test(ua)?'Android' : /iPhone|iPad|iPod/i.test(ua)?'iOS'
+             : /Windows/i.test(ua)?'Windows' : /Macintosh/i.test(ua)?'Mac' : '기타';
+    const br = /SamsungBrowser/i.test(ua)?'Samsung Internet'
+             : /(CriOS|Chrome)/i.test(ua)?'Chrome'
+             : /Safari/i.test(ua)?'Safari' : '기타';
+    return os+' · '+br;
+  }
+  /* 같은 기기에서 다시 열었는지만 표시 — localStorage 는 이 기기에만
+     남고 서버로 전송되지 않으므로 추적용이 아니라 참고용이다. */
+  function visitNote(){
+    try{
+      if(localStorage.getItem('wb_seen'))return '재방문';
+      localStorage.setItem('wb_seen','1'); return '최초방문';
+    }catch(e){ return '' }
+  }
+  const fd=new FormData();
+  fd.append('type','visit');
+  fd.append('token',RSVP_TOKEN);
+  fd.append('ref',refType());
+  fd.append('dev',devType());
+  fd.append('note',visitNote());
+  fetch(RSVP_ENDPOINT,{method:'POST',mode:'no-cors',body:fd}).catch(()=>{});
+})();
 
 let _rsvpSending=false;
 
