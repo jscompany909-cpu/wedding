@@ -36,7 +36,6 @@
   <meta name="twitter:image" content="https://jscompany909-cpu.github.io/wedding/photos/og.jpg?v=1">
 
   <!-- 카카오 JavaScript SDK — 큰 사진 + 버튼이 있는 공유 카드용 (키 미입력 시 자동으로 기존 방식 사용) -->
-  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.8.3/kakao.min.js" crossorigin="anonymous"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Allura&family=Josefin+Sans:wght@100;200;300&family=Nanum+Brush+Script&family=Noto+Sans+KR:wght@300;400;500&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
@@ -391,8 +390,6 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .share-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:clamp(20px,5vw,28px)}
 .share-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:var(--r);border:1px solid var(--bd);background:var(--wh);color:var(--t2);font-family:var(--serif);font-size:clamp(14px,3.5vw,15px);font-weight:300;cursor:pointer;transition:all .25s}
 .share-btn:hover{background:var(--t1);color:var(--wh);border-color:var(--t1)}
-/* 카카오 노란색을 쓰지 않고 '링크 복사'와 같은 서식으로 통일. 아이콘 색도 글자색을 따라간다. */
-.share-btn.kakao .share-ico,.share-btn.kakao svg{color:inherit}
 .share-ico{font-size:18px}
 
 /* ─── FOOTER ─── */
@@ -723,9 +720,9 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 <section class="sec" style="background:var(--bg2)">
   <div class="share-wrap rv">
     <button class="share-btn" onclick="copyLink()"><span class="share-ico">🔗</span>링크 복사</button>
-    <button class="share-btn kakao" onclick="shareKakao()">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path fill="currentColor" d="M10 2C5.58 2 2 4.91 2 8.5c0 2.26 1.37 4.25 3.44 5.42L4.5 17l3.91-2.08A9.4 9.4 0 0 0 10 15c4.42 0 8-2.91 8-6.5S14.42 2 10 2z"/></svg>
-      카카오톡 공유
+    <button class="share-btn" onclick="watchLive()">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path fill="currentColor" d="M9 3.2a11.6 11.6 0 0 0-4.9 1c-.9.42-1.6 1.2-1.85 2.2C2 7.52 2 8.7 2 10s0 2.48.25 3.6c.25 1 .95 1.78 1.85 2.2 1.5.7 3.4 1 4.9 1s3.4-.3 4.9-1c.9-.42 1.6-1.2 1.85-2.2.25-1.12.25-2.3.25-3.6s0-2.48-.25-3.6c-.25-1-.95-1.78-1.85-2.2a11.6 11.6 0 0 0-4.9-1Zm-1.2 4.1 4 2.4a.35.35 0 0 1 0 .6l-4 2.4a.35.35 0 0 1-.53-.3v-4.8c0-.28.3-.46.53-.3Z"/></svg>
+      유튜브 라이브
     </button>
   </div>
 </section>
@@ -1335,73 +1332,20 @@ function copyLink(){
     });
 }
 /* ──────────────────────────────────────────────────────────────
-   카카오톡 공유
-   ① 카카오 JavaScript 키를 아래에 넣으면
-      → 큰 사진 + [청첩장 보기][위치 보기] 버튼이 있는 카드로 전송됩니다.
-   ② 키가 비어 있으면
-      → 기존 방식(링크 텍스트 전송)으로 자동 대체됩니다.
-
-   키 발급 : developers.kakao.com → 내 애플리케이션 → 앱 키 → JavaScript 키
-   ※ [앱 설정 > 플랫폼 > Web] 에 아래 주소를 반드시 등록해야 동작합니다.
-      https://jscompany909-cpu.github.io
+   유튜브 라이브
+   식이 다가오면 실제 방송 URL 을 아래에 붙여넣으세요
+   (예: https://www.youtube.com/watch?v=xxxxxxxxxxx).
+   비워 두면 '아직 공개되지 않았다'는 안내만 뜨고 아무 데도 이동하지
+   않습니다.
 ────────────────────────────────────────────────────────────── */
-const KAKAO_JS_KEY='';   /* ← 여기에 JavaScript 키를 붙여넣으세요 */
+const YOUTUBE_LIVE_URL='';   /* ← 여기에 실제 라이브 URL을 붙여넣으세요 */
 
-const SHARE_INFO={
-  title:'배진섭 ❤️ 서보미',
-  desc:'2026년 11월 7일 토요일 오후 3시\n사랑의교회 북측 2층 언약채플',
-  image:'https://jscompany909-cpu.github.io/wedding/photos/og.jpg?v=1',
-  url:'https://jscompany909-cpu.github.io/wedding/',
-  map:'https://map.kakao.com/?q=서울특별시 서초구 반포대로 121 사랑의교회'
-};
-
-function kakaoReady(){
-  if(!KAKAO_JS_KEY||typeof Kakao==='undefined')return false;
-  try{
-    if(!Kakao.isInitialized())Kakao.init(KAKAO_JS_KEY);
-    return Kakao.isInitialized();
-  }catch(e){return false}
-}
-
-function shareKakao(){
-  /* ① SDK 카드 전송 */
-  if(kakaoReady()){
-    try{
-      const link={mobileWebUrl:SHARE_INFO.url,webUrl:SHARE_INFO.url};
-      Kakao.Share.sendDefault({
-        objectType:'feed',
-        content:{
-          title:SHARE_INFO.title,
-          description:SHARE_INFO.desc,
-          imageUrl:SHARE_INFO.image,
-          link:link
-        },
-        buttons:[
-          {title:'청첩장 보기',link:link},
-          {title:'위치 보기',link:{mobileWebUrl:SHARE_INFO.map,webUrl:SHARE_INFO.map}}
-        ]
-      });
-      return;
-    }catch(e){/* 실패하면 아래 기존 방식으로 진행 */}
+function watchLive(){
+  if(!YOUTUBE_LIVE_URL){
+    toast('유튜브 라이브 링크는 예식이 가까워지면 열립니다');
+    return;
   }
-
-  /* ② 기존 방식 — 카카오톡 앱 딥링크 (모바일 우선) */
-  const msg=encodeURIComponent('💌 배진섭 ❤️ 서보미\n\n2026년 11월 7일 (토) 오후 3시\n사랑의교회 언약채플\n\n'+location.href);
-  const ua=navigator.userAgent||'';
-  if(/Android/i.test(ua)){
-    /* 안드로이드 → 카카오톡 인텐트 */
-    location.href='intent://send?text='+encodeURIComponent('💌 배진섭 ❤️ 서보미\n\n2026년 11월 7일 (토) 오후 3시\n사랑의교회 언약채플\n\n'+location.href)+'#Intent;scheme=kakaotalk;package=com.kakao.talk;end';
-  } else if(/iPhone|iPad/i.test(ua)){
-    /* iOS → 카카오톡 URL 스킴 */
-    location.href='kakaotalk://send?text='+msg;
-    /* 미설치 대비: 1.2초 후 앱스토어 or 공유 */
-    setTimeout(()=>{
-      if(navigator.share) navigator.share({title:'배진섭 ❤️ 서보미',url:location.href}).catch(()=>{});
-    },1200);
-  } else {
-    /* PC → 링크 복사 */
-    copyLink();
-  }
+  window.open(YOUTUBE_LIVE_URL,'_blank');
 }
 
 /* ─── MODALS ─── */
