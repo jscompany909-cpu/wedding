@@ -31,11 +31,10 @@
 
 ## 미완료 설정
 
-**카카오 공유 카드** — `index.html`의 `const KAKAO_JS_KEY='';` 가 비어 있다.
-developers.kakao.com에서 JavaScript 키를 발급받아 넣고,
-[앱 설정 > 플랫폼 > Web]에 `https://jscompany909-cpu.github.io` 를 등록해야
-큰 사진 + [청첩장 보기][위치 보기] 버튼 카드가 전송된다.
-키가 비어 있으면 기존 딥링크 방식으로 자동 대체되므로 그대로 두어도 동작은 한다.
+**유튜브 라이브** — `index.html`의 `const YOUTUBE_LIVE_URL='';` 가 비어 있다.
+식이 가까워지면 실제 방송 URL을 넣는다. 비어 있는 동안은 '공유' 섹션의
+[유튜브 라이브] 버튼을 눌러도 "링크는 예식이 가까워지면 열립니다" 토스트만
+뜨고 아무 데도 이동하지 않는다.
 
 **Apps Script 재배포** — `rsvp-apps-script.gs`를 고쳤다면 Apps Script 편집기에서
 반드시 **새 배포**를 해야 반영된다. 기존 배포를 수정만 하면 안 바뀐다.
