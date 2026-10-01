@@ -306,8 +306,38 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 /* 이모지 폭이 기기마다 달라 라벨 글자 시작점이 틀어지므로 고정 폭 슬롯에 넣는다 */
 .tr-ico{display:inline-block;width:1.55em;text-align:center;letter-spacing:0}
 
-/* ══════════════════════
-   식사 안내
+/* ─── 피로연장 경로 안내 (이동 행의 버튼 + 모달 일러스트) ─── */
+.route-btn{display:inline-flex;align-items:center;gap:4px;margin:2px 0 2px 6px;padding:3px 10px;border:1px solid var(--acc);border-radius:999px;background:transparent;color:var(--t2);font-family:var(--serif);font-size:12px;font-weight:400;line-height:1.7;letter-spacing:.3px;cursor:pointer;vertical-align:middle;transition:all .25s}
+.route-btn:hover,.route-btn:active{background:var(--t1);color:var(--wh);border-color:var(--t1)}
+.route-btn svg{flex-shrink:0}
+.rt-svg{display:block;width:100%;height:auto}
+.rt-svg text{font-family:var(--serif)}
+.rt-bld{fill:var(--bg3)}
+.rt-win{fill:var(--wh)}
+.rt-ground{stroke:var(--bd);stroke-width:1.5}
+.rt-lbl{font-size:11.5px;font-weight:500;fill:var(--t1);dominant-baseline:central}
+.rt-sub{font-size:9px;font-weight:400;fill:var(--t3);text-anchor:middle;dominant-baseline:central}
+.rt-badge{fill:var(--t1)}
+.rt-badge-t{font-size:10px;font-weight:600;fill:var(--wh);text-anchor:middle;dominant-baseline:central}
+.rt-tower *{fill:none;stroke:var(--t3);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.rt-tower .rt-fill{fill:var(--t3);stroke:none}
+.rt-bridge{fill:#EFE3C4}
+.rt-dest{fill:#4F6B57}
+.rt-here{fill:#9A4438}
+.rt-band-t{font-size:11.5px;font-weight:500;fill:#fff;text-anchor:middle;dominant-baseline:central}
+.rt-band-s{font-size:10px;font-weight:400;fill:rgba(255,255,255,.88);text-anchor:middle;dominant-baseline:central}
+.rt-now{font-size:12px;font-weight:700;fill:#9A4438;text-anchor:middle;dominant-baseline:central}
+.rt-ico{fill:none;stroke:var(--t3);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.rt-route{fill:none;stroke:#C0493A;stroke-width:2.6;stroke-dasharray:7 6;stroke-linecap:round;animation:rtFlow 1.1s linear infinite}
+.rt-arrow{fill:#C0493A}
+.rt-pulse{fill:#C0493A;opacity:.35;transform-box:fill-box;transform-origin:center;animation:rtPulse 1.8s ease-out infinite}
+@keyframes rtFlow{to{stroke-dashoffset:-13}}
+@keyframes rtPulse{0%{transform:scale(.6);opacity:.5}100%{transform:scale(2.2);opacity:0}}
+@media(prefers-reduced-motion:reduce){.rt-route,.rt-pulse{animation:none}}
+.rt-steps{list-style:none;counter-reset:rt;margin:14px 2px 2px;padding:0;text-align:left}
+.rt-steps li{counter-increment:rt;position:relative;padding:7px 0 7px 32px;font-size:clamp(14px,3.6vw,15px);font-weight:300;color:var(--t2);line-height:1.7;word-break:keep-all}
+.rt-steps li::before{content:counter(rt);position:absolute;left:0;top:8px;width:22px;height:22px;border-radius:50%;background:var(--t1);color:var(--wh);font-size:12px;font-weight:600;line-height:22px;text-align:center}
+.meal-ico{font-size:19px;flex-shrink:0}
 ══════════════════════ */
 .sec-meal{background:var(--wh)}
 .meal-card{background:var(--wh);overflow:hidden}
@@ -430,6 +460,94 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
   </div>
 </div>
 
+
+<!-- ROUTE MODAL : 언약채플 → 피로연장 -->
+<div class="modal-bg" id="routeModal" role="dialog" aria-modal="true" aria-label="피로연장 위치 안내">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <span class="modal-ttl">피로연장 위치 안내</span>
+      <button class="modal-close" onclick="hideModal('routeModal')" aria-label="닫기">✕</button>
+    </div>
+    <div class="modal-body">
+      <svg class="rt-svg" viewBox="0 0 360 300" role="img" aria-label="북측 미션센터 2층 언약채플에서 요셉꿈다리를 건너 남측 드림센터 6층 다니엘홀로 가는 경로">
+        <!-- 좌표는 Noto Sans KR 실측 글자 크기로 계산했다.
+             건물 좌우 여백 4 · 종탑↔건물 10 (좌우 대칭) · 이름표↔지붕 8
+             두 띠 높이 48, 줄 사이 2, 위아래 여백 동일 · 다리와 빨간 띠는 같은 높이 -->
+
+        <!-- 건물 -->
+        <rect class="rt-bld" x="4" y="44" width="136" height="246" rx="3"/>
+        <rect class="rt-win" x="18" y="58" width="108" height="9" rx="1.5"/>
+        <rect class="rt-win" x="18" y="74" width="108" height="9" rx="1.5"/>
+        <rect class="rt-bld" x="220" y="96" width="136" height="194" rx="3"/>
+        <rect class="rt-win" x="234" y="110" width="108" height="9" rx="1.5"/>
+        <rect class="rt-win" x="234" y="126" width="108" height="9" rx="1.5"/>
+        <line class="rt-ground" x1="0" y1="290" x2="360" y2="290"/>
+
+        <!-- 건물 이름 — 각 건물 지붕 바로 위 -->
+        <circle class="rt-badge" cx="12" cy="27.86" r="8"/><text class="rt-badge-t" x="12" y="27.86">S</text>
+        <text class="rt-lbl" x="25" y="27.86">드림센터(남)</text>
+        <circle class="rt-badge" cx="228" cy="79.86" r="8"/><text class="rt-badge-t" x="228" y="79.86">N</text>
+        <text class="rt-lbl" x="241" y="79.86">미션센터(북)</text>
+
+        <!-- 종탑 -->
+        <g class="rt-tower">
+          <path d="M180 12V38M172 21H188"/>
+          <path d="M180 38 152 82H208Z"/>
+          <rect x="154" y="82" width="52" height="44"/>
+          <path d="M163 90V118M171.5 90V118M180 90V118M188.5 90V118M197 90V118"/>
+          <rect class="rt-fill" x="150" y="126" width="60" height="9"/>
+          <rect x="150" y="135" width="60" height="61"/>
+          <circle cx="180" cy="165.5" r="21"/>
+          <path d="M180 165.5V152.5M180 165.5l8 5"/>
+          <rect x="150" y="196" width="60" height="94"/>
+          <path d="M160 196V290M170 196V290M180 196V290M190 196V290M200 196V290M150 268H210"/>
+        </g>
+
+        <!-- 요셉꿈다리 -->
+        <rect class="rt-bridge" x="140" y="208" width="80" height="48"/>
+        <text class="rt-lbl" x="180" y="221.05" text-anchor="middle">요셉꿈다리</text>
+
+        <!-- 6F 다니엘홀 (도착) -->
+        <rect class="rt-dest" x="4" y="96" width="136" height="48"/>
+        <text class="rt-band-t" x="72" y="111.88">6F 다니엘홀</text>
+        <text class="rt-band-s" x="72" y="129.14">(피로연장)</text>
+
+        <!-- 엘리베이터 · 에스컬레이터 — 글자·아이콘 모두 경로선 기준 좌우 대칭 -->
+        <text class="rt-sub" x="32.34" y="167.39">엘리베이터</text>
+        <text class="rt-sub" x="107.59" y="167.39">에스컬레이터</text>
+        <g class="rt-ico">
+          <rect x="16.34" y="180" width="32" height="40" rx="1.5"/>
+          <path d="M16.34 190H48.34M32.34 190V220"/>
+          <path d="M21.34 187 24.34 183 27.34 187M37.34 183 40.34 187 43.34 183"/>
+          <path d="M87.53 220H97.53L117.66 192H127.66"/>
+          <path d="M87.53 208H97.53L117.66 180H127.66"/>
+        </g>
+
+        <!-- 2F 언약채플 (현위치) -->
+        <text class="rt-now" x="288" y="191.36">현위치</text>
+        <rect class="rt-here" x="220" y="208" width="136" height="48"/>
+        <text class="rt-band-t" x="288" y="223.88">2F 언약채플</text>
+        <text class="rt-band-s" x="288" y="241.14">(예식장)</text>
+
+        <!-- 경로 : 현위치 → 다리 → 위로 -->
+        <path class="rt-route" d="M233.41 242.59H67.94V161"/>
+        <polygon class="rt-arrow" points="67.94,147 60.44,161 75.44,161"/>
+        <circle class="rt-pulse" cx="233.41" cy="242.59" r="8.5"/>
+
+        <!-- 순서 표시 — ①은 출발점(현위치)을 겸한다 -->
+        <circle class="rt-badge" cx="233.41" cy="242.59" r="8.5"/><text class="rt-badge-t" x="233.41" y="242.59">1</text>
+        <circle class="rt-badge" cx="180" cy="242.59" r="8.5"/><text class="rt-badge-t" x="180" y="242.59">2</text>
+        <circle class="rt-badge" cx="67.94" cy="200" r="8.5"/><text class="rt-badge-t" x="67.94" y="200">3</text>
+      </svg>
+      <ol class="rt-steps">
+        <li>신부대기실을 지나, 보이는 계단을 올라갑니다.</li>
+        <li>요셉꿈다리를 건너갑니다.</li>
+        <li>에스컬레이터 혹은 엘리베이터를 타고 6층으로 올라갑니다.</li>
+      </ol>
+    </div>
+    <div class="modal-foot"><button class="modal-foot-btn" onclick="hideModal('routeModal')">닫기</button></div>
+  </div>
+</div>
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox">
@@ -593,10 +711,10 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
       <p class="meal-note">(결혼예배 시작 30분 전부터 이용가능)</p>
     </div>
     <div class="meal-row">
-      <div><strong>장소</strong> &nbsp; 사랑의교회 남측 6층 연회장</div>
+      <div><strong>장소</strong> &nbsp; 사랑의교회 남측 6층 다니엘홀</div>
     </div>
     <div class="meal-row">
-      <div><strong>이동</strong> &nbsp; 요셉 꿈다리 연결다리 이용</div>
+      <div><strong>이동</strong> &nbsp; 요셉 꿈다리 연결다리 이용<button class="route-btn" type="button" aria-haspopup="dialog" onclick="showModal('routeModal')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 3H9V10.5"/><path d="M6.5 8 9 10.5 11.5 8"/></svg>약도</button></div>
       <p class="meal-note">언약채플에서 연결다리를 건너<br>남측 건물로 이동해 주세요.</p>
     </div>
   </div>
