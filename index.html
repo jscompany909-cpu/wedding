@@ -59,7 +59,7 @@
   --brush:'Nanum Brush Script',cursive;
   --r:6px;
 }
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-height:1.8;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom,0)}
 
 /* ─── PAPER TEXTURE OVERLAY ─── */
@@ -239,10 +239,10 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
 .gallery-item{aspect-ratio:1/1;overflow:hidden;cursor:pointer;background:var(--bg3);position:relative}
 .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
-.gallery-item:hover img{transform:scale(1.06)}
+@media(hover:hover){.gallery-item:hover img{transform:scale(1.06)}}
 .gallery-item.g-hide{display:none}
 .gallery-more{display:block;width:100%;margin-top:clamp(12px,3.5vw,18px);padding:13px;border-radius:var(--r);border:1px solid var(--bd);background:var(--wh);color:var(--t2);font-family:var(--serif);font-size:clamp(15px,3.9vw,17px);cursor:pointer;transition:all .25s}
-.gallery-more:hover{background:var(--t1);color:var(--wh);border-color:var(--t1)}
+@media(hover:hover){.gallery-more:hover{background:var(--t1);color:var(--wh);border-color:var(--t1)}}
 /* 라이트박스 — 페이드 전환 */
 .lightbox{position:fixed;inset:0;background:#0a0806;touch-action:none;z-index:10100;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
 .lightbox.show{opacity:1;visibility:visible}
@@ -265,9 +265,9 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .lb-hint{position:absolute;bottom:44px;left:50%;transform:translateX(-50%);font-family:var(--lbl);font-weight:200;font-size:11px;letter-spacing:1.5px;color:rgba(255,255,255,.42);white-space:nowrap}
 .lightbox.zoomed .lb-hint{opacity:0}
 .lb-close{position:absolute;top:18px;right:18px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .25s}
-.lb-close:hover{background:rgba(255,255,255,.25)}
+@media(hover:hover){.lb-close:hover{background:rgba(255,255,255,.25)}}
 .lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .25s}
-.lb-nav:hover{background:rgba(255,255,255,.25)}
+@media(hover:hover){.lb-nav:hover{background:rgba(255,255,255,.25)}}
 .lb-p{left:12px}.lb-n{right:12px}
 .lb-ctr{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);font-family:var(--lbl);font-weight:200;font-size:12px;letter-spacing:2px;color:rgba(255,255,255,.55)}
 
@@ -283,7 +283,7 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .map-lock{position:absolute;top:10px;left:10px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.92);border:1px solid var(--bd);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh2);z-index:20}
 .nav-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
 .nav-btn{display:flex;flex-direction:column;align-items:center;gap:5px;padding:clamp(12px,3.5vw,16px) 6px;border:1px solid var(--bd);border-radius:var(--r);background:var(--wh);color:var(--t2);font-family:var(--serif);font-size:clamp(12px,3vw,14px);font-weight:300;text-decoration:none;cursor:pointer;transition:all .25s}
-.nav-btn:hover{background:var(--bg);border-color:var(--acc);color:var(--t1)}
+@media(hover:hover){.nav-btn:hover{background:var(--bg);border-color:var(--acc);color:var(--t1)}}
 .nav-ico{font-size:clamp(19px,5vw,24px)}
 .transport-card{background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
 .tr-row{display:flex;align-items:baseline;gap:12px;padding:clamp(14px,4vw,18px) clamp(14px,4.5vw,20px);border-bottom:1px solid var(--bd);font-size:clamp(15px,3.9vw,18px);font-weight:400;color:var(--t1);line-height:1.9;text-align:left}
@@ -308,7 +308,8 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 
 /* ─── 피로연장 경로 안내 (이동 행의 버튼 + 모달 일러스트) ─── */
 .route-btn{display:inline-flex;align-items:center;gap:4px;margin:2px 0 2px 6px;padding:3px 10px;border:1px solid var(--acc);border-radius:999px;background:transparent;color:var(--t2);font-family:var(--serif);font-size:12px;font-weight:400;line-height:1.7;letter-spacing:.3px;cursor:pointer;vertical-align:middle;transition:all .25s}
-.route-btn:hover,.route-btn:active{background:var(--t1);color:var(--wh);border-color:var(--t1)}
+.route-btn:active{background:var(--t1);color:var(--wh);border-color:var(--t1)}
+@media(hover:hover){.route-btn:hover{background:var(--t1);color:var(--wh);border-color:var(--t1)}}
 .route-btn svg{flex-shrink:0}
 .rt-svg{display:block;width:100%;height:auto}
 .rt-svg text{font-family:var(--serif)}
@@ -362,7 +363,7 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .rsvp-opt+label{display:flex;align-items:center;justify-content:center;padding:11px 8px;border:1px solid var(--bd);border-radius:var(--r);font-size:clamp(13px,3.2vw,14px);font-weight:300;color:var(--t2);cursor:pointer;transition:all .25s;background:var(--wh);text-align:center;line-height:1.3}
 .rsvp-opt:checked+label{background:var(--t1);color:var(--wh);border-color:var(--t1)}
 .rsvp-btn{display:block;width:100%;margin-top:4px;padding:14px;background:var(--t1);color:var(--wh);border:none;border-radius:var(--r);font-family:var(--serif);font-size:clamp(14px,3.5vw,16px);font-weight:400;cursor:pointer;letter-spacing:1px;transition:opacity .25s}
-.rsvp-btn:hover{opacity:.82}
+@media(hover:hover){.rsvp-btn:hover{opacity:.82}}
 .rsvp-done{text-align:center;padding:clamp(32px,9vw,48px) 16px;background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);display:none}
 .rsvp-done-ico{font-size:50px;margin-bottom:14px;display:block}
 .rsvp-done-ttl{font-family:var(--disp);font-size:clamp(22px,5.5vw,28px);font-weight:300;color:var(--t1);margin-bottom:8px}
@@ -384,7 +385,7 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .acc-bank{font-size:clamp(13px,3.2vw,15px);font-weight:300;color:var(--t3);margin-top:2px}
 .acc-num{font-size:clamp(15px,3.8vw,17px);font-weight:400;color:var(--t2);margin-top:2px;word-break:break-all}
 .copy-btn{flex-shrink:0;padding:8px 14px;border:1px solid var(--bd);border-radius:var(--r);background:var(--bg);color:var(--t3);font-family:var(--lbl);font-size:12px;font-weight:200;letter-spacing:1px;cursor:pointer;transition:all .25s;min-height:40px;min-width:46px;display:flex;align-items:center;justify-content:center}
-.copy-btn:hover{background:var(--t1);color:var(--wh);border-color:var(--t1)}
+@media(hover:hover){.copy-btn:hover{background:var(--t1);color:var(--wh);border-color:var(--t1)}}
 
 /* ══════════════════════
    모달
@@ -396,8 +397,8 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .modal-hd{display:flex;align-items:center;justify-content:space-between;padding:20px 22px 14px;border-bottom:1px solid var(--bd);flex-shrink:0}
 .modal-ttl{font-family:var(--nser);font-size:17px;font-weight:400;color:var(--t1)}
 .modal-close{width:32px;height:32px;border-radius:50%;background:var(--bg);border:1px solid var(--bd);cursor:pointer;font-size:16px;color:var(--t3);display:flex;align-items:center;justify-content:center;transition:all .25s}
-.modal-close:hover{background:var(--t1);color:var(--wh)}
-.modal-body{overflow-y:auto;padding:16px 18px;flex:1}
+@media(hover:hover){.modal-close:hover{background:var(--t1);color:var(--wh)}}
+.modal-body{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:16px 18px;flex:1}
 .gb-modal-item{background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:14px 16px;margin-bottom:8px;text-align:left}
 .photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .photo-grid-item{aspect-ratio:3/4;border-radius:var(--r);overflow:hidden;background:var(--bg3)}
@@ -419,7 +420,7 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 /* ─── SHARE ─── */
 .share-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:clamp(20px,5vw,28px)}
 .share-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:var(--r);border:1px solid var(--bd);background:var(--wh);color:var(--t2);font-family:var(--serif);font-size:clamp(14px,3.5vw,15px);font-weight:300;cursor:pointer;transition:all .25s}
-.share-btn:hover{background:var(--t1);color:var(--wh);border-color:var(--t1)}
+@media(hover:hover){.share-btn:hover{background:var(--t1);color:var(--wh);border-color:var(--t1)}}
 .share-ico{font-size:18px}
 
 /* ─── FOOTER ─── */
@@ -818,9 +819,11 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
     </div>
     <div class="rsvp-group" id="rsvpCntGrp" style="display:none">
       <label class="rsvp-lbl">Guests · 참석 인원</label>
-      <!-- onfocus=select : 기본값 1 이 남아 있어 5 를 치면 15 가 되던 문제 방지 -->
-      <input class="rsvp-input" id="rsvpCount" type="number" min="1" max="10" value="1"
-             inputmode="numeric" onfocus="this.select()">
+      <!-- 포커스 때 전체 선택 : 기본값 1 이 남아 있어 5 를 치면 15 가 되던 문제 방지.
+           아이폰은 type=number 에서 전체 선택이 안 되므로 text + 숫자 키패드로 둔다. -->
+      <input class="rsvp-input" id="rsvpCount" type="text" value="1" maxlength="2"
+             inputmode="numeric" pattern="[0-9]*" autocomplete="off"
+             onfocus="selectAllSoon(this)" onclick="selectAllSoon(this)" oninput="this.value=this.value.replace(/\D/g,'')">
     </div>
     <!-- 허니팟: 화면에 안 보이는 칸. 자동 제출 봇만 여기를 채웁니다. -->
     <input id="rsvpWebsite" name="website" type="text" tabindex="-1" autocomplete="off"
@@ -975,7 +978,7 @@ const ro=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.
 document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
 
 /* ─── D-DAY ─── */
-const TARGET=new Date('2026-11-07T15:00:00');
+const TARGET=new Date(2026,10,7,15,0,0);   /* 2026-11-07 15:00 (월은 0부터) */
 function pad(n){return String(Math.abs(n)).padStart(2,'0')}
 function updateDD(){
   const diff=TARGET-new Date();
@@ -1439,17 +1442,7 @@ function toggleAcc(side){
 }
 
 /* ─── SHARE ─── */
-function copyLink(){
-  const url=location.href;
-  (navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject())
-    .then(()=>toast('링크가 복사되었습니다 💕'))
-    .catch(()=>{
-      const el=document.createElement('textarea');el.value=url;
-      el.style.cssText='position:fixed;opacity:0;top:-9999px';
-      document.body.appendChild(el);el.select();document.execCommand('copy');
-      document.body.removeChild(el);toast('링크가 복사되었습니다 💕');
-    });
-}
+function copyLink(){copyText(location.href,'링크가 복사되었습니다 💕')}
 /* ──────────────────────────────────────────────────────────────
    유튜브 라이브
    식이 다가오면 실제 방송 URL 을 아래에 붙여넣으세요
@@ -1474,15 +1467,29 @@ function hideModalNow(id){document.getElementById(id).classList.remove('show');d
 document.querySelectorAll('.modal-bg').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m)hideModal(m.id)})});
 
 /* ─── COPY & TOAST ─── */
-function copyAcc(num){
-  (navigator.clipboard?navigator.clipboard.writeText(num):Promise.reject())
-    .then(()=>toast('계좌번호가 복사되었습니다 💕'))
+function copyAcc(num){copyText(num,'계좌번호가 복사되었습니다 💕')}
+/* 클립보드 API 가 없거나 거절되면 숨긴 textarea 로 복사한다.
+   아이폰은 select() 만으로는 선택이 안 돼 setSelectionRange 가 필요하고,
+   16px 미만 글자 칸에 초점이 가면 화면이 확대되므로 크기를 지정한다. */
+function copyText(text,okMsg){
+  (navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject())
+    .then(()=>toast(okMsg))
     .catch(()=>{
-      const el=document.createElement('textarea');el.value=num;
-      el.style.cssText='position:fixed;opacity:0;top:-9999px';
-      document.body.appendChild(el);el.select();document.execCommand('copy');
-      document.body.removeChild(el);toast('계좌번호가 복사되었습니다 💕');
+      const el=document.createElement('textarea');el.value=text;
+      el.setAttribute('readonly','');
+      el.style.cssText='position:fixed;top:0;left:0;opacity:0;font-size:16px;pointer-events:none';
+      document.body.appendChild(el);
+      el.select();el.setSelectionRange(0,text.length);
+      let ok=false;try{ok=document.execCommand('copy')}catch(e){}
+      document.body.removeChild(el);
+      toast(ok?okMsg:'복사가 지원되지 않는 브라우저예요. 길게 눌러 복사해 주세요');
     });
+}
+/* 지금 한 번 선택하고, 아이폰은 focus 직후 선택이 곧바로 풀려 버리므로
+   한 박자 뒤에 다시 선택한다. */
+function selectAllSoon(el){
+  function sel(){try{el.setSelectionRange(0,el.value.length)}catch(e){el.select()}}
+  sel(); setTimeout(sel,0);
 }
 function toast(msg){
   const el=document.getElementById('toast');
