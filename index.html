@@ -1193,18 +1193,43 @@ function updateLb(dir){
   let startD=0,startSc=1;             /* 핀치 시작 상태 */
   let panning=false,px=0,py=0,sx=0,sy=0;
   let lastTap=0;
+  /* ─── 확대 화질 ───
+     transform:scale 로만 키우면 아이폰(사파리·카톡)은 화면 크기로 한 번 그린
+     그림을 그대로 늘려서 보여 준다. 레티나 2배 기종은 사진도 절반 해상도로
+     풀어 두기 때문에 4배 확대하면 얼굴이 뭉개진다. (갤럭시 크롬은 확대 후
+     다시 그려서 차이가 난다.)
+     그래서 손을 뗀 뒤에는 사진의 실제 크기(width/height)를 확대 배율만큼
+     키워 다시 그리게 한다. L 이 실제 크기에 반영된 배율이고, 나머지(sc/L)만
+     transform 으로 처리한다. 사진 원본 해상도보다 크게는 키우지 않는다. */
+  let L=1, commitT=0;
 
-  window.zReset=function(){sc=1;tx=0;ty=0;apply(false)};
+  window.zReset=function(){sc=1;tx=0;ty=0;clearTimeout(commitT);unbake();apply(false)};
 
   function apply(animate){
     img.style.transition=animate?'transform .28s cubic-bezier(.2,.8,.3,1)':'none';
-    img.style.transform=`translate(${tx}px,${ty}px) scale(${sc})`;
+    img.style.transform=`translate(${tx}px,${ty}px) scale(${sc/L})`;
     box.classList.toggle('zoomed',sc>1.01);
   }
+  function unbake(){
+    L=1; img.style.width=img.style.height=img.style.maxWidth=img.style.maxHeight='';
+  }
+  function bake(){
+    if(sc<=1.01){ if(L!==1){unbake();apply(false)} return }
+    const bw=img.offsetWidth/L, bh=img.offsetHeight/L;          /* 확대 전 화면상 크기 */
+    if(!bw||!img.naturalWidth) return;
+    const dpr=window.devicePixelRatio||1;
+    const cap=Math.max(1,Math.min(img.naturalWidth/(bw*dpr),img.naturalHeight/(bh*dpr)));
+    const nL=Math.min(sc,cap);
+    if(Math.abs(nL-L)<.02) return;
+    L=nL;
+    img.style.maxWidth='none'; img.style.maxHeight='none';
+    img.style.width=(bw*L)+'px'; img.style.height=(bh*L)+'px';
+    apply(false);                                                /* 보이는 크기·위치는 그대로 */
+  }
+  function bakeSoon(ms){clearTimeout(commitT);commitT=setTimeout(bake,ms)}
   /* 확대 상태에서 사진이 화면 밖으로 너무 빠지지 않도록 제한 */
   function clamp(){
-    const r=img.getBoundingClientRect();
-    const ow=r.width/sc, oh=r.height/sc;
+    const ow=img.offsetWidth/L, oh=img.offsetHeight/L;            /* 확대 전 크기 */
     const mx=Math.max(0,(ow*sc-window.innerWidth)/2);
     const my=Math.max(0,(oh*sc-window.innerHeight)/2);
     tx=Math.min(mx,Math.max(-mx,tx));
@@ -1220,6 +1245,7 @@ function updateLb(dir){
     sc=next;
     if(sc<=1.01){sc=1;tx=0;ty=0}
     clamp(); apply(true);
+    bakeSoon(320);                     /* 확대 애니메이션(.28s)이 끝난 뒤 선명하게 다시 그린다 */
   }
   function dist(t){const a=t[0],b=t[1];return Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY)}
   function mid(t){const a=t[0],b=t[1];return{x:(a.clientX+b.clientX)/2,y:(a.clientY+b.clientY)/2}}
@@ -1272,6 +1298,7 @@ function updateLb(dir){
 
   box.addEventListener('touchstart',function(e){
     if(sc>1.01||e.touches.length!==1||lbAnim){swOn=false;return}
+    if(L!==1){clearTimeout(commitT);unbake();apply(false)}   /* 막 축소한 직후라 크기가 남아 있으면 정리 */
     swOn=true;swAxis=null;swDx=0;swMoved=false;
     swX=e.touches[0].clientX;swY=e.touches[0].clientY;
   },{passive:true});
