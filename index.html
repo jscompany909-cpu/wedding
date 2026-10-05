@@ -301,9 +301,14 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .park-list>li{margin-bottom:12px;padding-left:2px}
 .park-list>li:last-child{margin-bottom:0}
 .park-sub,.park-note{display:block;font-size:clamp(13px,3.2vw,15px);color:var(--t3);line-height:1.75}
-.park-sub{margin-top:5px}
-.park-sub::before{content:"- "}
 .park-note{margin-top:2px;font-size:clamp(12px,3vw,14px)}
+/* 마제스타 시티 / 주차권 발급 : 같은 기호·크기·줄 간격이고, 이름 칸 폭을 같게 해서
+   뒤의 설명이 같은 세로선에서 시작한다. 좁은 화면에서 설명이 길면 그 선 안에서만 줄이 바뀐다. */
+.park-sub{display:flex;align-items:baseline;margin-top:2px}
+.park-sub:first-of-type{margin-top:5px}
+.park-sub::before{content:"-";flex:0 0 .9em}
+.ps-k{flex:0 0 7.2em;color:var(--t2);font-weight:400}
+.ps-v{flex:1;min-width:0;word-break:keep-all}
 /* 라벨 칸 폭은 em 기준 — 글자 크기가 커져도 본문 시작 위치가 전 행 동일하게 유지된다 */
 .tr-type{font-family:var(--lbl);font-weight:500;font-size:clamp(14px,3.5vw,16px);letter-spacing:.5px;color:var(--t1);min-width:4.8em;flex-shrink:0;line-height:1.9;white-space:nowrap}
 /* 이모지 폭이 기기마다 달라 라벨 글자 시작점이 틀어지므로 고정 폭 슬롯에 넣는다 */
@@ -696,8 +701,8 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
           </li>
           <li>
             교회 주차장 만차 시, 안내에 따라 이용 가능
-            <span class="park-sub">마제스타시티 주차장 (롯데마트 서초점)</span>
-            <span class="park-note">주차권 : 언약채플 2층 로비에서 수령</span>
+            <span class="park-sub"><span class="ps-k">마제스타 시티</span><span class="ps-v">주차장 (롯데마트 서초점)</span></span>
+            <span class="park-sub"><span class="ps-k">주차권 발급</span><span class="ps-v">언약채플 2층 로비에서 수령</span></span>
           </li>
         </ol>
       </div>
