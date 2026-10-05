@@ -30,6 +30,10 @@
 `User-agent: *` 전면 차단만 두면 카톡 링크 미리보기가 아예 안 뜬다.
 검색엔진(Googlebot/Yeti/Daum/bingbot)은 차단을 유지하되 미리보기 봇은 반드시 Allow.
 
+**`<meta name="format-detection">`** (`index.html`) — 아이폰이 계좌번호·주소·날짜를
+전화번호/링크로 자동 인식해 눌리는 파란 글자로 바꾸는 것을 막는다. 지우면 계좌번호를
+누를 때 통화·복사 메뉴가 뜬다. 계좌 복사는 [복사] 버튼으로만 한다.
+
 ## 미완료 설정
 
 **유튜브 라이브** — `index.html`의 `const YOUTUBE_LIVE_URL='';` 가 비어 있다.
