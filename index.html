@@ -288,9 +288,13 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 .map-hint{background:rgba(255,255,255,.92);padding:8px 18px;border-radius:20px;font-family:var(--lbl);font-weight:200;font-size:12px;letter-spacing:2px;color:var(--t2)}
 .map-lock{position:absolute;top:10px;left:10px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.92);border:1px solid var(--bd);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh2);z-index:20}
 .nav-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
-.nav-btn{display:flex;flex-direction:column;align-items:center;gap:5px;padding:clamp(12px,3.5vw,16px) 6px;border:1px solid var(--bd);border-radius:var(--r);background:var(--wh);color:var(--t2);font-family:var(--serif);font-size:clamp(12px,3vw,14px);font-weight:300;text-decoration:none;cursor:pointer;transition:all .25s}
-@media(hover:hover){.nav-btn:hover{background:var(--bg);border-color:var(--acc);color:var(--t1)}}
-.nav-ico{font-size:clamp(19px,5vw,24px)}
+.nav-btn{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:6px;padding:13px 4px;border:1px solid rgba(60,45,30,.08);border-radius:6px;background:var(--wh);box-shadow:0 1px 4px rgba(60,45,30,.08);color:var(--t1);font-family:var(--serif);font-size:clamp(13px,3.5vw,15px);font-weight:400;white-space:nowrap;text-decoration:none;cursor:pointer;transition:box-shadow .2s,transform .2s}
+.nav-btn:active{transform:translateY(1px);box-shadow:0 0 2px rgba(60,45,30,.1)}
+@media(hover:hover){.nav-btn:hover{box-shadow:0 3px 10px rgba(60,45,30,.12)}}
+/* 앱 색을 살린 작은 아이콘 (이모지는 기기마다 모양이 달라 SVG 로 그린다) */
+.nav-ico{width:18px;height:18px;flex:none;display:block}
+/* 아주 좁은 화면에서는 아이콘을 글자 위로 */
+@media(max-width:339px){.nav-btn{flex-direction:column;gap:4px;padding:11px 2px}}
 .transport-card{background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
 .tr-row{display:flex;align-items:baseline;gap:12px;padding:clamp(14px,4vw,18px) clamp(14px,4.5vw,20px);border-bottom:1px solid var(--bd);font-size:clamp(15px,3.9vw,18px);font-weight:400;color:var(--t1);line-height:1.9;text-align:left}
 .tr-row:last-child{border-bottom:none}
@@ -670,13 +674,13 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 
   <div class="nav-btns rv">
     <a href="https://map.kakao.com/?q=서울특별시 서초구 반포대로 121 사랑의교회" target="_blank" class="nav-btn">
-      <span class="nav-ico">🟡</span>카카오맵
+      <svg class="nav-ico" viewBox="0 0 18 18" aria-hidden="true"><rect width="18" height="18" rx="4.5" fill="#FEE500"/><path d="M9 3.6c-2 0-3.6 1.56-3.6 3.5 0 2.62 3.6 6.3 3.6 6.3s3.6-3.68 3.6-6.3C12.6 5.16 11 3.6 9 3.6z" fill="#3A1D1D"/><circle cx="9" cy="7.1" r="1.35" fill="#FEE500"/></svg>카카오맵
     </a>
     <a href="https://map.naver.com/v5/search/서울특별시 서초구 반포대로 121 사랑의교회" target="_blank" class="nav-btn">
-      <span class="nav-ico">🟢</span>네이버지도
+      <svg class="nav-ico" viewBox="0 0 18 18" aria-hidden="true"><rect width="18" height="18" rx="4.5" fill="#03C75A"/><path d="M5.6 4.8h2.1l2.7 4.1V4.8h2v8.4h-2.1L7.6 9.1v4.1h-2z" fill="#fff"/></svg>네이버지도
     </a>
     <a href="https://www.google.com/maps/search/서울특별시 서초구 반포대로 121 사랑의교회" target="_blank" class="nav-btn">
-      <span class="nav-ico">🔵</span>구글지도
+      <svg class="nav-ico" viewBox="0 0 18 18" aria-hidden="true"><rect x=".5" y=".5" width="17" height="17" rx="4" fill="#fff" stroke="#DADCE0"/><path d="M9 3.4c-2.1 0-3.8 1.64-3.8 3.68 0 2.76 3.8 6.62 3.8 6.62s3.8-3.86 3.8-6.62C12.8 5.04 11.1 3.4 9 3.4z" fill="#EA4335"/><circle cx="9" cy="7.1" r="1.45" fill="#A50E0E"/></svg>구글지도
     </a>
   </div>
 
