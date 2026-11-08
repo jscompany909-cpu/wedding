@@ -1000,7 +1000,7 @@ function updateDD(){
   const diff=TARGET-new Date();
   if(diff<=0){
     ['dd-d','dd-h','dd-m','dd-s'].forEach(id=>document.getElementById(id).textContent='0');
-    document.getElementById('dd-msg').textContent='🎊 오늘이 그날입니다!';return;
+    document.getElementById('dd-msg').textContent='💕 함께해 주셔서 감사드립니다';return;   /* 예식 이후 */
   }
   const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),
         m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
