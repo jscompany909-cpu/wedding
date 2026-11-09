@@ -320,6 +320,17 @@ body{font-family:var(--serif);background-color:var(--bg);color:var(--t1);line-he
 /* 이모지 폭이 기기마다 달라 라벨 글자 시작점이 틀어지므로 고정 폭 슬롯에 넣는다 */
 .tr-ico{display:inline-block;width:1.55em;text-align:center;letter-spacing:0}
 
+/* ─── 예식 영상 안내 창 ─── */
+.vid-body{text-align:center}
+.vid-thumb{position:relative;display:block;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:#2a2622 linear-gradient(135deg,#4a3f36,#2a2622)}
+.vid-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vid-play{position:absolute;left:50%;top:50%;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;background:rgba(200,40,40,.92);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+.vid-play svg{margin-left:3px}
+.vid-txt{margin-top:16px;font-size:clamp(14px,3.7vw,16px);line-height:1.85;color:var(--t2);word-break:keep-all}
+.vid-foot{display:flex;flex-direction:column;gap:8px}
+.vid-foot .modal-foot-btn{text-align:center;text-decoration:none}
+.vid-later{background:none;border:none;color:var(--t3);font-family:var(--serif);font-size:14px;padding:6px;cursor:pointer}
+
 /* ─── 피로연장 경로 안내 (이동 행의 버튼 + 모달 일러스트) ─── */
 .route-btn{display:inline-flex;align-items:center;gap:4px;margin:2px 0 2px 6px;padding:3px 10px;border:1px solid var(--acc);border-radius:999px;background:transparent;color:var(--t2);font-family:var(--serif);font-size:12px;font-weight:400;line-height:1.7;letter-spacing:.3px;cursor:pointer;vertical-align:middle;transition:all .25s}
 .route-btn:active{background:var(--t1);color:var(--wh);border-color:var(--t1)}
@@ -479,6 +490,25 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
 
 
 <!-- ROUTE MODAL : 언약채플 → 피로연장 -->
+<div class="modal-bg" id="videoModal" role="dialog" aria-modal="true" aria-label="예식 영상">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <span class="modal-ttl">예식 영상</span>
+      <button class="modal-close" onclick="hideModal('videoModal')" aria-label="닫기">✕</button>
+    </div>
+    <div class="modal-body vid-body">
+      <a class="vid-thumb" href="https://youtu.be/8VA_SvR3y6U" target="_blank" rel="noopener" onclick="openVideo()" aria-label="유튜브에서 예식 영상 보기">
+        <img src="https://i.ytimg.com/vi/8VA_SvR3y6U/hqdefault.jpg" alt="" onerror="this.style.display='none'">
+        <span class="vid-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26"><path d="M8 5.5v13l11-6.5z" fill="#fff"/></svg></span>
+      </a>
+      <p class="vid-txt">함께해 주신 모든 분들께 감사드립니다.<br>오시지 못한 분들도 영상으로<br>그날의 순간을 함께해 주세요.</p>
+    </div>
+    <div class="modal-foot vid-foot">
+      <a class="modal-foot-btn" href="https://youtu.be/8VA_SvR3y6U" target="_blank" rel="noopener" onclick="openVideo()">▶ 영상 보기</a>
+      <button class="vid-later" onclick="hideModal('videoModal')">청첩장 계속 보기</button>
+    </div>
+  </div>
+</div>
 <div class="modal-bg" id="routeModal" role="dialog" aria-modal="true" aria-label="피로연장 위치 안내">
   <div class="modal-box">
     <div class="modal-hd">
@@ -860,7 +890,7 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
     <button class="share-btn" onclick="copyLink()"><span class="share-ico">🔗</span>링크 복사</button>
     <button class="share-btn" onclick="watchLive()">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path fill="currentColor" d="M9 3.2a11.6 11.6 0 0 0-4.9 1c-.9.42-1.6 1.2-1.85 2.2C2 7.52 2 8.7 2 10s0 2.48.25 3.6c.25 1 .95 1.78 1.85 2.2 1.5.7 3.4 1 4.9 1s3.4-.3 4.9-1c.9-.42 1.6-1.2 1.85-2.2.25-1.12.25-2.3.25-3.6s0-2.48-.25-3.6c-.25-1-.95-1.78-1.85-2.2a11.6 11.6 0 0 0-4.9-1Zm-1.2 4.1 4 2.4a.35.35 0 0 1 0 .6l-4 2.4a.35.35 0 0 1-.53-.3v-4.8c0-.28.3-.46.53-.3Z"/></svg>
-      유튜브 라이브
+      예식 영상 보기
     </button>
   </div>
 </section>
@@ -889,6 +919,7 @@ footer{background:var(--t1);color:rgba(255,255,255,.35);text-align:center;paddin
     setTimeout(()=>{
       intro.classList.add('hide');
       setTimeout(()=>{intro.style.display='none'},1200);
+      setTimeout(()=>{if(window.showVideoPromo)showVideoPromo()},3000);   /* 사진이 보이고 3초 뒤 영상 안내 */
     },400);
   }
 
@@ -1525,21 +1556,32 @@ function toggleAcc(side){
 /* ─── SHARE ─── */
 function copyLink(){copyText(location.href,'링크가 복사되었습니다 💕')}
 /* ──────────────────────────────────────────────────────────────
-   유튜브 라이브
-   식이 다가오면 실제 방송 URL 을 아래에 붙여넣으세요
-   (예: https://www.youtube.com/watch?v=xxxxxxxxxxx).
-   비워 두면 '아직 공개되지 않았다'는 안내만 뜨고 아무 데도 이동하지
-   않습니다.
+   예식 영상 (유튜브)
+   라이브 방송 대신 예식 영상을 올렸다. 공유 섹션의 [예식 영상 보기] 버튼과,
+   예식 이후 청첩장을 연 사람에게 인트로 3초 뒤 한 번 뜨는 안내 창이 쓴다.
 ────────────────────────────────────────────────────────────── */
-const YOUTUBE_LIVE_URL='';   /* ← 여기에 실제 라이브 URL을 붙여넣으세요 */
+const YOUTUBE_LIVE_URL='https://youtu.be/8VA_SvR3y6U';
+const YOUTUBE_VIDEO_ID='8VA_SvR3y6U';
 
 function watchLive(){
   if(!YOUTUBE_LIVE_URL){
-    toast('유튜브 라이브 링크는 예식이 가까워지면 열립니다');
+    toast('예식 영상은 준비되는 대로 올라옵니다');
     return;
   }
   window.open(YOUTUBE_LIVE_URL,'_blank');
 }
+
+/* 예식이 끝난 뒤 처음 들어온 사람에게 한 번만 영상 안내 창을 띄운다.
+   (자동으로 유튜브로 넘기지 않는다 — 주소·계좌를 보러 온 사람도 있고,
+    카톡·아이폰은 누르지 않은 이동을 막기도 한다) */
+function showVideoPromo(){
+  if(!YOUTUBE_LIVE_URL) return;
+  if(new Date()<TARGET) return;                                   /* 예식 전에는 띄우지 않음 */
+  try{ if(sessionStorage.getItem('vid_promo')) return; sessionStorage.setItem('vid_promo','1'); }catch(e){}
+  if(document.querySelector('.modal-bg.show')||document.getElementById('lightbox').classList.contains('show')) return;
+  showModal('videoModal');
+}
+function openVideo(){ hideModal('videoModal'); }
 
 /* ─── MODALS ─── */
 function showModal(id){document.getElementById(id).classList.add('show');document.body.style.overflow='hidden';ovOpen(function(){hideModalNow(id)})}
