@@ -36,10 +36,11 @@
 
 ## 미완료 설정
 
-**유튜브 라이브** — `index.html`의 `const YOUTUBE_LIVE_URL='';` 가 비어 있다.
-식이 가까워지면 실제 방송 URL을 넣는다. 비어 있는 동안은 '공유' 섹션의
-[유튜브 라이브] 버튼을 눌러도 "링크는 예식이 가까워지면 열립니다" 토스트만
-뜨고 아무 데도 이동하지 않는다.
+**예식 영상** — 라이브 방송은 하지 못했고, 예식 영상을 유튜브에 올렸다.
+`index.html`의 `YOUTUBE_LIVE_URL`(https://youtu.be/8VA_SvR3y6U)을 공유 섹션의
+[예식 영상 보기] 버튼과 `#videoModal` 안내 창이 쓴다. 안내 창은 예식 시각 이후,
+인트로가 끝나고 3초 뒤 한 방문에 한 번(sessionStorage `vid_promo`) 뜬다.
+영상을 바꾸면 모달 안의 링크 2곳과 썸네일(i.ytimg.com/vi/<ID>/hqdefault.jpg)도 같이 바꾼다.
 
 **Apps Script 재배포** — `rsvp-apps-script.gs`를 고쳤다면 Apps Script 편집기에서
 반드시 **새 배포**를 해야 반영된다. 기존 배포를 수정만 하면 안 바뀐다.
